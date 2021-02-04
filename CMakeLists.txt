@@ -43,6 +43,7 @@ find_package(Qt5 COMPONENTS
 )
 
 set(TARGET_HDR
+    include/ros_wrapper.h
 #    src/log_model.h
 #    src/base_module.h
 #    src/weight_module.h
@@ -59,6 +60,7 @@ set(TARGET_SRC
 #  src/log_model.cpp
 #  src/base_module.cpp
   src/main.cpp
+  src/ros_wrapper.cpp
 #  src/weight_module.cpp
 #  src/festo_module.cpp
 #  src/flexbe_module.cpp
@@ -80,6 +82,7 @@ set(RESOURCES
 catkin_package(
   INCLUDE_DIRS
   src
+  include
   CATKIN_DEPENDS
     roscpp
     std_msgs
@@ -99,7 +102,7 @@ set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR}/src/imports
 qt5_add_resources(${PROJECT_NAME}_QML src/qml.qrc)
 
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
   ${PROJECT_SOURCE_DIR}
   ${Qt5Widgets_INCLUDE_DIRS}
@@ -113,6 +116,7 @@ add_executable(${PROJECT_NAME}
   ${${PROJECT_NAME}_MOCS}
   ${${PROJECT_NAME}_QML}
   ${RESOURCES}
+  ${TARGET_HDR}
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -124,7 +128,7 @@ target_link_libraries(${PROJECT_NAME}
   Qt5::Sql
   Qt5::WebView
 )
-#target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 get_target_property(QtCore_location Qt5::Core LOCATION)
 
 # Копироваие скрипта с для поиска по сценариям

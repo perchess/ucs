@@ -19,18 +19,23 @@ Page {
         x: 37
         y: 38
         text: qsTr("Отправить")
+        onClicked: rosStringPub.setConstMsg()
     }
 
     TextField {
         id: textField
-        x: 37
-        y: 146
+        y: 278
+        height: 44
         text: qsTr("Принято:")
+        anchors.left: parent.left
+        anchors.leftMargin: 44
+        anchors.right: parent.right
+        anchors.rightMargin: 183
     }
 
     Connections {
-        target: button
-        onClicked: print("clicked")
+        target: rosStringPub
+        onValueChanged: textField.text = "Принято:" + newValue
     }
 
 }
@@ -39,7 +44,19 @@ Page {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:0;autoSize:true;height:480;width:640}
+    D{i:0;autoSize:true;height:480;width:640}D{i:3;anchors_width:413;anchors_x:37}
 }
  ##^##*/
