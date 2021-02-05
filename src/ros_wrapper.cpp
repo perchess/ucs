@@ -34,8 +34,11 @@ void RosWrapper::setConstMsg(){
 
 CppWrapper::CppWrapper(QObject *parent)
     :QObject(parent){
-    //Create config file
-//    configFile_.(CONFIG_PATH);
+
+    //Create namespace
+    configFile_.open(CONFIG_PATH);
+    configFile_ << "qtout:" << std::endl;
+//    configFile_.close();
 }
 
 CppWrapper::~CppWrapper(){
@@ -45,9 +48,9 @@ CppWrapper::~CppWrapper(){
 
 void CppWrapper::setUrdfPath(QString path){
 
-    configFile_.open(CONFIG_PATH);
-    configFile_ << path.toStdString() << std::endl;
-    configFile_.close();
+//    configFile_.open(CONFIG_PATH);
+    configFile_ << TAB << "urdf_file: " << "\""<< path.toStdString().erase(0,7) << "\"" << std::endl;
+//    configFile_.close();
 
 }
 

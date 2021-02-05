@@ -45,14 +45,15 @@ Page {
     }
 
     RowLayout {
-        x: 17
         y: 2
-        width: 604
         height: 40
+        anchors.left: parent.left
+        anchors.leftMargin: 17
+        anchors.right: parent.right
+        anchors.rightMargin: 19
 
         TextField {
             id: textField
-            width: 400
             height: 40
             text: qsTr("Выберите файл")
             Layout.preferredHeight: 40
@@ -67,3 +68,10 @@ Page {
 
 }
 
+
+
+
+/*##^## Designer {
+    D{i:4;anchors_width:604;anchors_x:17}
+}
+ ##^##*/

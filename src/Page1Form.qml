@@ -14,31 +14,93 @@ Page {
         padding: 10
     }
 
-    Button {
-        id: button
-        x: 37
-        y: 38
-        text: qsTr("Отправить")
-        onClicked: rosStringPub.setConstMsg()
-    }
-
-    TextField {
-        id: textField
-        y: 278
-        height: 44
-        text: qsTr("Принято:")
-        anchors.left: parent.left
-        anchors.leftMargin: 44
-        anchors.right: parent.right
-        anchors.rightMargin: 183
-    }
-
     Connections {
         target: rosStringPub
         onValueChanged: textField.text = "Принято:" + newValue
     }
 
+    GroupBox {
+        id: groupBox
+        x: 72
+        y: 46
+        width: 497
+        height: 283
+        title: qsTr("Состав системы")
+
+        CheckBox {
+            id: checkBox
+            x: 0
+            y: 16
+            text: qsTr("Лидар")
+        }
+
+        CheckBox {
+            id: checkBox1
+            x: 0
+            y: 62
+            text: qsTr("RGBD камера")
+        }
+
+        CheckBox {
+            id: checkBox2
+            x: 0
+            y: 110
+            text: qsTr("Радар")
+        }
+
+        CheckBox {
+            id: checkBox3
+            x: 0
+            y: 156
+            text: qsTr("RGB камера")
+        }
+
+        CheckBox {
+            id: checkBox4
+            x: 0
+            y: 202
+            text: qsTr("IMU")
+        }
+
+        TextField {
+            id: textField
+            x: 273
+            y: 16
+            text: qsTr("Состояние")
+        }
+
+        TextField {
+            id: textField1
+            x: 273
+            y: 62
+            text: qsTr("Состояние")
+        }
+
+        TextField {
+            id: textField2
+            x: 273
+            y: 110
+            text: qsTr("Состояние")
+        }
+
+        TextField {
+            id: textField3
+            x: 273
+            y: 156
+            text: qsTr("Состояние")
+        }
+
+        TextField {
+            id: textField4
+            x: 273
+            y: 202
+            text: qsTr("Состояние")
+        }
+    }
+
 }
+
+
 
 
 

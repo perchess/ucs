@@ -12,6 +12,7 @@
 
 #pragma message ("add currrent path macros")
 #define CONFIG_PATH "/home/den/QtProjects/qmlcmake/config/qt_out.yaml"
+#define TAB "  "
 
 
 class RosWrapper : public QObject{
