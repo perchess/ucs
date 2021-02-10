@@ -6,12 +6,14 @@
 
 #include <iostream>
 #include <fstream>
+#include <any>
 
 //#include "main.moc"
 
 
-#pragma message ("add currrent path macros")
-#define CONFIG_PATH "/home/den/QtProjects/qmlcmake/config/qt_out.yaml"
+
+#define CURRENT_DIR "/home/den/QtProjects/qmlcmake/"
+#define CONFIG_PATH "config/qt_out.yaml"
 #define TAB "  "
 
 
@@ -43,10 +45,12 @@ class CppWrapper : public QObject{
     Q_OBJECT
 public:
     explicit CppWrapper(QObject *parent = nullptr);
+    void applyChanges();
     ~CppWrapper();
 
 public slots:
-    void setUrdfPath(QString path);
+    void setProperty(QString parametr, QString name);
+    void setProperty(bool parametr, QString name);
 
 
 signals:
@@ -55,5 +59,14 @@ signals:
 private:
 //    std::string configPath_;
     std::ofstream configFile_;
+    // Состояния параметров
+//    std::string urdfPath_;
+//    bool lidarState_;
+//    bool rgbdState_;
+//    bool rgbState_;
+//    bool imuState_;
+//    bool radarState_;
+    std::map<std::string, std::string> strParams_;
+    std::map<std::string, bool> boolParams_;
 
 };

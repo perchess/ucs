@@ -36,21 +36,37 @@ CppWrapper::CppWrapper(QObject *parent)
     :QObject(parent){
 
     //Create namespace
-    configFile_.open(CONFIG_PATH);
-    configFile_ << "qtout:" << std::endl;
+    configFile_.open(CURRENT_DIR CONFIG_PATH);
+    configFile_ << "qtout: " << std::endl;
 //    configFile_.close();
 }
 
 CppWrapper::~CppWrapper(){
+
     configFile_.close();
 }
 
 
-void CppWrapper::setUrdfPath(QString path){
+void CppWrapper::setProperty(QString parametr, QString name){
+    strParams_[name.toStdString()] = parametr.toStdString();
+    applyChanges();
+//    configFile_ << TAB << name.toStdString() << ": " << "\""<< parametr.toStdString() << "\"" << std::endl;
 
-//    configFile_.open(CONFIG_PATH);
-    configFile_ << TAB << "urdf_file: " << "\""<< path.toStdString().erase(0,7) << "\"" << std::endl;
-//    configFile_.close();
+}
 
+
+
+void CppWrapper::setProperty(bool parametr, QString name){
+
+    configFile_ << TAB << name.toStdString() << ": " << std::boolalpha << parametr << std::endl;
+
+}
+
+void CppWrapper::applyChanges(){
+    // Надо очистить файл, но без первой строчки (ns)
+    // затем можно записывать
+    for (auto it : strParams_){
+        configFile_ << TAB << it.first << ": " << "\""<< it.second << "\"" << std::endl;
+    }
 }
 

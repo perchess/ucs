@@ -28,7 +28,7 @@ Page {
         folder: shortcuts.home
         onAccepted: {
             textField.text = fileDialog.fileUrl
-            cppWrapper.setUrdfPath(fileDialog.fileUrl)
+            cppWrapper.setProperty(fileDialog.fileUrl.toString().replace("file:///","/"), "urdf_path")
             //            console.log("You chose: " + fileDialog.fileUrls)
             //            Qt.quit()
         }

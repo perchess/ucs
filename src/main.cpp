@@ -23,6 +23,11 @@ void readParam(const std::string param_name, T& param_value,
 int main(int argc, char *argv[]){
     /// Init ROS
     ros::init(argc, argv, "DataHub_node");
+
+    // Проверяем, запущен ли мастер, если нет - запускаем
+    if (!ros::master::check())
+        system("roscore &");
+
     ros::NodeHandle nh("~");
 
     ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("chatter", 1000);
@@ -48,6 +53,11 @@ int main(int argc, char *argv[]){
      * */
     context->setContextProperty("rosStringPub", &selfpub);
     context->setContextProperty("cppWrapper", &cppWrapper);
+
+    /*
+     *
+     * */
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
@@ -56,5 +66,9 @@ int main(int argc, char *argv[]){
     }, Qt::QueuedConnection);
     engine.load(url);
 
-    return app.exec();
+    auto app_exec = app.exec();
+
+    system("killall roscore");
+
+    return app_exec;
 }

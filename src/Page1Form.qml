@@ -16,7 +16,7 @@ Page {
 
     Connections {
         target: rosStringPub
-        onValueChanged: textField.text = "Принято:" + newValue
+        onValueChanged: lidarTF.text = "Принято:" + newValue
     }
 
     GroupBox {
@@ -28,77 +28,117 @@ Page {
         title: qsTr("Состав системы")
 
         CheckBox {
-            id: checkBox
+            id: lidarCB
             x: 0
             y: 16
             text: qsTr("Лидар")
         }
 
         CheckBox {
-            id: checkBox1
+            id: rgbdCB
             x: 0
             y: 62
             text: qsTr("RGBD камера")
         }
 
         CheckBox {
-            id: checkBox2
+            id: radarCB
             x: 0
             y: 110
             text: qsTr("Радар")
         }
 
         CheckBox {
-            id: checkBox3
+            id: rgbCB
             x: 0
             y: 156
             text: qsTr("RGB камера")
         }
 
         CheckBox {
-            id: checkBox4
+            id: imuCB
             x: 0
             y: 202
             text: qsTr("IMU")
         }
 
         TextField {
-            id: textField
+            id: lidarTF
             x: 273
             y: 16
             text: qsTr("Состояние")
         }
 
         TextField {
-            id: textField1
+            id: rgbdTF
             x: 273
             y: 62
             text: qsTr("Состояние")
         }
 
         TextField {
-            id: textField2
+            id: radarTF
             x: 273
             y: 110
             text: qsTr("Состояние")
         }
 
         TextField {
-            id: textField3
+            id: rgbTF
             x: 273
             y: 156
             text: qsTr("Состояние")
         }
 
         TextField {
-            id: textField4
+            id: imuTF
             x: 273
             y: 202
             text: qsTr("Состояние")
         }
     }
 
+    Connections {
+        target: lidarCB
+        onClicked: cppWrapper.setProperty(lidarCB.checked, "turn_lidar")
+    }
+
+    Connections {
+        target: radarCB
+        onClicked: cppWrapper.setProperty(lidarCB.checked, "turn_radar")
+    }
+    Connections {
+        target: rgbdCB
+        onClicked: cppWrapper.setProperty(lidarCB.checked, "turn_rgbd")
+    }
+    Connections {
+        target: rgbCB
+        onClicked: cppWrapper.setProperty(lidarCB.checked, "turn_rgb")
+    }
+    Connections {
+        target: imuCB
+        onClicked: cppWrapper.setProperty(lidarCB.checked, "turn_imu")
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
