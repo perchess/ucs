@@ -3,6 +3,7 @@
 #include <ros/ros.h>
 #include <ros_wrapper.h>
 #include <QQmlContext>
+#include <my_rviz.h>
 
 
 //! @brief Шаблоннная функция для чтения параметров
@@ -57,6 +58,11 @@ int main(int argc, char *argv[]){
     /*
      *
      * */
+    // RVIZ
+    MyViz myViz;
+    myViz.resize(200, 200);
+    myViz.show();
+    myViz.raise();
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

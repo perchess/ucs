@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(qmlcmake)
 
-add_compile_options(-std=c++17)
-set(CMAKE_CXX_STANDARD 17)
+add_compile_options(-std=c++14)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -28,6 +28,7 @@ set(CMAKE_AUTORCC ON)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  rviz
 )
 
 # Qt5
@@ -44,6 +45,7 @@ find_package(Qt5 COMPONENTS
 
 set(TARGET_HDR
     include/ros_wrapper.h
+    include/my_rviz.h
 #    src/log_model.h
 #    src/base_module.h
 #    src/weight_module.h
@@ -61,6 +63,7 @@ set(TARGET_SRC
 #  src/base_module.cpp
   src/main.cpp
   src/ros_wrapper.cpp
+  src/my_rviz.cpp
 #  src/weight_module.cpp
 #  src/festo_module.cpp
 #  src/flexbe_module.cpp

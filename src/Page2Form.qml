@@ -4,6 +4,8 @@ import Qt.labs.folderlistmodel 2.1
 import QtQml.Models 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.0
+import Qt3D.Core 2.9
+
 
 Page {
     id: page1
@@ -67,6 +69,10 @@ Page {
     }
 
 }
+
+
+
+
 
 
 
