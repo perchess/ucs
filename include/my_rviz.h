@@ -3,6 +3,9 @@
 #include <QObject>
 #include <QtQuick/QQuickView>
 
+#include <rviz/visualization_manager.h>
+#include <rviz/render_panel.h>
+#include "rviz/display.h"
 
 namespace rviz
 {
@@ -33,6 +36,7 @@ private:
   rviz::VisualizationManager* manager_;
   rviz::RenderPanel* render_panel_;
   rviz::Display* grid_;
+  rviz::QtOgreRenderWindow* render_window_;
 
   int thickness_percent_;
   int cell_size_percent_;

@@ -5,6 +5,8 @@ import QtQml.Models 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.0
 import Qt3D.Core 2.9
+import ros.rviz 1.0
+import MyModule 1.0
 
 
 Page {
@@ -20,6 +22,66 @@ Page {
         text: qsTr("Настройки ROS")
         font.pixelSize: Qt.application.font.pixelSize * 2
         padding: 10
+    }
+    Loader {
+        id: loader
+        anchors.bottomMargin: 66
+        anchors.leftMargin: 157
+        anchors.rightMargin: 157
+        anchors.topMargin: 91
+        anchors.fill: parent
+        sourceComponent: rvizComp
+    }
+
+    Component {
+      id: rvizComp
+
+      Item {
+        VisualizationFrame {
+          id: visualizationFrame
+          anchors.fill: parent
+          renderWindow: renderWindow
+        }
+
+        Rectangle {
+          anchors.fill: parent
+          color: "lightblue"
+
+          RenderWindow {
+            id: renderWindow
+            anchors.fill: parent
+            anchors.margins: 20
+          }
+        }
+
+        SimpleGrid {
+          id: grid
+          frame: visualizationFrame
+          lineWidth: 10
+          color: "lightblue"
+        }
+
+        DisplayConfig {
+          id: displayConfig
+          frame: visualizationFrame
+          source: rvizPath + "/src/test/quick_test.rviz"
+        }
+
+        Row {
+          anchors.bottom: parent.bottom
+          anchors.horizontalCenter: parent.horizontalCenter
+
+          Button {
+            text: "Red Grid"
+            onClicked: grid.color = "red"
+          }
+
+          Button {
+            text: "Blue Grid"
+            onClicked: grid.color = "blue"
+          }
+        }
+      }
     }
 
     FileDialog {

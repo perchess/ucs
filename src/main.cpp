@@ -1,9 +1,23 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlEngine>
+#include <QQmlContext>
 #include <ros/ros.h>
 #include <ros_wrapper.h>
 #include <QQmlContext>
-#include <my_rviz.h>
+//#include <my_rviz.h>
+
+#include "rviz/quick_visualizer_app.h"
+#include "rviz/quick_visualization_frame.h"
+
+#include "rviz/visualization_manager.h"
+#include "rviz/render_panel.h"
+#include "rviz/displays_panel.h"
+#include "rviz/quick_visualization_frame.h"
+#include <ros/package.h>
+
+#include "simplegrid.h"
+#include "displayconfig.h"
 
 
 //! @brief Шаблоннная функция для чтения параметров
@@ -49,20 +63,26 @@ int main(int argc, char *argv[]){
 
     QQmlContext *context = engine.rootContext();
 
+    ///RVIZ
+    rviz::QuickVisualizationFrame::registerTypes();
+    qmlRegisterType<SimpleGrid>("MyModule", 1, 0, "SimpleGrid");
+    qmlRegisterType<DisplayConfig>("MyModule", 1, 0, "DisplayConfig");
+
     /* Загружаем объект класса в qml
      *
      * */
     context->setContextProperty("rosStringPub", &selfpub);
     context->setContextProperty("cppWrapper", &cppWrapper);
+    context->setContextProperty("rvizPath", QString::fromStdString("/home/den/rviz_qml/src/rviz"));
 
     /*
      *
      * */
     // RVIZ
-    MyViz myViz;
-    myViz.resize(200, 200);
-    myViz.show();
-    myViz.raise();
+//    MyViz myViz;
+//    myViz.resize(200, 200);
+//    myViz.show();
+//    myViz.raise();
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

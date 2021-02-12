@@ -5,9 +5,7 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 
-#include "rviz/visualization_manager.h"
-#include "rviz/render_panel.h"
-#include "rviz/display.h"
+
 
 #include <QtQml/QQmlContext>
 #include <QColor>
@@ -19,9 +17,11 @@ MyViz::MyViz( QWindow* parent )
   : QQuickView( parent )
   , manager_(nullptr)
   , grid_(nullptr)
+  , render_window_()
   , render_panel_(nullptr)
   , cell_size_percent_(0)
   , thickness_percent_(0)
+
 {
     connect(this, &MyViz::beforeRendering, this, &MyViz::initializeOgre, Qt::DirectConnection);
     connect(this, &MyViz::ogreInitialized, this, &MyViz::addContent);
@@ -50,8 +50,9 @@ void MyViz::initializeOgre()
 {
     // we only want to initialize once
     disconnect(this, &MyViz::beforeRendering, this, &MyViz::initializeOgre);
-    render_panel_ = new rviz::RenderPanel();
-    manager_ = new rviz::VisualizationManager( render_panel_ );
+    render_panel_ = new rviz::RenderPanel(render_window_);
+    render_panel_->initialize()
+    manager_ = new rviz::VisualizationManager(render_panel_);
     manager_->initialize();
     manager_->startUpdate();
 

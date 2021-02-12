@@ -45,7 +45,9 @@ find_package(Qt5 COMPONENTS
 
 set(TARGET_HDR
     include/ros_wrapper.h
-    include/my_rviz.h
+    include/simplegrid.h
+    include/displayconfig.h
+    #    include/my_rviz.h
 #    src/log_model.h
 #    src/base_module.h
 #    src/weight_module.h
@@ -63,7 +65,9 @@ set(TARGET_SRC
 #  src/base_module.cpp
   src/main.cpp
   src/ros_wrapper.cpp
-  src/my_rviz.cpp
+  src/simplegrid.cpp
+  src/displayconfig.cpp
+#  src/my_rviz.cpp
 #  src/weight_module.cpp
 #  src/festo_module.cpp
 #  src/flexbe_module.cpp
