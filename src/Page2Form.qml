@@ -23,13 +23,16 @@ Page {
         font.pixelSize: Qt.application.font.pixelSize * 2
         padding: 10
     }
+
     Loader {
         id: loader
-        anchors.bottomMargin: 66
-        anchors.leftMargin: 157
-        anchors.rightMargin: 157
-        anchors.topMargin: 91
-        anchors.fill: parent
+        x: 371
+        y: 89
+        width: 250
+        height: 250
+        active: true
+        clip: false
+        visible: false
         sourceComponent: rvizComp
     }
 
@@ -39,6 +42,8 @@ Page {
       Item {
         VisualizationFrame {
           id: visualizationFrame
+          width: 300
+          height: 300
           anchors.fill: parent
           renderWindow: renderWindow
         }
@@ -50,7 +55,6 @@ Page {
           RenderWindow {
             id: renderWindow
             anchors.fill: parent
-            anchors.margins: 20
           }
         }
 
@@ -61,26 +65,43 @@ Page {
           color: "lightblue"
         }
 
+//        RobotModel {
+//            id: robotModel
+//            frame: visualizationFrame
+//        }
+
         DisplayConfig {
           id: displayConfig
           frame: visualizationFrame
-          source: rvizPath + "/src/test/quick_test.rviz"
+          source: rvizPath + "/src/test/quick_displays.rviz"
         }
 
-        Row {
-          anchors.bottom: parent.bottom
+        Button {
+          anchors.top: parent.top
           anchors.horizontalCenter: parent.horizontalCenter
-
-          Button {
-            text: "Red Grid"
-            onClicked: grid.color = "red"
-          }
-
-          Button {
-            text: "Blue Grid"
-            onClicked: grid.color = "blue"
+          text: qsTr("reload")
+          onClicked: {
+            loader.active = false;
+            loader.active = true;
           }
         }
+
+
+
+//        Row {
+//          anchors.bottom: parent.bottom
+//          anchors.horizontalCenter: parent.horizontalCenter
+
+//          Button {
+//            text: "Red Grid"
+//            onClicked: grid.color = "red"
+//          }
+
+//          Button {
+//            text: "Blue Grid"
+//            onClicked: grid.color = "blue"
+//          }
+//        }
       }
     }
 
@@ -91,8 +112,10 @@ Page {
         title: "Please choose a file"
         folder: shortcuts.home
         onAccepted: {
-            textField.text = fileDialog.fileUrl
+            textField.text = fileDialog.fileUrl.toString().replace("file:///","/")
             cppWrapper.setProperty(fileDialog.fileUrl.toString().replace("file:///","/"), "urdf_path")
+            cppWrapper.systemCmd("roslaunch robot_description description.launch xacro_urdf_arg:=/home/den/scooter_ws/src/nissan_cart/scooter_description/urdf/scooter.xacro")
+            loader.visible = true
             //            console.log("You chose: " + fileDialog.fileUrls)
             //            Qt.quit()
         }
@@ -130,6 +153,7 @@ Page {
         }
     }
 
+
 }
 
 
@@ -139,7 +163,17 @@ Page {
 
 
 
+
+
+
+
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:4;anchors_width:604;anchors_x:17}
+    D{i:5;anchors_width:604;anchors_x:17}
 }
  ##^##*/

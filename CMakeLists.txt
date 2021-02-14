@@ -47,6 +47,7 @@ set(TARGET_HDR
     include/ros_wrapper.h
     include/simplegrid.h
     include/displayconfig.h
+    include/robot_model.h
     #    include/my_rviz.h
 #    src/log_model.h
 #    src/base_module.h
@@ -67,6 +68,7 @@ set(TARGET_SRC
   src/ros_wrapper.cpp
   src/simplegrid.cpp
   src/displayconfig.cpp
+  src/robot_model.cpp
 #  src/my_rviz.cpp
 #  src/weight_module.cpp
 #  src/festo_module.cpp

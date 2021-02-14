@@ -48,6 +48,9 @@ CppWrapper::~CppWrapper(){
 
 
 void CppWrapper::setProperty(QString parametr, QString name){
+    if (name == "urdf_path")
+      systemCmd("export UCS_URDF_PATH=" + parametr);
+
     strParams_[name.toStdString()] = parametr.toStdString();
     applyChanges();
 //    configFile_ << TAB << name.toStdString() << ": " << "\""<< parametr.toStdString() << "\"" << std::endl;
@@ -68,5 +71,9 @@ void CppWrapper::applyChanges(){
     for (auto it : strParams_){
         configFile_ << TAB << it.first << ": " << "\""<< it.second << "\"" << std::endl;
     }
+}
+
+void CppWrapper::systemCmd(QString command){
+    system((command + " &").toStdString().c_str());
 }
 

@@ -5,6 +5,7 @@
 #include <ros/ros.h>
 #include <ros_wrapper.h>
 #include <QQmlContext>
+#include <QApplication>
 //#include <my_rviz.h>
 
 #include "rviz/quick_visualizer_app.h"
@@ -13,11 +14,12 @@
 #include "rviz/visualization_manager.h"
 #include "rviz/render_panel.h"
 #include "rviz/displays_panel.h"
-#include "rviz/quick_visualization_frame.h"
+#include "rviz/default_plugin/robot_model_display.h"
 #include <ros/package.h>
 
 #include "simplegrid.h"
 #include "displayconfig.h"
+//#include "robot_model.h"
 
 
 //! @brief Шаблоннная функция для чтения параметров
@@ -67,13 +69,14 @@ int main(int argc, char *argv[]){
     rviz::QuickVisualizationFrame::registerTypes();
     qmlRegisterType<SimpleGrid>("MyModule", 1, 0, "SimpleGrid");
     qmlRegisterType<DisplayConfig>("MyModule", 1, 0, "DisplayConfig");
+//    qmlRegisterType<RobotModelType>("MyModule", 1, 0, "RobotModel");
 
     /* Загружаем объект класса в qml
      *
      * */
     context->setContextProperty("rosStringPub", &selfpub);
     context->setContextProperty("cppWrapper", &cppWrapper);
-    context->setContextProperty("rvizPath", QString::fromStdString("/home/den/rviz_qml/src/rviz"));
+    context->setContextProperty("rvizPath", QString::fromStdString(ros::package::getPath("rviz")));
 
     /*
      *

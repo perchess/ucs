@@ -51,6 +51,7 @@ public:
 public slots:
     void setProperty(QString parametr, QString name);
     void setProperty(bool parametr, QString name);
+    void systemCmd(QString command);
 
 
 signals:
