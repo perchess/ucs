@@ -26,11 +26,11 @@ Page {
 
     Loader {
         id: loader
-        x: 371
-        y: 89
-        width: 250
-        height: 250
-        active: true
+        x: 315
+        y: 64
+        width: 300
+        height: 300
+        active: false
         clip: false
         visible: false
         sourceComponent: rvizComp
@@ -58,12 +58,12 @@ Page {
           }
         }
 
-        SimpleGrid {
-          id: grid
-          frame: visualizationFrame
-          lineWidth: 10
-          color: "lightblue"
-        }
+//        SimpleGrid {
+//          id: grid
+//          frame: visualizationFrame
+//          lineWidth: 10
+//          color: "lightblue"
+//        }
 
 //        RobotModel {
 //            id: robotModel
@@ -73,7 +73,7 @@ Page {
         DisplayConfig {
           id: displayConfig
           frame: visualizationFrame
-          source: rvizPath + "/src/test/quick_displays.rviz"
+          source: curPath + "config/rviz.rviz"
         }
 
         Button {
@@ -114,8 +114,9 @@ Page {
         onAccepted: {
             textField.text = fileDialog.fileUrl.toString().replace("file:///","/")
             cppWrapper.setProperty(fileDialog.fileUrl.toString().replace("file:///","/"), "urdf_path")
-            cppWrapper.systemCmd("roslaunch robot_description description.launch xacro_urdf_arg:=/home/den/scooter_ws/src/nissan_cart/scooter_description/urdf/scooter.xacro")
+            cppWrapper.systemCmd("roslaunch robot_description description.launch xacro_urdf_arg:=" + textField.text)
             loader.visible = true
+//            loader.active = true
             //            console.log("You chose: " + fileDialog.fileUrls)
             //            Qt.quit()
         }
@@ -153,8 +154,49 @@ Page {
         }
     }
 
+    Button {
+        id: showButton
+        x: 63
+        y: 312
+        text: qsTr("on")
+    }
+
+    Connections {
+        target: showButton
+        onClicked: loader.active = true
+    }
+
+    Button {
+        id: showButton1
+        x: 169
+        y: 312
+        text: qsTr("off")
+    }
+
+    Connections {
+        target: showButton1
+        onClicked: loader.active = false
+    }
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

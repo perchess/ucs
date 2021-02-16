@@ -6,7 +6,10 @@
 #include <ros_wrapper.h>
 #include <QQmlContext>
 #include <QApplication>
+#include <QDir>
 //#include <my_rviz.h>
+
+#include <experimental/filesystem>
 
 #include "rviz/quick_visualizer_app.h"
 #include "rviz/quick_visualization_frame.h"
@@ -20,6 +23,7 @@
 #include "simplegrid.h"
 #include "displayconfig.h"
 //#include "robot_model.h"
+
 
 
 //! @brief Шаблоннная функция для чтения параметров
@@ -76,7 +80,7 @@ int main(int argc, char *argv[]){
      * */
     context->setContextProperty("rosStringPub", &selfpub);
     context->setContextProperty("cppWrapper", &cppWrapper);
-    context->setContextProperty("rvizPath", QString::fromStdString(ros::package::getPath("rviz")));
+    context->setContextProperty("curPath", QString(CURRENT_DIR));
 
     /*
      *
