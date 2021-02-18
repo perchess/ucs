@@ -147,12 +147,16 @@ Page {
                 id: imuTF
                 height: 40
                 text: qsTr("Состояние")
-                styleColor: "#d50b0b"
+                lineHeight: 2
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.NoWrap
                 Layout.preferredWidth: 100
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                background: Rectangle {
+                    color: "#ed4040"
+                    border.color: "#d1c5c5"
+                }
 
             }
 
@@ -222,6 +226,8 @@ Page {
         target: imuCB
         onClicked: cppWrapper.setProperty(imuCB.checked, "turn_imu")
     }
+
+
 
 }
 
