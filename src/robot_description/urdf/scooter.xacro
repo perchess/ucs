@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<robot name="scooter" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:property name="camera_link" value="0.05" /> <!-- Size of square 'camera' box -->
+    <!-- Import Rviz colors -->
+    <xacro:include filename="$(find scooter_description)/urdf/materials.xacro" />
+    <!-- Import macros -->
+    <xacro:include filename="$(find scooter_description)/urdf/scooter_macro.xacro" />
+    <xacro:property name="wheel_radius" value="0.15" />
+<!--    <xacro:property name="wheel_separation_h" value="0.79" />-->
+    <xacro:property name="steer_lower_limit" value="${-50*PI/180}" />
+    <xacro:property name="steer_upper_limit" value="${-steer_lower_limit}" />
+    <xacro:property name="steer_vel_limit" value="${1.7}" />
+    <xacro:property name="clearance" value="${0.15}" />
+
+    <link name="base_footprint"/>
+
+    <joint name="base_joint" type="fixed">
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+      <origin xyz="0.0 0.0 ${clearance}" rpy="0 0 0"/>
+    </joint>
+
+    <link name="base_link">
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 ${0.55 - clearance}" />
+        <geometry>
+          <mesh filename="package://scooter_description/meshes/cirkit_unit03/cirkit_unit03_body.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0.35" />
+        <geometry>
+          <box size="1.0 0.55 0.4"/>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <max_vel>0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <xacro:default_inertial mass="40"/>
+    </link>
+
+    <xacro:rear_wheel/>
+    <xacro:front_wheel right_left="right" reflect_right_left="1"/>
+    <xacro:front_wheel right_left="left" reflect_right_left="-1"/>
+    <xacro:wheel right_left="right" reflect_right_left="1" front_rear="rear" reflect_front_rear="-1"/>
+    <xacro:wheel right_left="left" reflect_right_left="-1" front_rear="rear" reflect_front_rear="-1"/>
+
+    <!-- lrf -->
+    <!-- <link name="front_top_lrf"> -->
+    <!--     <visual> -->
+    <!--         <origin rpy="0 0.5 0" xyz="0 0 0"/> -->
+    <!--         <geometry> -->
+    <!--             <mesh filename="package://scooter_description/meshes/LRF/UTM-30LX.dae"/> -->
+    <!--         </geometry> -->
+    <!--     </visual> -->
+    <!-- </link> -->
+
+    <!-- <joint name="base_to_front_top_lrf" type="fixed"> -->
+    <!--     <axis xyz="0 1 0"/> -->
+    <!--     <parent link="base_link"/> -->
+    <!--     <child link="front_top_lrf"/> -->
+    <!--     <origin rpy="0 0.53 0" xyz="0.40 0 0.75"/> -->
+    <!-- </joint> -->
+    <!-- lrf -->
+    <link name="front_top_3durg">
+      <visual>
+        <origin rpy="0 0 0" xyz="-0.10 0 0"/>
+        <geometry>
+          <mesh filename="package://scooter_description/meshes/3DURG/hokuyo3durg.dae"/>
+        </geometry>
+      </visual>
+    </link>
+    
+    <joint name="base_to_front_top_3durg" type="fixed">
+      <axis xyz="0 1 0"/>
+      <parent link="base_link"/>
+      <child link="front_top_3durg"/>
+      <origin rpy="${PI} 0 0" xyz="0.40 0 ${0.75 - clearance}"/>
+    </joint>
+
+    <link name="front_top_3durg_rgbd_optical_frame"/>
+
+    <joint name="front_top_3durg_to_rgbd_optical_frame" type="fixed">
+      <axis xyz="0 1 0"/>
+      <parent link="front_top_3durg"/>
+      <child link="front_top_3durg_rgbd_optical_frame"/>
+      <origin rpy="${PI/2} ${PI} ${PI/2}"/>
+    </joint>
+
+    <!-- front_bottom_lrf -->
+    <link name="front_bottom_lrf">
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://scooter_description/meshes/LRF/UTM-30LX.dae"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="base_to_front_bottom_lrf" type="fixed">
+        <axis xyz="0 1 0"/>
+        <parent link="base_link"/>
+        <child link="front_bottom_lrf"/>
+        <origin xyz="0.55 0 ${0.39 - clearance}"/>
+    </joint>
+
+    <!-- steer -->
+    <link name="front_steer_link"/>
+    <joint name="front_steer_joint" type="revolute">
+        <axis xyz="0 0 1"/>
+        <parent link="base_link"/>
+        <child link="front_steer_link"/>
+        <origin xyz="0.41 0 ${0.14 - clearance}"/>
+        <dynamics damping="0.7" friction="0.7"/>
+<!--        <limit effort="20.0" lower="${steer_lower_limit}" upper="${steer_upper_limit}" velocity="${50.0*PI/180.0*0.95}"/>-->
+        <limit effort="50.0" lower="${steer_lower_limit}" upper="${steer_upper_limit}" velocity="1.7"/>
+    </joint>
+
+    <!-- steer_left -->
+    <!--
+    <link name="steer_left">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://scooter_description/meshes/LRF/UTM-30LX.dae"/>
+            </geometry>
+        </visual>
+        <inertial>
+            <mass value="1.0" />
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                iyy="1.0" iyz="0.0"
+                izz="1.0" />
+        </inertial>
+    </link>
+
+    <joint name="base_to_steer_left" type="continuous">
+        <axis xyz="0 0 1"/>
+        <parent link="base_link"/>
+        <child link="steer_left"/>
+        <origin xyz="0.41 0.25 0.34"/>
+    </joint>
+    -->
+
+    <!-- rear_bottom_lrf -->
+    <link name="rear_bottom_lrf">
+      <visual>
+        <origin rpy="0 0 ${PI}" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://scooter_description/meshes/LRF/UTM-30LX.dae"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="base_to_rear_bottom_lrf" type="fixed">
+      <axis xyz="0 1 0"/>
+      <parent link="base_link"/>
+      <child link="rear_bottom_lrf"/>
+      <origin  rpy="0 0 ${PI}" xyz="-0.45 0 ${0.35 - clearance}"/>
+    </joint>
+    
+    <!-- Camera -->
+    <link name="camera_link">
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${camera_link/3} ${camera_link} ${camera_link/2}"/>
+        </geometry>
+      </collision>
+      
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${camera_link/3} ${camera_link} ${camera_link/2}"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      
+      <inertial>
+        <mass value="1e-5" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+    </link>
+
+    <joint name="base_to_camera" type="fixed">
+      <axis xyz="0 1 0" />
+      <parent link="base_link"/>
+      <child link="camera_link"/>
+      <origin rpy="0 0 0" xyz="0.45 0 ${0.72 - clearance}"/>
+    </joint>
+
+    <joint name="base_to_merged_lrf" type="fixed">
+      <axis xyz="0 1 0"/>
+      <parent link="base_link" />
+      <child link="merged_lrf" />
+      <origin rpy="0 0 0" xyz="0 0 ${0.39 - clearance}"/>
+    </joint>
+
+    <link name="merged_lrf">
+    </link>
+
+</robot>
