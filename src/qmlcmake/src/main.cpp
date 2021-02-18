@@ -53,8 +53,9 @@ int main(int argc, char *argv[]){
 
     ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("chatter", 1000);
 
-    RosWrapper selfpub(&nh, &chatter_pub);
+    RosWrapper rosWrapper(&nh, &chatter_pub);
     CppWrapper cppWrapper;
+
 
     ros::AsyncSpinner spiner(0);
     spiner.start();
@@ -73,23 +74,19 @@ int main(int argc, char *argv[]){
     rviz::QuickVisualizationFrame::registerTypes();
     qmlRegisterType<SimpleGrid>("MyModule", 1, 0, "SimpleGrid");
     qmlRegisterType<DisplayConfig>("MyModule", 1, 0, "DisplayConfig");
+//    qmlRegisterType<RosWrapper>("RosWrapper", 1, 0, "ROS");
 //    qmlRegisterType<RobotModelType>("MyModule", 1, 0, "RobotModel");
 
     /* Загружаем объект класса в qml
      *
      * */
-    context->setContextProperty("rosStringPub", &selfpub);
+    context->setContextProperty("rosWrapper", &rosWrapper);
     context->setContextProperty("cppWrapper", &cppWrapper);
     context->setContextProperty("curPath", QString(CURRENT_DIR));
 
     /*
      *
      * */
-    // RVIZ
-//    MyViz myViz;
-//    myViz.resize(200, 200);
-//    myViz.show();
-//    myViz.raise();
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

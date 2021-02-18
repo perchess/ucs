@@ -26,83 +26,108 @@ Page {
 
     Loader {
         id: loader
-        x: 315
         y: 64
-        width: 300
-        height: 300
+        height: 220
+        anchors.left: parent.left
+        anchors.leftMargin: 315
+        anchors.right: parent.right
+        anchors.rightMargin: 25
         active: false
         clip: false
         visible: false
         sourceComponent: rvizComp
     }
 
-    Component {
-      id: rvizComp
+    RowLayout {
+        id: rowLayout
+        x: 337
+        width: 256
+        height: 67
+        anchors.top: loader.bottom
+        anchors.topMargin: 6
+        visible: true
 
-      Item {
-        VisualizationFrame {
-          id: visualizationFrame
-          width: 300
-          height: 300
-          anchors.fill: parent
-          renderWindow: renderWindow
-        }
-
-        Rectangle {
-          anchors.fill: parent
-          color: "lightblue"
-
-          RenderWindow {
-            id: renderWindow
-            anchors.fill: parent
-          }
-        }
-
-//        SimpleGrid {
-//          id: grid
-//          frame: visualizationFrame
-//          lineWidth: 10
-//          color: "lightblue"
-//        }
-
-//        RobotModel {
-//            id: robotModel
-//            frame: visualizationFrame
-//        }
-
-        DisplayConfig {
-          id: displayConfig
-          frame: visualizationFrame
-          source: curPath + "config/rviz.rviz"
+        Button {
+            id: showButton1
+            text: qsTr("off")
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
         }
 
         Button {
-          anchors.top: parent.top
-          anchors.horizontalCenter: parent.horizontalCenter
-          text: qsTr("reload")
-          onClicked: {
-            loader.active = false;
-            loader.active = true;
-          }
+            id: showButton
+            text: qsTr("on")
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
         }
 
+    }
+
+    Component {
+        id: rvizComp
+
+        Item {
+            VisualizationFrame {
+                id: visualizationFrame
+                width: 300
+                height: 300
+                anchors.fill: parent
+                renderWindow: renderWindow
+            }
+
+            Rectangle {
+                anchors.fill: parent
+                color: "lightblue"
+
+                RenderWindow {
+                    id: renderWindow
+                    anchors.fill: parent
+                }
+            }
+
+            //        SimpleGrid {
+            //          id: grid
+            //          frame: visualizationFrame
+            //          lineWidth: 10
+            //          color: "lightblue"
+            //        }
+
+            //        RobotModel {
+            //            id: robotModel
+            //            frame: visualizationFrame
+            //        }
+
+            DisplayConfig {
+                id: displayConfig
+                frame: visualizationFrame
+                source: curPath + "config/rviz.rviz"
+            }
+
+            Button {
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: qsTr("reload")
+                onClicked: {
+                    loader.active = false;
+                    loader.active = true;
+                }
+            }
 
 
-//        Row {
-//          anchors.bottom: parent.bottom
-//          anchors.horizontalCenter: parent.horizontalCenter
 
-//          Button {
-//            text: "Red Grid"
-//            onClicked: grid.color = "red"
-//          }
+            //        Row {
+            //          anchors.bottom: parent.bottom
+            //          anchors.horizontalCenter: parent.horizontalCenter
 
-//          Button {
-//            text: "Blue Grid"
-//            onClicked: grid.color = "blue"
-//          }
-//        }
-      }
+            //          Button {
+            //            text: "Red Grid"
+            //            onClicked: grid.color = "red"
+            //          }
+
+            //          Button {
+            //            text: "Blue Grid"
+            //            onClicked: grid.color = "blue"
+            //          }
+            //        }
+        }
     }
 
     FileDialog {
@@ -116,7 +141,7 @@ Page {
             cppWrapper.setProperty(fileDialog.fileUrl.toString().replace("file:///","/"), "urdf_path")
             cppWrapper.systemCmd("roslaunch robot_description description.launch xacro_urdf_arg:=" + textField.text)
             loader.visible = true
-//            loader.active = true
+            //            loader.active = true
             //            console.log("You chose: " + fileDialog.fileUrls)
             //            Qt.quit()
         }
@@ -154,29 +179,17 @@ Page {
         }
     }
 
-    Button {
-        id: showButton
-        x: 63
-        y: 312
-        text: qsTr("on")
-    }
-
     Connections {
         target: showButton
         onClicked: loader.active = true
-    }
-
-    Button {
-        id: showButton1
-        x: 169
-        y: 312
-        text: qsTr("off")
     }
 
     Connections {
         target: showButton1
         onClicked: loader.active = false
     }
+
+
 
 
 }
@@ -215,7 +228,9 @@ Page {
 
 
 
+
+
 /*##^## Designer {
-    D{i:5;anchors_width:604;anchors_x:17}
+    D{i:3;anchors_y:225}D{i:2;anchors_width:300;anchors_x:315}D{i:8;anchors_width:604;anchors_x:17}
 }
  ##^##*/

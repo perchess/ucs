@@ -6,6 +6,7 @@ RosWrapper::RosWrapper(ros::NodeHandle * nh, ros::Publisher * pub, QObject *pare
     , msg_(std::string())
     , nh_(nh)
     , pub_(pub)
+    , topicStringList_()
 {}
 
 
@@ -30,6 +31,33 @@ void RosWrapper::setConstMsg(){
     emit valueChanged(QString::fromStdString(msg_));
 
 }
+
+void RosWrapper::createRosTopicList(){
+    ros::master::V_TopicInfo topics;
+    ros::master::getTopics(topics);
+    topicStringList_.clear();
+    for (auto it : topics){
+        topicStringList_.append(QString::fromStdString(it.name));
+    }
+    for (auto it : appendedStrings_){
+        topicStringList_.append(it);
+    }
+    emit modelChanged(topicStringList_);
+
+}
+
+void RosWrapper::appendList( QString str){
+    appendedStrings_.insert(str);
+    createRosTopicList();
+}
+
+
+QStringList RosWrapper::getTopicList() const{
+    return topicStringList_;
+
+}
+
+
 
 
 CppWrapper::CppWrapper(QObject *parent)
@@ -58,8 +86,9 @@ void CppWrapper::setProperty(QString parametr, QString name){
 
 
 void CppWrapper::setProperty(bool parametr, QString name){
-
-    configFile_ << TAB << name.toStdString() << ": " << std::boolalpha << parametr << std::endl;
+    boolParams_[name.toStdString()] = parametr;
+    applyChanges();
+//    configFile_ << TAB << name.toStdString() << ": " << std::boolalpha << parametr << std::endl;
 
 }
 
@@ -72,6 +101,9 @@ void CppWrapper::applyChanges(){
     configFile_ << "qtout: " << std::endl;
     for (auto it : strParams_){
         configFile_ << TAB << it.first << ": " << "\""<< it.second << "\"" << std::endl;
+    }
+    for (auto it : boolParams_){
+      configFile_ << TAB << it.first << ": " << std::boolalpha << it.second << std::endl;
     }
 }
 

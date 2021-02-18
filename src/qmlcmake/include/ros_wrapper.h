@@ -1,6 +1,7 @@
 #pragma once
 #include <QObject>
 #include <QString>
+#include <QStringListModel>
 #include <ros/ros.h>
 #include <ros/package.h>
 #include <std_msgs/String.h>
@@ -20,22 +21,35 @@
 
 class RosWrapper : public QObject{
     Q_OBJECT
+  //declaration in QObject derived class
+    Q_PROPERTY(QStringList myModel READ getTopicList NOTIFY modelChanged)
+
 public:
     explicit RosWrapper(ros::NodeHandle * nh, ros::Publisher * pub, QObject *parent = nullptr);
+    QStringList getTopicList() const;
+
 
 
 public slots:
     void setMsg(std::string str);
     void setConstMsg();
+    void createRosTopicList();
+    void appendList(QString);
 
 
 signals:
    void valueChanged(QString newValue);
+   void topicListSend(QList<QString> topics);
+   void modelChanged(QStringList);
+
+
 
 private:
     std::string msg_;
     ros::NodeHandle * nh_;
     ros::Publisher * pub_;
+    QStringList topicStringList_;
+    std::set<QString> appendedStrings_;
 };
 
 
@@ -56,6 +70,7 @@ public slots:
 
 
 signals:
+
 
 
 private:
