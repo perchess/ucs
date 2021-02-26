@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.10)
 project(qmlcmake)
 
 add_compile_options(-std=c++14)
@@ -28,7 +28,7 @@ set(CMAKE_AUTORCC ON)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
-  rviz
+  rviz2
 )
 
 # Qt5
@@ -40,6 +40,7 @@ find_package(Qt5 COMPONENTS
   Widgets
   QuickControls2
   Sql
+  LinguistTools
   REQUIRED
 )
 
@@ -110,6 +111,10 @@ set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR}/src/imports
 
 qt5_add_resources(${PROJECT_NAME}_QML src/qml.qrc)
 
+qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} helloworld_en.ts helloworld_de.ts)
+
+configure_file(translations.qrc ${CMAKE_BINARY_DIR} COPYONLY)
+
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
@@ -126,6 +131,8 @@ add_executable(${PROJECT_NAME}
   ${${PROJECT_NAME}_QML}
   ${RESOURCES}
   ${TARGET_HDR}
+  ${CMAKE_BINARY_DIR}/translations.qrc
+  ${QM_FILES}
 )
 
 target_link_libraries(${PROJECT_NAME}

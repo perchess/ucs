@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlEngine>
 #include <QQmlContext>
+#include <QLocale>
 #include <ros/ros.h>
 #include <ros_wrapper.h>
 #include <QQmlContext>
@@ -42,6 +43,8 @@ void readParam(const std::string param_name, T& param_value,
 
 
 int main(int argc, char *argv[]){
+
+    QLocale::setDefault(QLocale("en_US"));
     /// Init ROS
     ros::init(argc, argv, "DataHub_node");
 
