@@ -1,4 +1,4 @@
-#include <ros_wrapper.h>
+#include <qml_wrapper.h>
 #include <fstream>
 
 RosWrapper::RosWrapper(ros::NodeHandle * nh, ros::Publisher * pub, QObject *parent)
@@ -60,14 +60,16 @@ QStringList RosWrapper::getTopicList() const{
 
 
 
-CppWrapper::CppWrapper(QObject *parent)
+CppWrapper::CppWrapper(QQmlApplicationEngine * qmlEng, QObject *parent)
     : QObject(parent)
-    , packagePath_(ros::package::getPath("qmlcmake")){
+    , packagePath_(ros::package::getPath("qmlcmake"))
+    , qmlEnginePtr_(qmlEng)
+//    , qCoreAppPtr_(nullptr)
+    , translator_()
+    , locale_(QLocale::system()){
 
-    //Create namespace
-//    configFile_.open(packagePath_ + CONFIG_PATH);
-//    configFile_ << "qtout: " << std::endl;
-//    configFile_.close();
+    qDebug() << translator_.load(locale_, "helloworld", "_", ":/");
+    QCoreApplication::installTranslator(&translator_);
 }
 
 CppWrapper::~CppWrapper(){
@@ -109,5 +111,16 @@ void CppWrapper::applyChanges(){
 
 void CppWrapper::systemCmd(QString command){
     system((command + " &").toStdString().c_str());
+}
+
+void CppWrapper::setLocale(QLocale locale){
+    this->locale_ = locale;
+}
+
+void CppWrapper::setLanguage(QString localeStr){
+    setLocale(QLocale(localeStr));
+    translator_.load(locale_, "helloworld", "_", ":/");
+//    qCoreAppPtr_->installTranslator(&translator_);
+    qmlEnginePtr_->retranslate();
 }
 

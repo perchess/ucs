@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en_US">
+<TS version="2.1" language="en_US" sourcelanguage="ru_RU">
 <context>
     <name>Page1Form</name>
     <message>
@@ -58,27 +58,27 @@
     <message>
         <location filename="src/Page2Form.qml" line="52"/>
         <source>off</source>
-        <translation>off</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/Page2Form.qml" line="58"/>
         <source>on</source>
-        <translation>on</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/Page2Form.qml" line="107"/>
         <source>reload</source>
-        <translation>reload</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/Page2Form.qml" line="171"/>
         <source>Выберите файл</source>
-        <translation>Choose a file</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/Page2Form.qml" line="178"/>
         <source>browse</source>
-        <translation>browse</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

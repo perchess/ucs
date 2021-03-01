@@ -2,11 +2,10 @@
 #include <QQmlApplicationEngine>
 #include <QQmlEngine>
 #include <QQmlContext>
-#include <QLocale>
 #include <ros/ros.h>
-#include <ros_wrapper.h>
+#include <qml_wrapper.h>
 #include <QQmlContext>
-#include <QApplication>
+
 #include <QDir>
 //#include <my_rviz.h>
 
@@ -57,7 +56,7 @@ int main(int argc, char *argv[]){
     ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("chatter", 1000);
 
     RosWrapper rosWrapper(&nh, &chatter_pub);
-    CppWrapper cppWrapper;
+
 
 
     ros::AsyncSpinner spiner(0);
@@ -69,7 +68,13 @@ int main(int argc, char *argv[]){
 
     QGuiApplication app(argc, argv);
 
+
+//    app.installTranslator(&qtTranslator);
+
     QQmlApplicationEngine engine;
+    CppWrapper cppWrapper(&engine);
+
+    qDebug() << "Qt version : " << QT_VERSION_STR;
 
     QQmlContext *context = engine.rootContext();
 
