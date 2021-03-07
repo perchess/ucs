@@ -54,6 +54,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   rviz2
 )
+find_package(yaml_cpp)
 
 # Qt5
 find_package(Qt5 5.12.2 COMPONENTS
@@ -180,6 +181,7 @@ target_link_libraries(${PROJECT_NAME}
   Qt5::QuickControls2
   Qt5::Sql
   Qt5::WebView
+  yaml-cpp
 )
 target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 get_target_property(QtCore_location Qt5::Core LOCATION)

@@ -64,7 +64,6 @@ CppWrapper::CppWrapper(QQmlApplicationEngine * qmlEng, QObject *parent)
     : QObject(parent)
     , packagePath_(ros::package::getPath("qmlcmake"))
     , qmlEnginePtr_(qmlEng)
-//    , qCoreAppPtr_(nullptr)
     , translator_()
     , locale_(QLocale::system()){
 
@@ -73,40 +72,31 @@ CppWrapper::CppWrapper(QQmlApplicationEngine * qmlEng, QObject *parent)
 }
 
 CppWrapper::~CppWrapper(){
-
     configFile_.close();
 }
 
 
 void CppWrapper::setProperty(QString parametr, QString name){
-    strParams_[name.toStdString()] = parametr.toStdString();
+    yamlNode_[name] = parametr;
     applyChanges();
-//    configFile_ << TAB << name.toStdString() << ": " << "\""<< parametr.toStdString() << "\"" << std::endl;
-
 }
 
 
 
 void CppWrapper::setProperty(bool parametr, QString name){
-    boolParams_[name.toStdString()] = parametr;
+    yamlNode_[name] = parametr;
     applyChanges();
-//    configFile_ << TAB << name.toStdString() << ": " << std::boolalpha << parametr << std::endl;
-
 }
 
 void CppWrapper::applyChanges(){
-    // Надо очистить файл, но без первой строчки (ns)
-    // затем можно записывать
     if (configFile_.is_open())
-      configFile_.close();
+        configFile_.close();
     configFile_.open(packagePath_ + CONFIG_PATH);
-    configFile_ << "qtout: " << std::endl;
-    for (auto it : strParams_){
-        configFile_ << TAB << it.first << ": " << "\""<< it.second << "\"" << std::endl;
-    }
-    for (auto it : boolParams_){
-      configFile_ << TAB << it.first << ": " << std::boolalpha << it.second << std::endl;
-    }
+    static YAML::Node parentNode;
+    parentNode["gui_config"] = yamlNode_;
+    configFile_ << parentNode;
+    configFile_.close();
+
 }
 
 void CppWrapper::systemCmd(QString command){

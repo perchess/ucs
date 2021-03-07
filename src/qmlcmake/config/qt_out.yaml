@@ -1,2 +1,7 @@
-qtout: 
-  turn_imu: false
+gui_config:
+  turn_rgb: true
+  turn_lidar: true
+  turn_rgbd: true
+  turn_radar: true
+  turn_imu: true
+  urdf_path: /home/den/ucs_ws/devel/lib/qmlcmake/qmlcmake

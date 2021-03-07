@@ -16,6 +16,9 @@
 #include <fstream>
 #include <any>
 
+#include "yaml-cpp/yaml.h"
+#include <qtyaml.h>
+
 //#include "main.moc"
 
 
@@ -86,11 +89,9 @@ signals:
 
 private:
     std::ofstream configFile_;
-    std::map<std::string, std::string> strParams_;
-    std::map<std::string, bool> boolParams_;
+    YAML::Node yamlNode_;
     std::string packagePath_;
     QQmlApplicationEngine * qmlEnginePtr_;
-//    QCoreApplication * qCoreAppPtr_;
     QTranslator translator_;
     QLocale locale_;
 
