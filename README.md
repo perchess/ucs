@@ -1,0 +1,1 @@
+Этот пакет требует модифицированный rviz (https://gitlab.rtc.ru/DASokolov/rvizqml) branch : another_plugins_lib
