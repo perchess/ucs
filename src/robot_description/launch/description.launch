@@ -1,0 +1,9 @@
+<launch>
+    <!-- <rosparam command="load" file="$(find robot_gazebo)/config/ackermann_steering_bot_controllers.yaml" /> -->
+	<!-- <rosparam command="load" file="/home/den/QtProjects/UniversalControllSystem/ucs/config/qt_out.yaml" /> -->
+	<arg name="xacro_urdf_arg" default=""/>
+	<param name="robot_description"
+         command="$(find xacro)/xacro '$(arg xacro_urdf_arg)'" />
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+</launch>

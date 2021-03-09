@@ -1,0 +1,8 @@
+<launch>
+  <!-- arg name="scan_topic" default="third_robot/laser/base_scan" /-->
+  <arg name="scan_topic" default="/scooter/laser/base_scan" />
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
+    <rosparam file="$(find scooter_gmapping)/config/gmapping_gazebo_niko.yaml" command="load" />
+    <remap from="scan" to="$(arg scan_topic)"/>
+  </node>
+</launch>

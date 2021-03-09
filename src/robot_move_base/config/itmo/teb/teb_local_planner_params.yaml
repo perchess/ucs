@@ -1,0 +1,116 @@
+TebLocalPlannerROS:
+
+ # +++ Robot Configuration Parameters
+
+ max_vel_x: 0.5 #0.25
+ acc_lim_x: 0.1
+ max_vel_x_backwards: 0.2 #See optimization parameter weight_kinematics_forward_drive
+
+ max_vel_theta: 0.1
+ acc_lim_theta: 0.1
+ # # ********************** Carlike robot parameters ********************
+ min_turning_radius: 1.5
+ cmd_angle_instead_rotvel: True
+ wheelbase: 0.81
+# # ********************** Carlike robot parameters ********************
+
+ # Note, reduce weight_kinematics_nh significantly in order to adjust the tradeoff between usual driving and strafing.
+ max_vel_y: 0.0 #0.1
+ acc_lim_y: 0.0 #0.08
+
+ footprint_model:
+  type: "polygon"
+  vertices: [
+  [0.65, 0.35],
+  [0.65, -0.35],
+  [-0.65, -0.35],
+  [-0.65, 0.35] ]
+#  vertices: [ [0.29, 0.19],
+#              [-0.29, 0.19],
+#              [-0.29, -0.19],
+#              [0.29, -0.19],
+#              [0.29, -0.11],
+#              [0.36, -0.11],
+#              [0.36, 0.11],
+#              [0.29, 0.11] ]
+
+ # +++ Goal Tolerance
+
+ xy_goal_tolerance: 0.08
+ yaw_goal_tolerance: 0.1
+ free_goal_vel: False
+
+# +++ Trajectory Configuration
+
+ teb_autosize: True
+ dt_ref: 0.3 #0.24
+ dt_hysteresis: 0.1
+ min_samples: 3
+ global_plan_overwrite_orientation: True
+ max_global_plan_lookahead_dist: 1.2
+ feasibility_check_no_poses: 5
+ allow_init_with_backwards_motion: false #This is only recommended if the robot is equipped with rear sensors
+
+ # +++ Obstacles
+
+ min_obstacle_dist: 0.2
+ inflation_dist: 0.5
+ include_costmap_obstacles: True
+ costmap_obstacles_behind_robot_dist: 1.0
+ obstacle_poses_affected: 30
+ legacy_obstacle_association: False #!
+ obstacle_association_force_inclusion_factor: 1.5
+ obstacle_association_cutoff_factor: 5
+
+ costmap_converter_plugin: ""
+ costmap_converter_spin_thread: True
+ costmap_converter_rate: 5
+
+ # +++ Optimization
+
+ no_inner_iterations: 5
+ no_outer_iterations: 4
+ penalty_epsilon: 0.05
+
+ weight_max_vel_x: 4.0
+ weight_max_vel_theta: 1.0
+ weight_acc_lim_x: 1.0
+ weight_acc_lim_theta: 1.0
+# weight_kinematics_nh: 2000
+ weight_kinematics_forward_drive: 6.0
+ weight_kinematics_turning_radius: 10.0
+ weight_optimaltime: 1.0
+ weight_obstacle: 50.0
+ weight_viapoint: 1.0
+ weight_inflation: 0.1
+ weight_adapt_factor: 2.0
+
+ optimization_activate: True
+ optimization_verbose: False
+ #weight_dynamic_obstacle: 10 # not in use yet
+
+ # +++ Homotopy Class Planner
+
+ enable_homotopy_class_planning: True
+ enable_multithreading: True
+ max_number_classes: 4
+ selection_cost_hysteresis: 1.0
+ selection_obst_cost_scale: 100.0
+ selection_viapoint_cost_scale: 1.0
+ selection_alternative_time_cost: False #If true, time cost (sum of squared time differences) is replaced by the total transition time (sum of time differences)
+ roadmap_graph_no_samples: 15
+ roadmap_graph_area_width: 4
+ h_signature_prescaler: 1.0
+ h_signature_threshold: 0.1
+ obstacle_keypoint_offset: 0.1
+ obstacle_heading_threshold: 0.45
+ visualize_hc_graph: False
+ viapoints_all_candidates: True
+
+ # If true, distinctive trajectories are explored using a simple left-right approach (pass each obstacle on the left or right side) for path generation, otherwise sample possible roadmaps randomly in a specified region between start and goal.
+ simple_exploration: False
+
+ # +++ Miscellaneous pars
+
+ odom_topic: odom
+ map_frame: map

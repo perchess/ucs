@@ -1,0 +1,48 @@
+<launch>
+
+<!--    <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
+        <rosparam file="$(find robot_move_base)/config/itmo/teb/move_base_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/itmo/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find robot_move_base)/config/itmo/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find robot_move_base)/config/itmo/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/itmo//global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/itmo/teb/teb_local_planner_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/itmo/teb/costmap_converter_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/itmo/base_global_planner_params.yaml" command="load" />
+        <remap from="cmd_vel" to="/scooter/cmd_vel" />
+        <remap from="odom" to="/scooter/odom" />
+    </node>-->
+
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
+<!--        <rosparam file="$(find robot_move_base)/config/itmo/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find robot_move_base)/config/itmo/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find robot_move_base)/config/itmo/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/itmo/global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/itmo/teb/teb_local_planner_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/itmo/teb/costmap_converter_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/itmo/teb/move_base_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/itmo/base_global_planner_params.yaml" command="load" />-->
+        <rosparam file="$(find robot_move_base)/config/itmo/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find robot_move_base)/config/itmo/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find robot_move_base)/config/itmo/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/itmo//global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/gazebo/base_local_planner_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/itmo/teb/teb_local_planner_params.yaml" command="load" />
+        <rosparam file="$(find robot_move_base)/config/itmo/base_global_planner_params.yaml" command="load" />
+
+
+        <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+        <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+        <param name="controller_frequency" value="5.0" />
+        <param name="controller_patience" value="15.0" />
+        <param name="max_planning_retries" value="10" />
+        <param name="oscillation_timeout" value="10.0" />
+        <param name="clearing_rotation_allowed" value="false" /> <!-- Our carlike robot is not able to rotate in place -->
+
+        <remap from="cmd_vel" to="/scooter/cmd_vel" />
+        <remap from="odom" to="/scooter/odom" />
+        <remap from="map" to="/rtabmap/grid_map" />
+    </node>
+    <node pkg="tf" type="static_transform_publisher" name="realsense_tf_publisher" args="0 0 0 0 0 3.14 front_top_3durg camera_link 100" />
+
+</launch>
