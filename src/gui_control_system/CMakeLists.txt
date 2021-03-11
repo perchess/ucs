@@ -6,10 +6,22 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+include(FeatureSummary)
+
 #set(Qt5Core_DIR "/home/den/Qt5-12/5.12.2/gcc_64/lib/cmake/Qt5Core")
-set(Qt5_DIR "/home/den/Qt5-12/5.12.2/gcc_64/lib/cmake/Qt5")
-#set(QT_QMAKE_EXECUTABLE "/home/den/Qt5-12/5.12.2/gcc_64/bin/qmake")
-set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH}:/home/den/Qt5-12/5.12.2/gcc_64/lib)
+#set(Qt5_DIR "/home/den/Qt5-12/5.12.6/gcc_64/lib/cmake/Qt5")
+#set(QT_QMAKE_EXECUTABLE "/home/den/Qt5-12/5.12.6/gcc_64/bin/qmake")
+#set(LD_LIBRARY_PATH "/home/den/Qt5-12/5.12.6/gcc_64/lib:"$ENV{LD_LIBRARY_PATH})
+#message( "LD_LIBRARY_PATH : " ${LD_LIBRARY_PATH})
+
+# Add folder where are supportive functions
+# Добавить папку с доп файлами
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
+include(Qt5QGCConfiguration)
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "Qt version: ${QT_VERSION}")
+message(STATUS "Qt spec: ${QT_MKSPEC}")
 
 
 #Костыль, чтобы добавть в CMAKE_PREFIX путь к Qt
@@ -77,7 +89,8 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(yaml_cpp)
 
 # Qt5
-find_package(Qt5 5.12.2 COMPONENTS
+find_package(Qt5 ${QT_VERSION}
+  COMPONENTS
   Core
   Qml
   Quick
@@ -87,6 +100,8 @@ find_package(Qt5 5.12.2 COMPONENTS
   Sql
   LinguistTools
   REQUIRED
+  HINTS
+      ${QT_LIBRARY_HINTS}
 )
 
 message("Qt5Core_VERSION_MAJOR: " ${Qt5Core_VERSION_MAJOR})
@@ -197,7 +212,6 @@ add_executable(${PROJECT_NAME}
   ${${PROJECT_NAME}_QML}
   ${RESOURCES}
   ${TARGET_HDR}
-#  ${CMAKE_BINARY_DIR}/translations.qrc
   ${APP_RES}
 )
 

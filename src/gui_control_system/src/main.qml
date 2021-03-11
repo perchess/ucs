@@ -5,8 +5,8 @@ import MyModule 1.0
 ApplicationWindow {
     id: applicationWindow
     visible: true
-    width: 640
-    height: 480
+    width: 1280
+    height: 720
     title: qsTr("Tabs")
 
     SwipeView {

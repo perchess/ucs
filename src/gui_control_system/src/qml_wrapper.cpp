@@ -65,7 +65,7 @@ CppWrapper::CppWrapper(QQmlApplicationEngine * qmlEng, QObject *parent)
     , packagePath_(ros::package::getPath("gui_control_system"))
     , qmlEnginePtr_(qmlEng)
     , translator_()
-    , locale_(QLocale::system()){
+    , locale_(QLocale("ru_RU")){
 
     qDebug() << "Is translate valid : " << translator_.load(locale_, "main", "_", ":/");
     QCoreApplication::installTranslator(&translator_);
@@ -109,8 +109,7 @@ void CppWrapper::setLocale(QLocale locale){
 
 void CppWrapper::setLanguage(QString localeStr){
     setLocale(QLocale(localeStr));
-    translator_.load(locale_, "helloworld", "_", ":/");
-//    qCoreAppPtr_->installTranslator(&translator_);
+    translator_.load(locale_, "tr_file", "_", ":/");
     qmlEnginePtr_->retranslate();
 }
 

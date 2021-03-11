@@ -56,27 +56,22 @@
         <translation>ROS settings</translation>
     </message>
     <message>
-        <location filename="../src/Page2Form.qml" line="52"/>
+        <location filename="../src/Page2Form.qml" line="55"/>
         <source>off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Page2Form.qml" line="58"/>
+        <location filename="../src/Page2Form.qml" line="61"/>
         <source>on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Page2Form.qml" line="108"/>
-        <source>reload</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Page2Form.qml" line="172"/>
+        <location filename="../src/Page2Form.qml" line="175"/>
         <source>Выберите файл</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Page2Form.qml" line="179"/>
+        <location filename="../src/Page2Form.qml" line="182"/>
         <source>browse</source>
         <translation type="unfinished"></translation>
     </message>

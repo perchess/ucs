@@ -44,8 +44,6 @@ void readParam(const std::string param_name, T& param_value,
 
 int main(int argc, char *argv[]){
 
-
-    QLocale::setDefault(QLocale("ru_RU"));
     /// Init ROS
     ros::init(argc, argv, "DataHub_node");
 

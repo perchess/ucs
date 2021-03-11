@@ -1,2 +1,2 @@
 gui_config:
-  urdf_path: /home/den/catkin_workspaces/ucs_ws/src/robot_description/urdf/scooter.xacro
+  turn_imu: true
