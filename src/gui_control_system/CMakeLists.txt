@@ -83,6 +83,8 @@ set(CMAKE_AUTORCC ON)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rosbag
+  rosbag_storage
   std_msgs
   rviz
 )
@@ -113,6 +115,7 @@ set(TARGET_HDR
     include/simplegrid.h
     include/displayconfig.h
     include/robot_model.h
+    include/logs_table_model.h
     #    include/my_rviz.h
 #    src/log_model.h
 #    src/base_module.h
@@ -134,6 +137,7 @@ set(TARGET_SRC
   src/simplegrid.cpp
   src/displayconfig.cpp
   src/robot_model.cpp
+  src/logs_table_model.cpp
 #  src/my_rviz.cpp
 #  src/weight_module.cpp
 #  src/festo_module.cpp

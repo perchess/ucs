@@ -4,46 +4,46 @@
 <context>
     <name>Page1Form</name>
     <message>
-        <location filename="../src/Page1Form.qml" line="17"/>
+        <location filename="../src/Page1Form.qml" line="18"/>
         <source>Конфигуратор</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Page1Form.qml" line="33"/>
+        <location filename="../src/Page1Form.qml" line="34"/>
         <source>Состав системы</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Page1Form.qml" line="50"/>
+        <location filename="../src/Page1Form.qml" line="51"/>
         <source>IMU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Page1Form.qml" line="55"/>
+        <location filename="../src/Page1Form.qml" line="56"/>
         <source>RGB камера</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Page1Form.qml" line="60"/>
+        <location filename="../src/Page1Form.qml" line="61"/>
         <source>Радар</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Page1Form.qml" line="65"/>
+        <location filename="../src/Page1Form.qml" line="66"/>
         <source>RGBD камера</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Page1Form.qml" line="70"/>
+        <location filename="../src/Page1Form.qml" line="71"/>
         <source>Лидар</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Page1Form.qml" line="151"/>
-        <location filename="../src/Page1Form.qml" line="168"/>
-        <location filename="../src/Page1Form.qml" line="179"/>
-        <location filename="../src/Page1Form.qml" line="189"/>
-        <location filename="../src/Page1Form.qml" line="199"/>
+        <location filename="../src/Page1Form.qml" line="152"/>
+        <location filename="../src/Page1Form.qml" line="169"/>
+        <location filename="../src/Page1Form.qml" line="180"/>
+        <location filename="../src/Page1Form.qml" line="190"/>
+        <location filename="../src/Page1Form.qml" line="200"/>
         <source>Состояние</source>
         <translation type="unfinished"></translation>
     </message>

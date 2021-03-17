@@ -1,13 +1,14 @@
-import QtQuick 2.0
+import QtQuick 2.14
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.0
 import QtQuick.Extras 1.4
+import Qt.labs.qmlmodels 1.0
 
 
 Page {
     id: page1
-    width: 640
-    height: 480
+    width: 1280
+    height: 720
     title: ""
     font.pointSize: 12
     contentHeight: 5
@@ -207,6 +208,59 @@ Page {
 
     }
 
+    TableView {
+        id: tableView
+        x: 643
+        y: 15
+        width: 550
+        height: 300
+        model: table_model
+        // ...
+        Row {
+            id: columnsHeader
+            y: tableView.contentY
+            width: 536
+            height: 200
+            z: 2
+            Repeater {
+                model: tableView.columns > 0 ? tableView.columns : 1
+                Label {
+                    width: tableView.columnWidthProvider(modelData)
+                    height: 35
+                    text: table_model.headerData(modelData, Qt.Horizontal)
+                    color: '#aaaaaa'
+                    font.pixelSize: 15
+                    padding: 10
+                    verticalAlignment: Text.AlignVCenter
+
+                    background: Rectangle { color: "#333333" }
+                }
+            }
+        }
+        Column {
+            id: rowsHeader
+            x: tableView.contentX
+            width: 480
+            height: 289
+            z: 2
+            Repeater {
+                model: tableView.rows > 0 ? tableView.rows : 1
+                Label {
+                    width: 60
+                    height: tableView.rowHeightProvider(modelData)
+                    text: table_model.headerData(modelData, Qt.Vertical)
+                    color: '#aaaaaa'
+                    font.pixelSize: 15
+                    padding: 10
+                    verticalAlignment: Text.AlignVCenter
+
+                    background: Rectangle { color: "#333333" }
+                }
+            }
+        }
+    }
+
+
     Connections {
         target: lidarCB
         onClicked: cppWrapper.setProperty(lidarCB.checked, "turn_lidar")
@@ -248,3 +302,9 @@ Page {
 
 
 
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:0.75}
+}
+##^##*/

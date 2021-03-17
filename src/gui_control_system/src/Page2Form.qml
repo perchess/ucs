@@ -1,4 +1,4 @@
-import QtQuick 2.2
+import QtQuick 2.14
 import QtQuick.Controls 2.2
 import Qt.labs.folderlistmodel 2.1
 import QtQml.Models 2.2
