@@ -1,4 +1,4 @@
-import QtQuick 2.14
+import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.0
 import QtQuick.Extras 1.4
@@ -73,6 +73,7 @@ Page {
 
             ComboBox {
                 id: imuComboBox
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
                 model: rosWrapper.myModel
@@ -87,6 +88,7 @@ Page {
 
             ComboBox {
                 id: rgbComboBox
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
                 model: rosWrapper.myModel
@@ -101,6 +103,7 @@ Page {
 
             ComboBox {
                 id: radarComboBox
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
                 model: rosWrapper.myModel
@@ -115,6 +118,7 @@ Page {
 
             ComboBox {
                 id: rgbdComboBox
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
                 model: rosWrapper.myModel
@@ -129,6 +133,7 @@ Page {
 
             ComboBox {
                 id: lidarComboBox
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
                 model: rosWrapper.myModel
@@ -169,8 +174,6 @@ Page {
                 text: qsTr("Состояние")
                 Layout.preferredWidth: 100
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                anchors.right: parent.right
-                anchors.rightMargin: 0
             }
 
             TextField {
@@ -178,9 +181,8 @@ Page {
                 width: 107
                 height: 40
                 text: qsTr("Состояние")
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 Layout.preferredWidth: 100
-                anchors.right: parent.right
-                anchors.rightMargin: 0
             }
 
             TextField {
@@ -188,9 +190,8 @@ Page {
                 width: 107
                 height: 40
                 text: qsTr("Состояние")
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 Layout.preferredWidth: 100
-                anchors.right: parent.right
-                anchors.rightMargin: 0
             }
 
             TextField {
@@ -198,9 +199,8 @@ Page {
                 width: 107
                 height: 40
                 text: qsTr("Состояние")
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 Layout.preferredWidth: 100
-                anchors.right: parent.right
-                anchors.rightMargin: 0
             }
 
 
@@ -208,57 +208,57 @@ Page {
 
     }
 
-    TableView {
-        id: tableView
-        x: 643
-        y: 15
-        width: 550
-        height: 300
-        model: table_model
-        // ...
-        Row {
-            id: columnsHeader
-            y: tableView.contentY
-            width: 536
-            height: 200
-            z: 2
-            Repeater {
-                model: tableView.columns > 0 ? tableView.columns : 1
-                Label {
-                    width: tableView.columnWidthProvider(modelData)
-                    height: 35
-                    text: table_model.headerData(modelData, Qt.Horizontal)
-                    color: '#aaaaaa'
-                    font.pixelSize: 15
-                    padding: 10
-                    verticalAlignment: Text.AlignVCenter
+//    TableView {
+//        id: tableView
+//        x: 643
+//        y: 15
+//        width: 550
+//        height: 300
+//        model: table_model
+//        // ...
+//        Row {
+//            id: columnsHeader
+//            y: tableView.contentY
+//            width: 536
+//            height: 200
+//            z: 2
+//            Repeater {
+//                model: tableView.columns > 0 ? tableView.columns : 1
+//                Label {
+//                    width: tableView.columnWidthProvider(modelData)
+//                    height: 35
+//                    text: table_model.headerData(modelData, Qt.Horizontal)
+//                    color: '#aaaaaa'
+//                    font.pixelSize: 15
+//                    padding: 10
+//                    verticalAlignment: Text.AlignVCenter
 
-                    background: Rectangle { color: "#333333" }
-                }
-            }
-        }
-        Column {
-            id: rowsHeader
-            x: tableView.contentX
-            width: 480
-            height: 289
-            z: 2
-            Repeater {
-                model: tableView.rows > 0 ? tableView.rows : 1
-                Label {
-                    width: 60
-                    height: tableView.rowHeightProvider(modelData)
-                    text: table_model.headerData(modelData, Qt.Vertical)
-                    color: '#aaaaaa'
-                    font.pixelSize: 15
-                    padding: 10
-                    verticalAlignment: Text.AlignVCenter
+//                    background: Rectangle { color: "#333333" }
+//                }
+//            }
+//        }
+//        Column {
+//            id: rowsHeader
+//            x: tableView.contentX
+//            width: 480
+//            height: 289
+//            z: 2
+//            Repeater {
+//                model: tableView.rows > 0 ? tableView.rows : 1
+//                Label {
+//                    width: 60
+//                    height: tableView.rowHeightProvider(modelData)
+//                    text: table_model.headerData(modelData, Qt.Vertical)
+//                    color: '#aaaaaa'
+//                    font.pixelSize: 15
+//                    padding: 10
+//                    verticalAlignment: Text.AlignVCenter
 
-                    background: Rectangle { color: "#333333" }
-                }
-            }
-        }
-    }
+//                    background: Rectangle { color: "#333333" }
+//                }
+//            }
+//        }
+//    }
 
 
     Connections {

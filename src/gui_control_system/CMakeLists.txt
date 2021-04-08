@@ -150,7 +150,7 @@ set(TARGET_SRC
 )
 
 set(RESOURCES
-  src/qml.qrc
+  qml.qrc
 #  src/imports/FalloutTheme/qmldir
 #  src/imports/FalloutTheme/FalloutTheme.qml
 )
@@ -178,7 +178,7 @@ set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR}/src/imports
 #                    CACHE STRING "" FORCE
 )
 
-qt5_add_resources(${PROJECT_NAME}_QML src/qml.qrc)
+qt5_add_resources(${PROJECT_NAME}_QML ${RESOURCES})
 
 #################
 ## Translation ##

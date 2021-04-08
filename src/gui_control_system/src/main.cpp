@@ -44,6 +44,7 @@ void readParam(const std::string param_name, T& param_value,
 
 int main(int argc, char *argv[]){
 
+    qputenv("QSG_RENDER_LOOP", "basic");
     /// Init ROS
     ros::init(argc, argv, "DataHub_node");
 
@@ -100,7 +101,7 @@ int main(int argc, char *argv[]){
     qDebug() << "App path : " << qApp->applicationDirPath();
     qDebug() << QDir().relativeFilePath("main.cpp");
 
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
