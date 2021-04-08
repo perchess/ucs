@@ -1,2 +1,2 @@
 gui_config:
-  turn_imu: true
+  urdf_path: /home/den/examples.desktop
