@@ -19,31 +19,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="58"/>
+        <location filename="../qml/Page1Form.qml" line="63"/>
         <source>RGB камера</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="63"/>
+        <location filename="../qml/Page1Form.qml" line="72"/>
         <source>Радар</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="68"/>
+        <location filename="../qml/Page1Form.qml" line="81"/>
         <source>RGBD камера</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="73"/>
+        <location filename="../qml/Page1Form.qml" line="90"/>
         <source>Лидар</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="159"/>
-        <location filename="../qml/Page1Form.qml" line="176"/>
-        <location filename="../qml/Page1Form.qml" line="185"/>
-        <location filename="../qml/Page1Form.qml" line="194"/>
-        <location filename="../qml/Page1Form.qml" line="203"/>
+        <location filename="../qml/Page1Form.qml" line="180"/>
+        <location filename="../qml/Page1Form.qml" line="197"/>
+        <location filename="../qml/Page1Form.qml" line="206"/>
+        <location filename="../qml/Page1Form.qml" line="215"/>
+        <location filename="../qml/Page1Form.qml" line="224"/>
         <source>Состояние</source>
         <translation type="unfinished"></translation>
     </message>
@@ -56,12 +56,12 @@
         <translation>ROS settings</translation>
     </message>
     <message>
-        <location filename="../qml/Page2Form.qml" line="71"/>
+        <location filename="../qml/Page2Form.qml" line="67"/>
         <source>Выберите файл</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page2Form.qml" line="78"/>
+        <location filename="../qml/Page2Form.qml" line="74"/>
         <source>browse</source>
         <translation type="unfinished"></translation>
     </message>

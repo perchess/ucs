@@ -7,9 +7,18 @@ RosWrapper::RosWrapper(QObject *parent)
     , nh_()
     , topicStringList_()
     , rosoutSub_(nh_.subscribe("rosout", 100, &RosWrapper::callbackRosout, this) )
-    , model_()
+    , model_(new LogsTableModel)
+    , sort_model_(new ModelFilter(this))
 {
+    sort_model_->setSourceModel(model_);
+    sort_model_->setSeverityDebugEnabled(true);
+    sort_model_->setSeverityWarningsEnabled( true);
+    sort_model_->setSeverityErrorEnabled( false);
+    sort_model_->setSeverityInfoEnabled( true );
 
+    sort_model_->setMessageFilterEnabled( true );
+    sort_model_->setNodeFilterEnabled( false);
+    sort_model_->setTimeFilterEnabled( false );
 }
 
 RosWrapper::~RosWrapper()
@@ -20,6 +29,12 @@ RosWrapper::~RosWrapper()
       ros::waitForShutdown();
     }
 }
+
+ModelFilter * RosWrapper::getTableModel()
+{
+    return sort_model_;
+}
+
 
 void RosWrapper::spin()
 {
@@ -43,7 +58,7 @@ void RosWrapper::callbackRosout(const rosgraph_msgs::Log::ConstPtr &msg)
     else
     {
       prev_time = curr_time;
-      model_.appendRow( buffer );
+      model_->appendRow( buffer );
       buffer.clear();
     }
 }

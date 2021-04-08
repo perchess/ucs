@@ -8,11 +8,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 include(FeatureSummary)
 
-# Add folder where are supportive functions
-# Добавить папку с доп файлами
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-
-include(Qt5QGCConfiguration)
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Qt version: ${QT_VERSION}")
 message(STATUS "Qt spec: ${QT_MKSPEC}")
@@ -90,6 +85,7 @@ set(TARGET_HDR
     include/displayconfig.h
     include/robot_model.h
     include/logs_table_model.h
+    include/modelfilter.h
     )
 
 set(TARGET_SRC
@@ -100,6 +96,7 @@ set(TARGET_SRC
     src/displayconfig.cpp
     src/robot_model.cpp
     src/logs_table_model.cpp
+    src/modelfilter.cpp
     )
 
 set(RESOURCES

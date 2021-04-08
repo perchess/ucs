@@ -35,11 +35,6 @@ Page {
         height: 299
         title: qsTr("Состав системы")
 
-
-
-
-
-
         GridLayout {
             id: columnLayout
             anchors.topMargin: 15
@@ -281,16 +276,15 @@ Page {
 
     TableView {
         id: tableView
-        anchors.left: groupBox.right
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 300
-        anchors.rightMargin: 20
-        anchors.topMargin: groupBox.topPadding
-        anchors.leftMargin: 20
+        x: 700
+        y: 50
+        width: 500
+        height: 600
+
         columnWidthProvider: function (column) { return 100; }
         rowHeightProvider: function (column) { return 60; }
+        leftMargin: rowsHeader.implicitWidth
+        topMargin: columnsHeader.implicitHeight
         model: rosbagTableModel
         ScrollBar.horizontal: ScrollBar{}
         ScrollBar.vertical: ScrollBar{}
@@ -365,8 +359,9 @@ Page {
 
 
 
-
 }
+
+
 
 
 

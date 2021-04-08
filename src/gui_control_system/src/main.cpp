@@ -66,8 +66,6 @@ int main(int argc, char *argv[]){
 
 //    ros::AsyncSpinner spiner(0);
 //    spiner.start();
-
-    LogsTableModel rosbag_table;
     /// ----------
 
     /// Init QT
@@ -94,7 +92,7 @@ int main(int argc, char *argv[]){
     /* Загружаем объект класса в qml
      *
      * */
-    context->setContextProperty("rosbagTableModel", &rosbag_table);
+    context->setContextProperty("rosbagTableModel", rosWrapper.getTableModel());
     context->setContextProperty("rosWrapper", &rosWrapper);
     context->setContextProperty("cppWrapper", &cppWrapper);
     context->setContextProperty("curPath", QString(ros::package::getPath("gui_control_system").c_str()));

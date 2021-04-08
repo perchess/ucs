@@ -8,6 +8,7 @@
 #include <std_msgs/String.h>
 
 #include <logs_table_model.h>
+#include <modelfilter.h>
 
 
 class RosWrapper : public QObject
@@ -21,6 +22,7 @@ public:
     ~RosWrapper();
     QStringList getTopicList() const;
     void callbackRosout(const rosgraph_msgs::Log::ConstPtr &msg);
+    ModelFilter * getTableModel();
 
 
 
@@ -49,5 +51,6 @@ private:
 
     QStringList topicStringList_;
     std::set<QString> appendedStrings_;
-    LogsTableModel model_;
+    LogsTableModel* model_;
+    ModelFilter* sort_model_;
 };
