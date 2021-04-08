@@ -1,61 +1,6 @@
 #include <qml_wrapper.h>
 #include <fstream>
 
-RosWrapper::RosWrapper(ros::NodeHandle * nh, ros::Publisher * pub, QObject *parent)
-    : QObject(parent)
-    , msg_(std::string())
-    , nh_(nh)
-    , pub_(pub)
-    , topicStringList_()
-{}
-
-
-void RosWrapper::setMsg(std::string str){
-    if (str != msg_) {
-    msg_=str;
-    std_msgs::String ros_msg;
-    ros_msg.data = msg_;
-    pub_->publish(ros_msg);
-
-    emit valueChanged(QString(msg_.c_str()));
-    }
-}
-
-void RosWrapper::setConstMsg(){
-
-    msg_=std::string("Button clicked const msg");
-    std_msgs::String ros_msg;
-    ros_msg.data = msg_;
-    pub_->publish(ros_msg);
-
-    emit valueChanged(QString::fromStdString(msg_));
-
-}
-
-void RosWrapper::createRosTopicList(){
-    ros::master::V_TopicInfo topics;
-    ros::master::getTopics(topics);
-    topicStringList_.clear();
-    for (auto it : topics){
-        topicStringList_.append(QString::fromStdString(it.name));
-    }
-    for (auto it : appendedStrings_){
-        topicStringList_.append(it);
-    }
-    emit modelChanged(topicStringList_);
-
-}
-
-void RosWrapper::appendList( QString str){
-    appendedStrings_.insert(str);
-    createRosTopicList();
-}
-
-
-QStringList RosWrapper::getTopicList() const{
-    return topicStringList_;
-
-}
 
 
 

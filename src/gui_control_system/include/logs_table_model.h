@@ -28,7 +28,7 @@ public:
   }Severity;
 
   // Header:
-  QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+  Q_INVOKABLE QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
   // Basic functionality:
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;

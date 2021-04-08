@@ -49,4 +49,14 @@ ApplicationWindow {
             text: qsTr("Tab Button")
         }
     }
+
+    Timer {
+        interval: 1
+        running: true
+        repeat: true
+        onTriggered:{
+            rosWrapper.spin()
+        }
+    }
+
 }

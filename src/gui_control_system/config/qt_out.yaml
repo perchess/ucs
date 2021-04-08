@@ -1,2 +1,2 @@
 gui_config:
-  urdf_path: /home/den/examples.desktop
+  urdf_path: /home/den/scooter_ws/src/nissan_cart/scooter_description/urdf/scooter.xacro

@@ -1,8 +1,10 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.5
+//import QtQuick.Controls 1.6
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
 import QtQuick.Extras 1.4
 import Qt.labs.qmlmodels 1.0
+
 
 
 Page {
@@ -49,26 +51,47 @@ Page {
             CheckBox {
                 id: imuCB
                 text: qsTr("IMU")
+
+                Connections {
+                    target: imuCB
+                    onClicked: cppWrapper.setProperty(imuCB.checked, "turn_imu")
+                }
             }
 
             CheckBox {
                 id: rgbCB
                 text: qsTr("RGB камера")
+                Connections {
+                    target: rgbCB
+                    onClicked: cppWrapper.setProperty(rgbCB.checked, "turn_rgb")
+                }
             }
 
             CheckBox {
                 id: radarCB
                 text: qsTr("Радар")
+                Connections {
+                    target: radarCB
+                    onClicked: cppWrapper.setProperty(radarCB.checked, "turn_radar")
+                }
             }
 
             CheckBox {
                 id: rgbdCB
                 text: qsTr("RGBD камера")
+                Connections {
+                    target: rgbdCB
+                    onClicked: cppWrapper.setProperty(rgbdCB.checked, "turn_rgbd")
+                }
             }
 
             CheckBox {
                 id: lidarCB
                 text: qsTr("Лидар")
+                Connections {
+                    target: lidarCB
+                    onClicked: cppWrapper.setProperty(lidarCB.checked, "turn_lidar")
+                }
             }
 
             ComboBox {
@@ -208,80 +231,138 @@ Page {
 
     }
 
-//    TableView {
-//        id: tableView
-//        x: 643
-//        y: 15
-//        width: 550
-//        height: 300
-//        model: table_model
-//        // ...
-//        Row {
-//            id: columnsHeader
-//            y: tableView.contentY
-//            width: 536
-//            height: 200
-//            z: 2
-//            Repeater {
-//                model: tableView.columns > 0 ? tableView.columns : 1
-//                Label {
-//                    width: tableView.columnWidthProvider(modelData)
-//                    height: 35
-//                    text: table_model.headerData(modelData, Qt.Horizontal)
-//                    color: '#aaaaaa'
-//                    font.pixelSize: 15
-//                    padding: 10
-//                    verticalAlignment: Text.AlignVCenter
+    //        TableView {
+    //            id: tableView
+    //            model: rosbagTableModel
+    //            Row {
+    //                id: columnsHeader
+    //                y: tableView.contentY
+    //                width: parent.width
+    //                height: 50
+    //                z: 2
+    //                Repeater {
+    //                    model: tableView.columns > 0 ? tableView.columns : 1
+    //                    Label {
+    //                        width: tableView.columnWidthProvider(modelData)
+    //                        height: 35
+    //                        text: rosbagTableModel.headerData(modelData, Qt.Horizontal)
+    //                        color: '#aaaaaa'
+    //                        font.pixelSize: 15
+    //                        padding: 10
+    //                        verticalAlignment: Text.AlignVCenter
 
-//                    background: Rectangle { color: "#333333" }
-//                }
-//            }
-//        }
-//        Column {
-//            id: rowsHeader
-//            x: tableView.contentX
-//            width: 480
-//            height: 289
-//            z: 2
-//            Repeater {
-//                model: tableView.rows > 0 ? tableView.rows : 1
-//                Label {
-//                    width: 60
-//                    height: tableView.rowHeightProvider(modelData)
-//                    text: table_model.headerData(modelData, Qt.Vertical)
-//                    color: '#aaaaaa'
-//                    font.pixelSize: 15
-//                    padding: 10
-//                    verticalAlignment: Text.AlignVCenter
+    //                        background: Rectangle { color: "#333333" }
+    //                    }
+    //                }
+    //            }
+    //            Column {
+    //                id: rowsHeader
+    //                x: tableView.contentX
+    //                width: 50
+    //                height: parent.height
+    //                z: 2
+    //                Repeater {
+    //                    model: tableView.rows > 0 ? tableView.rows : 1
+    //                    Label {
+    //                        width: 60
+    //                        height: tableView.rowHeightProvider(modelData)
+    //                        text: rosbagTableModel.headerData(modelData, Qt.Vertical)
+    //                        color: '#aaaaaa'
+    //                        font.pixelSize: 15
+    //                        padding: 10
+    //                        verticalAlignment: Text.AlignVCenter
 
-//                    background: Rectangle { color: "#333333" }
-//                }
-//            }
-//        }
-//    }
+    //                        background: Rectangle { color: "#333333" }
+    //                    }
+    //                }
+    //            }
+    //        }
 
 
-    Connections {
-        target: lidarCB
-        onClicked: cppWrapper.setProperty(lidarCB.checked, "turn_lidar")
+    TableView {
+        id: tableView
+        anchors.left: groupBox.right
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 300
+        anchors.rightMargin: 20
+        anchors.topMargin: groupBox.topPadding
+        anchors.leftMargin: 20
+        columnWidthProvider: function (column) { return 100; }
+        rowHeightProvider: function (column) { return 60; }
+        model: rosbagTableModel
+        ScrollBar.horizontal: ScrollBar{}
+        ScrollBar.vertical: ScrollBar{}
+        clip: true
+        delegate: Rectangle {
+            Text {
+                text: display
+                anchors.fill: parent
+                anchors.margins: 10
+                color: 'black'
+                font.pixelSize: 15
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+        Rectangle { // mask the headers
+            z: 3
+            color: "#222222"
+            y: tableView.contentY
+            x: tableView.contentX
+            width: tableView.leftMargin
+            height: tableView.topMargin
+        }
+
+        Row {
+            id: columnsHeader
+            y: tableView.contentY
+            z: 2
+            Repeater {
+                model: tableView.columns > 0 ? tableView.columns : 1
+                Label {
+                    width: tableView.columnWidthProvider(modelData)
+                    height: 35
+                    text: rosbagTableModel.headerData(modelData, Qt.Horizontal)
+                    color: '#aaaaaa'
+                    font.pixelSize: 15
+                    padding: 10
+                    verticalAlignment: Text.AlignVCenter
+
+                    background: Rectangle { color: "#333333" }
+                }
+            }
+        }
+        Column {
+            id: rowsHeader
+            x: tableView.contentX
+            z: 2
+            Repeater {
+                model: tableView.rows > 0 ? tableView.rows : 1
+                Label {
+                    width: 60
+                    height: tableView.rowHeightProvider(modelData)
+                    text: rosbagTableModel.headerData(modelData, Qt.Vertical)
+                    color: '#aaaaaa'
+                    font.pixelSize: 15
+                    padding: 10
+                    verticalAlignment: Text.AlignVCenter
+
+                    background: Rectangle { color: "#333333" }
+                }
+            }
+        }
+
+        ScrollIndicator.horizontal: ScrollIndicator { }
+        ScrollIndicator.vertical: ScrollIndicator { }
     }
 
-    Connections {
-        target: radarCB
-        onClicked: cppWrapper.setProperty(radarCB.checked, "turn_radar")
-    }
-    Connections {
-        target: rgbdCB
-        onClicked: cppWrapper.setProperty(rgbdCB.checked, "turn_rgbd")
-    }
-    Connections {
-        target: rgbCB
-        onClicked: cppWrapper.setProperty(rgbCB.checked, "turn_rgb")
-    }
-    Connections {
-        target: imuCB
-        onClicked: cppWrapper.setProperty(imuCB.checked, "turn_imu")
-    }
+
+
+
+
+
+
 
 
 

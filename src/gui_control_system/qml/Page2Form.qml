@@ -1,5 +1,6 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.4
+import QtQuick.Window 2.2
 import Qt.labs.folderlistmodel 2.1
 import QtQml.Models 2.2
 import QtQuick.Dialogs 1.2
@@ -50,10 +51,6 @@ Page {
         Component.onCompleted: visible = false
     }
 
-    Connections {
-        target: findButton
-        onClicked: fileDialog.open()
-    }
 
     RowLayout {
         id: fileBrowser
@@ -76,8 +73,17 @@ Page {
             id: findButton
             text: qsTr("browse")
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+            Connections {
+                target: findButton
+                onClicked: fileDialog.open()
+            }
         }
     }
+
+
+
+
     Item {
         id: root
         anchors.left: parent.left
@@ -167,7 +173,6 @@ Page {
                 setPropertyValue("Alpha", alpha)
                 setPropertyValue("Robot Description", robotDescription)
                 setPropertyValue("TF Prefix", tfPrefix)
-                console.log("test", rvizWidget.robotModelCheckBox.checked)
             }
         }
 

@@ -4,6 +4,7 @@
 #include <QQmlContext>
 #include <ros/ros.h>
 #include <qml_wrapper.h>
+#include <ros_wrapper.h>
 #include <QQmlContext>
 
 #include <QDir>
@@ -22,6 +23,8 @@
 
 #include "simplegrid.h"
 #include "displayconfig.h"
+
+#include "logs_table_model.h"
 
 //#include "robot_model.h"
 
@@ -55,16 +58,16 @@ int main(int argc, char *argv[]){
     }
 
 
-    ros::NodeHandle nh("~");
+//    ros::NodeHandle nh("~");
 
-    ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("gui_output", 1000);
+//    ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("gui_output", 1000);
 
-    RosWrapper rosWrapper(&nh, &chatter_pub);
+    RosWrapper rosWrapper;
 
+//    ros::AsyncSpinner spiner(0);
+//    spiner.start();
 
-
-    ros::AsyncSpinner spiner(0);
-    spiner.start();
+    LogsTableModel rosbag_table;
     /// ----------
 
     /// Init QT
@@ -91,6 +94,7 @@ int main(int argc, char *argv[]){
     /* Загружаем объект класса в qml
      *
      * */
+    context->setContextProperty("rosbagTableModel", &rosbag_table);
     context->setContextProperty("rosWrapper", &rosWrapper);
     context->setContextProperty("cppWrapper", &cppWrapper);
     context->setContextProperty("curPath", QString(ros::package::getPath("gui_control_system").c_str()));
@@ -111,7 +115,7 @@ int main(int argc, char *argv[]){
 
     auto app_exec = app.exec();
 
-    system("killall roscore &");
+//    system("killall roscore &");
 
     return app_exec;
 }

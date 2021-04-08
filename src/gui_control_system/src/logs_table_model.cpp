@@ -53,57 +53,64 @@ int LogsTableModel::columnCount(const QModelIndex &parent) const
 
 QVariant LogsTableModel::data(const QModelIndex &index, int role) const
 {
-  if (!index.isValid())
+    if (!index.isValid())
+        return QVariant();
+    if(role == Qt::DisplayRole
+            && index.row() >= 0 && index.row() < rowCount()
+            && index.column() >= 0 && index.column() < columnCount())
+        return QString("data %1-%2").arg(index.row()).arg(index.column());
     return QVariant();
+//  if (!index.isValid())
+//    return QVariant();
 
-  if (index.row() >= _logs.size())
-    return QVariant();
+//  if (index.row() >= _logs.size())
+//    return QVariant();
 
-  const LogItem& log = _logs[ index.row() ];
+//  const LogItem& log = _logs[ index.row() ];
 
-  if (role == Qt::DisplayRole)
-  {
-    switch( index.column() )
-    {
-    case 0: return QVariant::fromValue(log.count);
-    case 1: return log.time_text;
-    case 2: {
-      switch( log.level_raw )
-      {
-      case DEBUG:      return "DEBUG";
-      case INFO:       return "INFO";
-      case WARNINGS:   return "WARNINGS";
-      case ERROR:      return "ERROR";
-      }
-    } break;
-    case 3: return QString::fromStdString( log.node.get() );
-    case 4: return log.message;
-    case 5: return QString::fromStdString( log.source.get() );
-    }
-  }
-  else if( role== Qt::ForegroundRole){
-    switch( log.level_raw )
-    {
-    case DEBUG:    return QBrush( QColor::fromRgb(50,  50 , 50)) ;  // black
-    case INFO:     return QBrush( QColor::fromRgb(0,   0  , 255));  // blue
-    case WARNINGS: return QBrush( QColor::fromRgb(240, 120, 0));    // orange
-    case ERROR:    return QBrush( QColor::fromRgb(255, 0  , 0));    // red
-    }
-  }
-  else if( role == Qt::UserRole){
-    switch( index.column() )
-    {
-    case 0: return QVariant::fromValue(log.count);
-    case 1: return log.time_raw;
-    case 2: return log.level_raw;
-    case 3: return QString::fromStdString( log.node.get() );
-    case 4: return log.message;
-    case 5: return QString::fromStdString( log.source.get() );
-    }
-  }
-  else{
-    return QVariant();
-  }
+//  if (role == Qt::DisplayRole)
+//  {
+//    switch( index.column() )
+//    {
+//    case 0: return QVariant::fromValue(log.count);
+//    case 1: return log.time_text;
+//    case 2: {
+//      switch( log.level_raw )
+//      {
+//      case DEBUG:      return "DEBUG";
+//      case INFO:       return "INFO";
+//      case WARNINGS:   return "WARNINGS";
+//      case ERROR:      return "ERROR";
+//      }
+//    } break;
+//    case 3: return QString::fromStdString( log.node.get() );
+//    case 4: return log.message;
+//    case 5: return QString::fromStdString( log.source.get() );
+//    }
+//  }
+//  else if( role== Qt::ForegroundRole){
+//    switch( log.level_raw )
+//    {
+//    case DEBUG:    return QBrush( QColor::fromRgb(50,  50 , 50)) ;  // black
+//    case INFO:     return QBrush( QColor::fromRgb(0,   0  , 255));  // blue
+//    case WARNINGS: return QBrush( QColor::fromRgb(240, 120, 0));    // orange
+//    case ERROR:    return QBrush( QColor::fromRgb(255, 0  , 0));    // red
+//    }
+//  }
+//  else if( role == Qt::UserRole){
+//    switch( index.column() )
+//    {
+//    case 0: return QVariant::fromValue(log.count);
+//    case 1: return log.time_raw;
+//    case 2: return log.level_raw;
+//    case 3: return QString::fromStdString( log.node.get() );
+//    case 4: return log.message;
+//    case 5: return QString::fromStdString( log.source.get() );
+//    }
+//  }
+//  else{
+//    return QVariant();
+//  }
 }
 
 LogsTableModel::LogItem LogsTableModel::convertRosout( const rosgraph_msgs::Log &log)
