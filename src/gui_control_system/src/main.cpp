@@ -51,6 +51,8 @@ int main(int argc, char *argv[]){
     /// Init ROS
     ros::init(argc, argv, "DataHub_node");
 
+
+
     // Проверяем, запущен ли мастер, если нет - запускаем
     if (!ros::master::check()){
       ROS_WARN("No rosmaster detected. Launching roscore ...");

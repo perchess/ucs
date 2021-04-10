@@ -33,6 +33,7 @@ void CppWrapper::setProperty(bool parametr, QString name){
     applyChanges();
 }
 
+// Запись конфига в файл
 void CppWrapper::applyChanges(){
     if (configFile_.is_open())
         configFile_.close();

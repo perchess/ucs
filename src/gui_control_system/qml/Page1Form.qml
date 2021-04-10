@@ -30,9 +30,9 @@ Page {
     GroupBox {
         id: groupBox
         x: 34
-        y: 15
-        width: 573
-        height: 299
+        y: 0
+        width: 674
+        height: 314
         title: qsTr("Состав системы")
 
         GridLayout {
@@ -41,7 +41,8 @@ Page {
             anchors.fill: parent
             flow: GridLayout.TopToBottom
             rows: 5
-            columns: 3
+            columns: 4
+
 
             CheckBox {
                 id: imuCB
@@ -49,7 +50,11 @@ Page {
 
                 Connections {
                     target: imuCB
-                    onClicked: cppWrapper.setProperty(imuCB.checked, "turn_imu")
+                    onClicked: {
+                        cppWrapper.setProperty(imuCB.checked, "imu_turn")
+                        cppWrapper.setProperty(imuPackage.editText, "imu_pkg")
+                        cppWrapper.setProperty(imuNodeName.editText, "imu_node")
+                    }
                 }
             }
 
@@ -58,7 +63,11 @@ Page {
                 text: qsTr("RGB камера")
                 Connections {
                     target: rgbCB
-                    onClicked: cppWrapper.setProperty(rgbCB.checked, "turn_rgb")
+                    onClicked: {
+                        cppWrapper.setProperty(rgbCB.checked, "rgb_turn")
+                        cppWrapper.setProperty(rgbPackage.editText, "rgb_pkg")
+                        cppWrapper.setProperty(rgbNodeName.editText, "rgb_node")
+                    }
                 }
             }
 
@@ -67,7 +76,11 @@ Page {
                 text: qsTr("Радар")
                 Connections {
                     target: radarCB
-                    onClicked: cppWrapper.setProperty(radarCB.checked, "turn_radar")
+                    onClicked: {
+                        cppWrapper.setProperty(radarCB.checked, "radar_turn")
+                        cppWrapper.setProperty(radarPackage.editText, "radar_pkg")
+                        cppWrapper.setProperty(radarNodeName.editText, "radar_node")
+                    }
                 }
             }
 
@@ -76,7 +89,11 @@ Page {
                 text: qsTr("RGBD камера")
                 Connections {
                     target: rgbdCB
-                    onClicked: cppWrapper.setProperty(rgbdCB.checked, "turn_rgbd")
+                    onClicked: {
+                        cppWrapper.setProperty(rgbdCB.checked, "rgbd_turn")
+                        cppWrapper.setProperty(rgbdPackage.editText, "rgbd_pkg")
+                        cppWrapper.setProperty(rgbdNodeName.editText, "rgbd_node")
+                    }
                 }
             }
 
@@ -85,88 +102,158 @@ Page {
                 text: qsTr("Лидар")
                 Connections {
                     target: lidarCB
-                    onClicked: cppWrapper.setProperty(lidarCB.checked, "turn_lidar")
+                    onClicked: {
+                        cppWrapper.setProperty(lidarCB.checked, "lidar_turn")
+                        cppWrapper.setProperty(lidarPackage.editText, "lidar_pkg")
+                        cppWrapper.setProperty(lidarNodeName.editText, "lidar_node")
+                    }
                 }
             }
 
             ComboBox {
-                id: imuComboBox
+                id: imuPackage
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
-                model: rosWrapper.myModel
+                model: rosWrapper.pacakgeListModel
+                Component.onCompleted: rosWrapper.createRosPackageList()
                 onAccepted: {
                     if (find(editText) === -1)
                         rosWrapper.appendList(editText)
                 }
-                onFocusChanged: {
-                    rosWrapper.createRosTopicList()
+                onHighlighted: {
+                    rosWrapper.createRosPackageList()
                 }
             }
 
             ComboBox {
-                id: rgbComboBox
+                id: rgbPackage
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
-                model: rosWrapper.myModel
+                model: rosWrapper.pacakgeListModel
+                Component.onCompleted: rosWrapper.createRosPackageList()
                 onAccepted: {
                     if (find(editText) === -1)
                         rosWrapper.appendList(editText)
                 }
-                onFocusChanged: {
-                    rosWrapper.createRosTopicList()
+                onHighlighted: {
+                    rosWrapper.createRosPackageList()
                 }
             }
 
             ComboBox {
-                id: radarComboBox
+                id: radarPackage
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
-                model: rosWrapper.myModel
+                model: rosWrapper.pacakgeListModel
+                Component.onCompleted: rosWrapper.createRosPackageList()
                 onAccepted: {
                     if (find(editText) === -1)
                         rosWrapper.appendList(editText)
                 }
-                onFocusChanged: {
-                    rosWrapper.createRosTopicList()
+                onHighlighted: {
+                    rosWrapper.createRosPackageList()
                 }
             }
 
             ComboBox {
-                id: rgbdComboBox
+                id: rgbdPackage
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
-                model: rosWrapper.myModel
+                model: rosWrapper.pacakgeListModel
+                Component.onCompleted: rosWrapper.createRosPackageList()
                 onAccepted: {
                     if (find(editText) === -1)
                         rosWrapper.appendList(editText)
                 }
-                onFocusChanged: {
-                    rosWrapper.createRosTopicList()
+                onHighlighted: {
+                    rosWrapper.createRosPackageList()
                 }
             }
 
             ComboBox {
-                id: lidarComboBox
+                id: lidarPackage
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
-                model: rosWrapper.myModel
+                model: rosWrapper.pacakgeListModel
+                Component.onCompleted: rosWrapper.createRosPackageList()
                 onAccepted: {
                     if (find(editText) === -1)
                         rosWrapper.appendList(editText)
                 }
-                onFocusChanged: {
-                    rosWrapper.createRosTopicList()
+                onHighlighted: {
+                    rosWrapper.createRosPackageList()
+                }
+            }
+
+            ListModel {
+                id: listModel
+            }
+
+
+            ComboBox {
+                id: imuNodeName
+                model: listModel
+                Layout.preferredWidth: 200
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                editable: true
+                onAccepted: {
+                    if (find(editText) === -1)
+                        listModel.append({name: editText})
+                }
+            }
+
+            ComboBox {
+                id: rgbNodeName
+                model: listModel
+                Layout.preferredWidth: 200
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                editable: true
+                onAccepted: {
+                    if (find(editText) === -1)
+                        listModel.append({name: editText})
                 }
             }
 
 
 
 
+            ComboBox {
+                id: radarNodeName
+                model: listModel
+                Layout.preferredWidth: 200
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                editable: true
+                onAccepted: {
+                    if (find(editText) === -1)
+                        listModel.append({name: editText})
+                }
+            }
+
+
+            ComboBox {
+                id: rgbdNodeName
+                model: listModel
+                Layout.preferredWidth: 200
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                editable: true
+                onAccepted: {
+                    if (find(editText) === -1)
+                        listModel.append({name: editText})
+                }
+            }
+
+            ComboBox {
+                id: lidarNodeName
+                model: listModel
+                Layout.preferredWidth: 200
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                editable: true
+            }
 
 
             Label {
@@ -222,6 +309,25 @@ Page {
             }
 
 
+
+
+
+
+
+        }
+
+        Label {
+            id: label
+            x: 228
+            y: -10
+            text: qsTr("Пакеты")
+        }
+
+        Label {
+            id: label1
+            x: 420
+            y: -10
+            text: qsTr("Ноды")
         }
 
     }
@@ -276,8 +382,8 @@ Page {
 
     TableView {
         id: tableView
-        x: 700
-        y: 50
+        x: 736
+        y: 0
         width: 500
         height: 600
 
@@ -381,6 +487,6 @@ Page {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.75}
+    D{i:0;formeditorZoom:0.66}D{i:33}
 }
 ##^##*/
