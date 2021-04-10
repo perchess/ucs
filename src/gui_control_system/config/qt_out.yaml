@@ -1,16 +1,4 @@
 gui_config:
-  lidar_turn: true
-  lidar_pkg: compressed_image_transport
-  lidar_node: lidar
-  radar_turn: true
-  radar_pkg: camera_calibration_parsers
-  radar_node: radar
-  rgbd_turn: true
-  rgbd_pkg: cmake_modules
-  rgbd_node: rgbd
-  rgb_turn: true
-  rgb_pkg: bondpy
-  rgb_node: rgb
-  imu_turn: true
-  imu_pkg: actionlib
-  imu_node: imu
+  test_turn: false
+  test_pkg: rviz
+  test_node: rviz

@@ -1,0 +1,4 @@
+<launch>
+  <rosparam command="load" file="$(find gui_control_system)/config/qt_out.yaml"/>
+  <node name="control_node" pkg="control_module" type="control_module_node" output="screen"/>
+</launch>
