@@ -24,7 +24,7 @@ Page {
 
     Connections {
         target: rosWrapper
-        onValueChanged: lidarTF.text = "Принято:" + newValue
+        function onValueChanged() { lidarTF.text = "Принято:" + newValue}
     }
 
     GroupBox {
@@ -49,8 +49,7 @@ Page {
                 text: qsTr("IMU")
 
                 Connections {
-                    target: imuCB
-                    onClicked: {
+                    function onClicked() {
                         cppWrapper.setProperty(imuCB.checked, "imu_turn")
                         cppWrapper.setProperty(imuPackage.editText, "imu_pkg")
                         cppWrapper.setProperty(imuNodeName.editText, "imu_node")
@@ -62,8 +61,7 @@ Page {
                 id: rgbCB
                 text: qsTr("RGB камера")
                 Connections {
-                    target: rgbCB
-                    onClicked: {
+                    function onClicked() {
                         cppWrapper.setProperty(rgbCB.checked, "rgb_turn")
                         cppWrapper.setProperty(rgbPackage.editText, "rgb_pkg")
                         cppWrapper.setProperty(rgbNodeName.editText, "rgb_node")
@@ -75,8 +73,7 @@ Page {
                 id: radarCB
                 text: qsTr("Радар")
                 Connections {
-                    target: radarCB
-                    onClicked: {
+                    function onClicked() {
                         cppWrapper.setProperty(radarCB.checked, "radar_turn")
                         cppWrapper.setProperty(radarPackage.editText, "radar_pkg")
                         cppWrapper.setProperty(radarNodeName.editText, "radar_node")
@@ -88,8 +85,7 @@ Page {
                 id: rgbdCB
                 text: qsTr("RGBD камера")
                 Connections {
-                    target: rgbdCB
-                    onClicked: {
+                    function onClicked() {
                         cppWrapper.setProperty(rgbdCB.checked, "rgbd_turn")
                         cppWrapper.setProperty(rgbdPackage.editText, "rgbd_pkg")
                         cppWrapper.setProperty(rgbdNodeName.editText, "rgbd_node")
@@ -101,8 +97,7 @@ Page {
                 id: lidarCB
                 text: qsTr("Лидар")
                 Connections {
-                    target: lidarCB
-                    onClicked: {
+                    function onClicked() {
                         cppWrapper.setProperty(lidarCB.checked, "lidar_turn")
                         cppWrapper.setProperty(lidarPackage.editText, "lidar_pkg")
                         cppWrapper.setProperty(lidarNodeName.editText, "lidar_node")
@@ -307,13 +302,6 @@ Page {
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 Layout.preferredWidth: 100
             }
-
-
-
-
-
-
-
         }
 
         Label {
@@ -330,55 +318,24 @@ Page {
             text: qsTr("Ноды")
         }
 
+        Button {
+            id: launchButton
+            x: 275
+            y: 309
+            text: qsTr("Старт")
+
+            Connections {
+                property variant args: ["control_module", "start.launch"]
+                function onClicked(mouse){
+                    if (rosWrapper.isNodeStarted("control_node"))
+                        rosWrapper.callService()
+                    else
+                        cppWrapper.callSystem("roslaunch", args)
+//                        cppWrapper.callSystem("roslaunch control_module start.launch")
+                }
+            }
+        }
     }
-
-    //        TableView {
-    //            id: tableView
-    //            model: rosbagTableModel
-    //            Row {
-    //                id: columnsHeader
-    //                y: tableView.contentY
-    //                width: parent.width
-    //                height: 50
-    //                z: 2
-    //                Repeater {
-    //                    model: tableView.columns > 0 ? tableView.columns : 1
-    //                    Label {
-    //                        width: tableView.columnWidthProvider(modelData)
-    //                        height: 35
-    //                        text: rosbagTableModel.headerData(modelData, Qt.Horizontal)
-    //                        color: '#aaaaaa'
-    //                        font.pixelSize: 15
-    //                        padding: 10
-    //                        verticalAlignment: Text.AlignVCenter
-
-    //                        background: Rectangle { color: "#333333" }
-    //                    }
-    //                }
-    //            }
-    //            Column {
-    //                id: rowsHeader
-    //                x: tableView.contentX
-    //                width: 50
-    //                height: parent.height
-    //                z: 2
-    //                Repeater {
-    //                    model: tableView.rows > 0 ? tableView.rows : 1
-    //                    Label {
-    //                        width: 60
-    //                        height: tableView.rowHeightProvider(modelData)
-    //                        text: rosbagTableModel.headerData(modelData, Qt.Vertical)
-    //                        color: '#aaaaaa'
-    //                        font.pixelSize: 15
-    //                        padding: 10
-    //                        verticalAlignment: Text.AlignVCenter
-
-    //                        background: Rectangle { color: "#333333" }
-    //                    }
-    //                }
-    //            }
-    //        }
-
 
     TableView {
         id: tableView
@@ -456,6 +413,7 @@ Page {
         ScrollIndicator.horizontal: ScrollIndicator { }
         ScrollIndicator.vertical: ScrollIndicator { }
     }
+
 
 
 

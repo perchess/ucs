@@ -7,6 +7,7 @@ RosWrapper::RosWrapper(QObject *parent)
   , nh_()
   , topicStringList_()
   , rosoutSub_(nh_.subscribe("rosout", 100, &RosWrapper::callbackRosout, this) )
+  , updt_srv_(nh_.serviceClient<std_srvs::Trigger>("updateParams"))
   , model_(new LogsTableModel)
   , sort_model_(new ModelFilter(this))
 {
@@ -129,4 +130,21 @@ QStringList RosWrapper::getTopicList() const{
 
 QStringList RosWrapper::getPacakgeListModel() const{
   return packageStringList_;
+}
+
+
+bool RosWrapper::isNodeStarted(QString node_name)
+{
+  ros::V_string nodes;
+  ros::master::getNodes(nodes);
+
+  auto it = std::find(nodes.begin(), nodes.end(), node_name.toStdString());
+  return it != nodes.end();
+}
+
+
+void RosWrapper::callUpdateService()
+{
+  std_srvs::Trigger srv;
+  updt_srv_.call(srv);
 }

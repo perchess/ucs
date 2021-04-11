@@ -51,29 +51,22 @@ int main(int argc, char *argv[]){
     /// Init ROS
     ros::init(argc, argv, "DataHub_node");
 
-
-
     // Проверяем, запущен ли мастер, если нет - запускаем
     if (!ros::master::check()){
       ROS_WARN("No rosmaster detected. Launching roscore ...");
       system("roscore &");
     }
 
-
-//    ros::NodeHandle nh("~");
-
-//    ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("gui_output", 1000);
-
     RosWrapper rosWrapper;
 
-//    ros::AsyncSpinner spiner(0);
-//    spiner.start();
     /// ----------
 
     /// Init QT
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
+    app.setOrganizationName("SPBSTU");
+    app.setOrganizationDomain("SPBSTU");
 
 
 
@@ -99,11 +92,6 @@ int main(int argc, char *argv[]){
     context->setContextProperty("cppWrapper", &cppWrapper);
     context->setContextProperty("curPath", QString(ros::package::getPath("gui_control_system").c_str()));
 
-    /*
-     *
-     * */
-    qDebug() << "App path : " << qApp->applicationDirPath();
-    qDebug() << QDir().relativeFilePath("main.cpp");
 
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

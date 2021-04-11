@@ -9,6 +9,11 @@ ApplicationWindow {
     height: 720
     title: qsTr("Tabs")
 
+    Shortcut {
+        sequence: StandardKey.Quit
+        onActivated: Qt.quit()
+    }
+
     SwipeView {
         id: swipeView
         anchors.fill: parent

@@ -75,8 +75,7 @@ Page {
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
 
             Connections {
-                target: findButton
-                onClicked: fileDialog.open()
+                function onClicked() { fileDialog.open() }
             }
         }
     }

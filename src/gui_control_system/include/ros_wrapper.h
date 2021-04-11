@@ -1,10 +1,12 @@
 #pragma once
 
 #include <QObject>
+
 #include <QStringListModel>
 
 #include <ros/ros.h>
 #include <ros/package.h>
+#include <std_srvs/Trigger.h>
 #include <std_msgs/String.h>
 
 #include <logs_table_model.h>
@@ -36,6 +38,8 @@ public slots:
     void createRosPackageList();
     void appendList(QString);
     void spin();
+    bool isNodeStarted(QString node_name);
+    void callUpdateService();
 
 
 signals:
@@ -52,6 +56,7 @@ private:
     ros::NodeHandle nh_;
 //    ros::Publisher * pub_;
     ros::Subscriber rosoutSub_;
+    ros::ServiceClient updt_srv_;
 
     QStringList topicStringList_;
     QStringList packageStringList_;

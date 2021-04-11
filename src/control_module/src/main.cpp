@@ -66,7 +66,7 @@ int main(int argc, char **argv)
   ros::Rate loop_rate(100);
 
 //  ControlModule conrtl_obj({"imu", "lidar", "radar", "rgb", "rgbd"});
-  ControlModule conrtl_obj({"test"});
+  ControlModule conrtl_obj({"imu"});
   while(ros::ok())
   {
     ros::spinOnce();

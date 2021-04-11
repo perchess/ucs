@@ -1,4 +1,4 @@
 gui_config:
-  test_turn: false
-  test_pkg: rviz
-  test_node: rviz
+  imu_turn: false
+  imu_pkg: rviz
+  imu_node: rviz
