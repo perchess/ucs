@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
 import QtQuick.Extras 1.4
 import Qt.labs.qmlmodels 1.0
+import QtQuick.Dialogs 1.2
 
 
 
@@ -317,24 +318,6 @@ Page {
             y: -10
             text: qsTr("Ноды")
         }
-
-        Button {
-            id: launchButton
-            x: 275
-            y: 309
-            text: qsTr("Старт")
-
-            Connections {
-                property variant args: ["control_module", "start.launch"]
-                function onClicked(mouse){
-                    if (rosWrapper.isNodeStarted("control_node"))
-                        rosWrapper.callService()
-                    else
-                        cppWrapper.callSystem("roslaunch", args)
-//                        cppWrapper.callSystem("roslaunch control_module start.launch")
-                }
-            }
-        }
     }
 
     TableView {
@@ -414,6 +397,102 @@ Page {
         ScrollIndicator.vertical: ScrollIndicator { }
     }
 
+    GroupBox {
+        id: groupBox1
+        x: 34
+        y: 348
+        width: 674
+        height: 262
+        title: qsTr("Управление")
+
+        RowLayout {
+            id: rowLayout1
+            x: 109
+            y: 90
+            width: 421
+            height: 59
+
+            CheckBox {
+                id: checkBox1
+                text: qsTr("Ручное")
+            }
+
+            TextInput {
+                id: textInput
+                width: 184
+                height: 22
+                text: qsTr("Телеуправление с клавиатуры")
+                font.pixelSize: 17
+            }
+        }
+
+        RowLayout {
+            id: rowLayout
+            x: 109
+            y: 17
+            width: 421
+            height: 60
+
+            CheckBox {
+                id: checkBox
+                text: qsTr("Автономная навигация")
+                onClicked: cppWrapper.systemCmd("roslaunch " + slamComboBox.editText)
+            }
+
+            FileDialog {
+                id: fileDialog3
+                x: 0
+                y: 0
+                title: "Please choose a file"
+                folder: shortcuts.home
+                onAccepted: {
+                    slamComboBox.editText = fileDialog3.fileUrl.toString().replace("file:///",
+                                                                           "/")
+                    cppWrapper.setProperty(fileDialog3.fileUrl.toString().replace(
+                                               "file:///", "/"), "slam_launch_path")
+                }
+                onRejected: {
+                    console.log("fileDialog1 rejected")
+                }
+                Component.onCompleted: visible = false
+            }
+
+            ComboBox {
+                id: slamComboBox
+                displayText: "Тип"
+                editable: true
+                onPressedChanged: {
+                    fileDialog3.open()
+                }
+//                Connections {
+//                    function onClicked(){
+//                        fileDialog1.open()
+//                        cppWrapper.systemCmd("roslaunch " + slamComboBox.editText)
+//                    }
+//                }
+            }
+        }
+
+        Button {
+            id: launchButton
+            x: 270
+            y: 155
+            text: qsTr("Старт")
+
+            Connections {
+                property variant args: ["control_module", "start.launch"]
+                function onClicked(mouse){
+                    if (rosWrapper.isNodeStarted("control_node"))
+                        rosWrapper.callService()
+                    else
+                        cppWrapper.callSystem("roslaunch", args)
+                    //                        cppWrapper.callSystem("roslaunch control_module start.launch")
+                }
+            }
+        }
+
+    }
+
 
 
 
@@ -445,6 +524,6 @@ Page {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.66}D{i:33}
+    D{i:0;formeditorZoom:0.75}
 }
 ##^##*/

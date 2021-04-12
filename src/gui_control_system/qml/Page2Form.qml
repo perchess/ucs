@@ -38,22 +38,63 @@ Page {
             cppWrapper.systemCmd(
                         "roslaunch robot_description description.launch xacro_urdf_arg:="
                         + textField.text)
-            loader.visible = true
-            //            loader.active = true
-            //            console.log("You chose: " + fileDialog.fileUrls)
-            //            Qt.quit()
+            robotModelDisplay.enable = true
         }
         onRejected: {
-            console.log("Canceled")
-            robotModelDisplay.enable = true
-            //            Qt.quit()
+            console.log("fileDialog rejected")
+        }
+        Component.onCompleted: visible = false
+    }
+
+    FileDialog {
+        id: fileDialog1
+        x: 0
+        y: 0
+        title: "Please choose a file"
+        folder: shortcuts.home
+        onAccepted: {
+            textFieldWorld.text = fileDialog1.fileUrl.toString().replace("file:///",
+                                                                   "/")
+            cppWrapper.setProperty(fileDialog1.fileUrl.toString().replace(
+                                       "file:///", "/"), "world_path")
+        }
+        onRejected: {
+            console.log("fileDialog1 rejected")
         }
         Component.onCompleted: visible = false
     }
 
 
-    RowLayout {
-        id: fileBrowser
+RowLayout {
+    id: fileBrowserWorld
+    height: 40
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: fileBrowser.bottom
+    anchors.topMargin: 14
+    anchors.leftMargin: 17
+    TextField {
+        id: textFieldWorld
+        height: 40
+        text: qsTr("Выберите файл мира")
+        Layout.preferredWidth: 400
+        Layout.preferredHeight: 40
+    }
+
+    Button {
+        id: findButton1
+        text: qsTr("browse")
+        Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+        Connections {
+            function onClicked() { fileDialog1.open() }
+        }
+    }
+    anchors.rightMargin: 19
+}
+
+RowLayout {
+    id: fileBrowser
         y: 2
         height: 40
         anchors.left: parent.left
@@ -64,7 +105,7 @@ Page {
         TextField {
             id: textField
             height: 40
-            text: qsTr("Выберите файл")
+            text: qsTr("Выберите файл URDF")
             Layout.preferredHeight: 40
             Layout.preferredWidth: 400
         }
@@ -83,16 +124,16 @@ Page {
 
 
 
-    Item {
-        id: root
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: fileBrowser.bottom
+Item {
+    id: root
+    anchors.left: parent.left
+    anchors.right: parent.right
+        anchors.top: fileBrowserWorld.bottom
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: page2.height/3
-        anchors.rightMargin: 20
-        anchors.leftMargin: page2.width*60/100
-        anchors.topMargin: 25
+        anchors.rightMargin: 15
+        anchors.leftMargin: 15
+        anchors.bottomMargin: 15
+        anchors.topMargin: 15
         ///////////////////////////////
         // Функции
         //////////////////////////////
@@ -223,8 +264,16 @@ Page {
                 setPropertyValue("Focal Point/Z", 1.0)
             }
         }
-    } // end rvizItem
+    }
+
+    // end rvizItem
 }
 
 
 
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/

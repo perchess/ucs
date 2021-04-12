@@ -48,6 +48,7 @@ void readParam(const std::string param_name, T& param_value,
 int main(int argc, char *argv[]){
 
     qputenv("QSG_RENDER_LOOP", "basic");
+    qputenv("TURTLEBOT3_MODEL", "waffle");
     /// Init ROS
     ros::init(argc, argv, "DataHub_node");
 
