@@ -64,36 +64,36 @@ Page {
     }
 
 
-RowLayout {
-    id: fileBrowserWorld
-    height: 40
-    anchors.left: parent.left
-    anchors.right: parent.right
-    anchors.top: fileBrowser.bottom
-    anchors.topMargin: 14
-    anchors.leftMargin: 17
-    TextField {
-        id: textFieldWorld
+    RowLayout {
+        id: fileBrowserWorld
         height: 40
-        text: qsTr("Выберите файл мира")
-        Layout.preferredWidth: 400
-        Layout.preferredHeight: 40
-    }
-
-    Button {
-        id: findButton1
-        text: qsTr("browse")
-        Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-
-        Connections {
-            function onClicked() { fileDialogWorld.open() }
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: fileBrowser.bottom
+        anchors.topMargin: 14
+        anchors.leftMargin: 17
+        TextField {
+            id: textFieldWorld
+            height: 40
+            text: qsTr("Выберите файл мира")
+            Layout.preferredWidth: 400
+            Layout.preferredHeight: 40
         }
-    }
-    anchors.rightMargin: 19
-}
 
-RowLayout {
-    id: fileBrowser
+        Button {
+            id: findButton1
+            text: qsTr("browse")
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+            Connections {
+                function onClicked() { fileDialogWorld.open() }
+            }
+        }
+        anchors.rightMargin: 19
+    }
+
+    RowLayout {
+        id: fileBrowser
         y: 2
         height: 40
         anchors.left: parent.left
@@ -123,10 +123,10 @@ RowLayout {
 
 
 
-Item {
-    id: root
-    anchors.left: parent.left
-    anchors.right: parent.right
+    Item {
+        id: root
+        anchors.left: parent.left
+        anchors.right: parent.right
         anchors.top: fileBrowserWorld.bottom
         anchors.bottom: parent.bottom
         anchors.rightMargin: 15
@@ -136,13 +136,6 @@ Item {
         ///////////////////////////////
         // Функции
         //////////////////////////////
-        function enableLoader() {//        rvizLoader.active = true
-        }
-        function loadURDF(packageName, launchName) {
-            cppWrapper.callSystem(
-                        "roslaunch " + packageName + " " + launchName + ".launch")
-            //        cppWrapper.systemCmd("roslaunch " + packageName + " " + launchName + ".launch")
-        }
         //////////////////////////////
 
         Rectangle {
@@ -163,9 +156,9 @@ Item {
         DisplayConfig {
             id: displayConfig
             frame: visualizationFrame
-            source: "/home/den/catkin_workspaces/custom_rviz/src/custom_rviz/default.rviz"
-//            source: rosWrapper.find("turtlebot3_slam") +
-//                    "/rviz/turtlebot3_gmapping.rviz"
+//            source: "/home/den/c_workspaces/ucs/src/robot_gmapping/rviz/turtlebot.rviz"
+            //            source: rosWrapper.find("turtlebot3_slam") +
+            //                    "/rviz/turtlebot3_gmapping.rviz"
         }
 
         //////////////////////////////////////

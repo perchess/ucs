@@ -492,9 +492,8 @@ Page {
 
                     cppWrapper.callSystem("roslaunch", [slamComboBox.editText, "open_rviz:=false"])
                     // КАКОЙ-то ХАРДКОД!!!!!!!!!!
-                    page2.displayConfig.setSource(rosWrapper.find("turtlebot3_slam") +
-                            "/rviz/turtlebot3_gmapping.rviz")
-                    page2.displayConfig.updateConfig()
+                    page2.displayConfig.setSource(rosWrapper.find("robot_gmapping") +
+                            "/rviz/turtlebot.rviz")
                 }
             }
 
