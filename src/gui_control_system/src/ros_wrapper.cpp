@@ -87,6 +87,13 @@ void RosWrapper::setConstMsg(){
 
 }
 
+
+QString RosWrapper::find(QString pkg_name)
+{
+    return QString::fromStdString(ros::package::getPath(pkg_name.toStdString()));
+}
+
+
 void RosWrapper::createRosTopicList(){
     ros::master::V_TopicInfo topics;
     ros::master::getTopics(topics);

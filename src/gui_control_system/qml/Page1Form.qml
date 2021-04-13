@@ -1,5 +1,4 @@
 import QtQuick 2.12
-//import QtQuick.Controls 1.6
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.0
 import QtQuick.Extras 1.4
@@ -439,11 +438,11 @@ Page {
             textRole: "key"
             valueRole: "value"
             model: ListModel {
-                    ListElement { key: "DEBUG";     value: 0 }
-                    ListElement { key: "INFO";      value: 1 }
-                    ListElement { key: "WARNING";   value: 2 }
-                    ListElement { key: "ERROR";     value: 3 }
-                }
+                ListElement { key: "DEBUG";     value: 0 }
+                ListElement { key: "INFO";      value: 1 }
+                ListElement { key: "WARNING";   value: 2 }
+                ListElement { key: "ERROR";     value: 3 }
+            }
             onActivated: {
                 rosWrapper.setSeverity(currentValue)
                 verticalScrollBar.position = 0.0
@@ -489,7 +488,14 @@ Page {
             CheckBox {
                 id: checkBox
                 text: qsTr("Автономная навигация")
-                onClicked: cppWrapper.systemCmd("roslaunch " + slamComboBox.editText)
+                onClicked: {
+
+                    cppWrapper.callSystem("roslaunch", [slamComboBox.editText, "open_rviz:=false"])
+                    // КАКОЙ-то ХАРДКОД!!!!!!!!!!
+                    page2.displayConfig.setSource(rosWrapper.find("turtlebot3_slam") +
+                            "/rviz/turtlebot3_gmapping.rviz")
+                    page2.displayConfig.updateConfig()
+                }
             }
 
             FileDialog {
@@ -500,9 +506,9 @@ Page {
                 folder: shortcuts.home
                 onAccepted: {
                     slamComboBox.editText = fileDialog3.fileUrl.toString().replace("file:///",
-                                                                           "/")
+                                                                                   "/")
                     cppWrapper.setProperty(fileDialog3.fileUrl.toString().replace(
-                                               "file:///", "/"), "slam_launch_path")
+                                               "file:///", "/"), "                                                      ")
                 }
                 onRejected: {
                     console.log("fileDialog1 rejected")
@@ -517,12 +523,6 @@ Page {
                 onPressedChanged: {
                     fileDialog3.open()
                 }
-//                Connections {
-//                    function onClicked(){
-//                        fileDialog1.open()
-//                        cppWrapper.systemCmd("roslaunch " + slamComboBox.editText)
-//                    }
-//                }
             }
         }
 

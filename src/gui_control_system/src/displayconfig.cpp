@@ -80,7 +80,8 @@ void DisplayConfig::updateConfig()
   auto reader = rviz::YamlConfigReader();
   auto config = rviz::Config();
   reader.readFile(config, source_);
-  frame_->getManager()->load(config.mapGetChild( "Visualization Manager" ));
+  frame_->load(config);
+//  frame_->getManager()->load(config.mapGetChild( "Visualization Manager" ));
 
   loaded_ = true;
   Q_EMIT loadedChanged(loaded_);

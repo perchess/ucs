@@ -13,6 +13,7 @@ Page {
     id: page2
     width: 640
     height: 480
+    property alias displayConfig: displayConfig
     title: ""
     font.pointSize: 12
     contentHeight: 5
@@ -23,6 +24,7 @@ Page {
         font.pixelSize: Qt.application.font.pixelSize * 2
         padding: 10
     }
+
 
     FileDialog {
         id: fileDialog
@@ -158,11 +160,13 @@ Item {
             renderWindow: renderWindow
         }
 
-        //    DisplayConfig {
-        //        id: displayConfig
-        //        frame: visualizationFrame
-        //        source: controlVb2DescriptionPath + "/rviz/urdf.rviz"
-        //    }
+        DisplayConfig {
+            id: displayConfig
+            frame: visualizationFrame
+            source: "/home/den/catkin_workspaces/custom_rviz/src/custom_rviz/default.rviz"
+//            source: rosWrapper.find("turtlebot3_slam") +
+//                    "/rviz/turtlebot3_gmapping.rviz"
+        }
 
         //////////////////////////////////////
         //             Дисплеи              //

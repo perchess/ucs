@@ -48,6 +48,7 @@ public slots:
     void setSeverity(QVariant sev);
     bool isNodeStarted(QString node_name);
     void callUpdateService();
+    QString find(QString pkg_name);
 
 
 signals:
