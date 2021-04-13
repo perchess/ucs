@@ -112,8 +112,9 @@ void RosWrapper::createRosNodeList(){
 //        topicStringList_.append(it);
 //    }
     emit myNodeModelChanged(nodeStringList_);
+}
 
-void RosWrapper::createRosPackageList(){
+void RosWrapper::createRosPackageList() {
   ros::V_string packages;
   ros::package::getAll(packages);
 
