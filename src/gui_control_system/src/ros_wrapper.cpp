@@ -135,6 +135,15 @@ void RosWrapper::appendList( QString str){
 //  createRosTopicList();
 }
 
+bool RosWrapper::isNodeStarted(QString node_name)
+{
+  ros::V_string nodes;
+  ros::master::getNodes(nodes);
+
+  auto it = std::find(nodes.begin(), nodes.end(), node_name.toStdString());
+  return it != nodes.end();
+}
+
 
 QStringList RosWrapper::getTopicList() const{
     return topicStringList_;
@@ -159,3 +168,15 @@ void RosWrapper::setSeverity(QVariant sev)
     sort_model_->severityFilterUpdated(sev.toInt());
     emit severityChanged(sev);
 }
+
+void RosWrapper::callUpdateService()
+{
+  std_srvs::Trigger srv;
+  updt_srv_.call(srv);
+}
+
+
+QStringList RosWrapper::getPacakgeListModel() const{
+  return packageStringList_;
+}
+
