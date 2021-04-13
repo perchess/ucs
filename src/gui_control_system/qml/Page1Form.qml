@@ -481,7 +481,6 @@ Page {
         }
 
         RowLayout {
-            id: rowLayout
             x: 109
             y: 17
             width: 421
