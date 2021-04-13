@@ -8,6 +8,7 @@
 #include <QQmlEngine>
 #include <QLocale>
 #include <QTranslator>
+#include <QProcess>
 
 #include <ros/ros.h>
 #include <ros/package.h>
@@ -44,6 +45,7 @@ public slots:
     void setProperty(QString parametr, QString name);
     void setProperty(bool parametr, QString name);
     void systemCmd(QString command);
+    void callSystem(QString program, QStringList args);
     void setLanguage(QString localeStr);
 
 
@@ -59,5 +61,6 @@ private:
     QQmlApplicationEngine * qmlEnginePtr_;
     QTranslator translator_;
     QLocale locale_;
+    std::vector<QProcess*> terminals_;
 
 };
