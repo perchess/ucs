@@ -38,7 +38,7 @@ Page {
             cppWrapper.systemCmd(
                         "roslaunch robot_description description.launch xacro_urdf_arg:="
                         + textField.text)
-            loader.visible = true
+//            loader.visible = true
             //            loader.active = true
             //            console.log("You chose: " + fileDialog.fileUrls)
             //            Qt.quit()
@@ -90,9 +90,9 @@ Page {
         anchors.right: parent.right
         anchors.top: fileBrowser.bottom
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: page2.height/3
-        anchors.rightMargin: 20
-        anchors.leftMargin: page2.width*60/100
+        anchors.leftMargin: 25
+        anchors.bottomMargin: 25
+        anchors.rightMargin: 25
         anchors.topMargin: 25
         ///////////////////////////////
         // Функции

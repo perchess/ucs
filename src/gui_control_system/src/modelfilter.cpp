@@ -89,6 +89,44 @@ void ModelFilter::sourceFilterUpdated(ModelFilter::FilterMode mode, const QStrin
   invalidateFilter();
 }
 
+void ModelFilter::severityFilterUpdated(int sev)
+{
+    switch(sev)
+    {
+    case LogsTableModel::DEBUG:
+        _debug_filter_enabled = true;
+        _info_filter_enabled = false;
+        _warn_filter_enabled = false;
+        _error_filter_enabled = false;
+        invalidateFilter();
+        break;
+    case LogsTableModel::INFO:
+        _debug_filter_enabled = false;
+        _info_filter_enabled = true;
+        _warn_filter_enabled = false;
+        _error_filter_enabled = false;
+        invalidateFilter();
+        break;
+    case LogsTableModel::WARNINGS:
+        _debug_filter_enabled = false;
+        _info_filter_enabled = false;
+        _warn_filter_enabled = true;
+        _error_filter_enabled = false;
+        invalidateFilter();
+        break;
+    case LogsTableModel::ERROR:
+        _debug_filter_enabled = false;
+        _info_filter_enabled = false;
+        _warn_filter_enabled = false;
+        _error_filter_enabled = true;
+        invalidateFilter();
+        break;
+    default:
+        break;
+    }
+}
+
+
 void ModelFilter::timeMinUpdated(QDateTime min)
 {
   _min = min;
@@ -191,7 +229,7 @@ bool ModelFilter::applyFilter(const QString& filter,
 
   if( mode == CONTAINS_ONE)
   {
-    QStringList filter_words = filter.split(QRegExp("\\s"), QString::SkipEmptyParts);
+    QStringList filter_words = filter.split(QRegExp("\\s"),Qt::SkipEmptyParts);
 
     for (int i=0; i< filter_words.size(); i++){
       if( text_to_parse.contains(filter_words[i], Qt::CaseSensitive) == true ){

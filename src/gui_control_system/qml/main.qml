@@ -50,13 +50,14 @@ ApplicationWindow {
         }
     }
 
-    Timer {
-        interval: 1
-        running: true
-        repeat: true
-        onTriggered:{
-            rosWrapper.spin()
-        }
-    }
+//    Timer {
+//        id: rosSpinTimer
+//        interval: 1
+//        running: false
+//        repeat: true
+//        onTriggered:{
+//            rosWrapper.spin()
+//        }
+//    }
 
 }

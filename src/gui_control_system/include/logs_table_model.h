@@ -1,6 +1,7 @@
 #ifndef LOGSTABLEMODEL_HPP
 #define LOGSTABLEMODEL_HPP
 
+#include <qqml.h>
 #include <QAbstractTableModel>
 #include <QString>
 #include <QDateTime>
@@ -16,6 +17,8 @@
 class LogsTableModel : public QAbstractTableModel
 {
   Q_OBJECT
+  QML_ELEMENT
+  QML_ADDED_IN_MINOR_VERSION(1)
 
 public:
   explicit LogsTableModel(QObject *parent = 0);
@@ -36,6 +39,8 @@ public:
   int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+  QHash<int, QByteArray> roleNames() const override;
 
   void appendRow(const std::vector<rosgraph_msgs::Log::ConstPtr> &pushed_logs);
 

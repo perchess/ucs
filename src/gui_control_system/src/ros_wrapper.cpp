@@ -11,13 +11,13 @@ RosWrapper::RosWrapper(QObject *parent)
     , sort_model_(new ModelFilter(this))
 {
     sort_model_->setSourceModel(model_);
-    sort_model_->setSeverityDebugEnabled(true);
-    sort_model_->setSeverityWarningsEnabled( true);
-    sort_model_->setSeverityErrorEnabled( false);
-    sort_model_->setSeverityInfoEnabled( true );
+    sort_model_->setSeverityDebugEnabled(false);
+    sort_model_->setSeverityWarningsEnabled( false);
+    sort_model_->setSeverityErrorEnabled( true);
+    sort_model_->setSeverityInfoEnabled( false );
 
-    sort_model_->setMessageFilterEnabled( true );
-    sort_model_->setNodeFilterEnabled( false);
+    sort_model_->setMessageFilterEnabled( false );
+    sort_model_->setNodeFilterEnabled( true);
     sort_model_->setTimeFilterEnabled( false );
 }
 
@@ -96,7 +96,21 @@ void RosWrapper::createRosTopicList(){
     for (auto it : appendedStrings_){
         topicStringList_.append(it);
     }
-    emit modelChanged(topicStringList_);
+    emit myTopicModelChanged(topicStringList_);
+
+}
+
+void RosWrapper::createRosNodeList(){
+    ros::V_string nodes;
+    ros::master::getNodes(nodes);
+    nodeStringList_.clear();
+    for (auto it : nodes){
+        nodeStringList_.append(QString::fromStdString(it));
+    }
+//    for (auto it : appendedStrings_){
+//        topicStringList_.append(it);
+//    }
+    emit myNodeModelChanged(nodeStringList_);
 
 }
 
@@ -108,5 +122,24 @@ void RosWrapper::appendList( QString str){
 
 QStringList RosWrapper::getTopicList() const{
     return topicStringList_;
+}
 
+QStringList RosWrapper::getNodeList() const{
+    return nodeStringList_;
+}
+
+
+void RosWrapper::setNode(QString node)
+{
+    node_ = node;
+    sort_model_->nodeFilterUpdated(ModelFilter::FilterMode::CONTAINS_ONE, node);
+    emit nodeChanged(node);
+}
+
+
+void RosWrapper::setSeverity(QVariant sev)
+{
+
+    sort_model_->severityFilterUpdated(sev.toInt());
+    emit severityChanged(sev);
 }

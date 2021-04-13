@@ -5,6 +5,8 @@
 #include <QString>
 #include <QRegExpValidator>
 
+#include <logs_table_model.h>
+
 class ModelFilter : public QSortFilterProxyModel
 {
   Q_OBJECT
@@ -29,6 +31,7 @@ public slots:
   void messageFilterUpdated(FilterMode mode, const QString& text  );
   void nodeFilterUpdated(FilterMode mode, const QString& text  );
   void sourceFilterUpdated(FilterMode mode, const QString& text  );
+  void severityFilterUpdated(int);
   void timeMinUpdated(QDateTime min);
   void timeMaxUpdated(QDateTime max);
 

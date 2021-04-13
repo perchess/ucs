@@ -100,8 +100,6 @@ int main(int argc, char *argv[]){
     /*
      *
      * */
-    qDebug() << "App path : " << qApp->applicationDirPath();
-    qDebug() << QDir().relativeFilePath("main.cpp");
 
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

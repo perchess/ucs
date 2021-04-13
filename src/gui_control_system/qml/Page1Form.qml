@@ -94,7 +94,7 @@ Page {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
-                model: rosWrapper.myModel
+                model: rosWrapper.myTopicModel
                 onAccepted: {
                     if (find(editText) === -1)
                         rosWrapper.appendList(editText)
@@ -109,7 +109,7 @@ Page {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
-                model: rosWrapper.myModel
+                model: rosWrapper.myTopicModel
                 onAccepted: {
                     if (find(editText) === -1)
                         rosWrapper.appendList(editText)
@@ -124,7 +124,7 @@ Page {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
-                model: rosWrapper.myModel
+                model: rosWrapper.myTopicModel
                 onAccepted: {
                     if (find(editText) === -1)
                         rosWrapper.appendList(editText)
@@ -139,7 +139,7 @@ Page {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
-                model: rosWrapper.myModel
+                model: rosWrapper.myTopicModel
                 onAccepted: {
                     if (find(editText) === -1)
                         rosWrapper.appendList(editText)
@@ -154,7 +154,7 @@ Page {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
-                model: rosWrapper.myModel
+                model: rosWrapper.myTopicModel
                 onAccepted: {
                     if (find(editText) === -1)
                         rosWrapper.appendList(editText)
@@ -276,25 +276,41 @@ Page {
 
     TableView {
         id: tableView
-        x: 700
-        y: 50
-        width: 500
-        height: 600
+        anchors.left: groupBox.right
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 250
+        anchors.rightMargin: 20
+        anchors.topMargin: 20
+        anchors.leftMargin: 20
 
-        columnWidthProvider: function (column) { return 100; }
-        rowHeightProvider: function (column) { return 60; }
-        leftMargin: rowsHeader.implicitWidth
+        columnWidthProvider: function (column) {
+            switch (column){
+            case 0:
+                return 50;
+            case 1:
+                return 0;
+            case 5:
+                return 200;
+            default:
+                return 100;
+            }
+        }
+        rowHeightProvider: function (column) { return 30; }
+        //        leftMargin: tableView.columnWidthProvider(0)
         topMargin: columnsHeader.implicitHeight
         model: rosbagTableModel
         ScrollBar.horizontal: ScrollBar{}
-        ScrollBar.vertical: ScrollBar{}
+        ScrollBar.vertical: ScrollBar{id:verticalScrollBar}
         clip: true
+
         delegate: Rectangle {
             Text {
                 text: display
                 anchors.fill: parent
                 anchors.margins: 10
-                color: 'black'
+                color: foreground
                 font.pixelSize: 15
                 verticalAlignment: Text.AlignVCenter
             }
@@ -327,28 +343,66 @@ Page {
                 }
             }
         }
-        Column {
-            id: rowsHeader
-            x: tableView.contentX
-            z: 2
-            Repeater {
-                model: tableView.rows > 0 ? tableView.rows : 1
-                Label {
-                    width: 60
-                    height: tableView.rowHeightProvider(modelData)
-                    text: rosbagTableModel.headerData(modelData, Qt.Vertical)
-                    color: '#aaaaaa'
-                    font.pixelSize: 15
-                    padding: 10
-                    verticalAlignment: Text.AlignVCenter
+        //        Column {
+        //            id: rowsHeader
+        //            x: tableView.contentX
+        //            z: 2
+        //            Repeater {
+        //                model: tableView.rows > 0 ? tableView.rows : 1
+        //                Label {
+        //                    width: 60
+        //                    height: tableView.rowHeightProvider(modelData)
+        //                    text: rosbagTableModel.headerData(modelData, Qt.Vertical)
+        //                    color: '#aaaaaa'
+        //                    font.pixelSize: 15
+        //                    padding: 10
+        //                    verticalAlignment: Text.AlignVCenter
 
-                    background: Rectangle { color: "#333333" }
-                }
-            }
-        }
+        //                    background: Rectangle { color: "#333333" }
+        //                }
+        //            }
+        //        }
 
         ScrollIndicator.horizontal: ScrollIndicator { }
         ScrollIndicator.vertical: ScrollIndicator { }
+    }
+
+    RowLayout {
+        id: rowLayout
+        x: 797
+        y: 423
+        width: 294
+        height: 42
+
+        ComboBox {
+            id: nodeFilter
+            displayText: qsTr("Ноды")
+            model: rosWrapper.myNodeModel
+            Component.onCompleted: rosWrapper.createRosNodeList()
+            onHighlighted: {
+                rosWrapper.createRosNodeList()
+            }
+            onActivated: {
+                rosWrapper.node = editText
+            }
+        }
+
+        ComboBox {
+            id: typeFilter
+            displayText: qsTr("Статусы")
+            textRole: "key"
+            valueRole: "value"
+            model: ListModel {
+                    ListElement { key: "DEBUG";     value: 0 }
+                    ListElement { key: "INFO";      value: 1 }
+                    ListElement { key: "WARNING";   value: 2 }
+                    ListElement { key: "ERROR";     value: 3 }
+                }
+            onActivated: {
+                rosWrapper.setSeverity(currentValue)
+                verticalScrollBar.position = 0.0
+            }
+        }
     }
 
 
