@@ -28,16 +28,14 @@ Page {
         id: fileDialog
         x: 0
         y: 0
-        title: "Please choose a file"
+        title: "Please choose a URDF file"
         folder: shortcuts.home
+        property variant args: ["robot_description", "description.launch", "xacro_urdf_arg:=" + textFieldUrdf.text]
         onAccepted: {
-            textField.text = fileDialog.fileUrl.toString().replace("file:///",
-                                                                   "/")
+            textFieldUrdf.text = fileDialog.fileUrl.toString().replace("file:///", "/")
             cppWrapper.setProperty(fileDialog.fileUrl.toString().replace(
                                        "file:///", "/"), "urdf_path")
-            cppWrapper.systemCmd(
-                        "roslaunch robot_description description.launch xacro_urdf_arg:="
-                        + textField.text)
+            cppWrapper.callSystem("roslaunch", args)
             robotModelDisplay.enable = true
         }
         onRejected: {
@@ -47,19 +45,18 @@ Page {
     }
 
     FileDialog {
-        id: fileDialog1
+        id: fileDialogWorld
         x: 0
         y: 0
-        title: "Please choose a file"
+        title: "Please choose a world file"
         folder: shortcuts.home
         onAccepted: {
-            textFieldWorld.text = fileDialog1.fileUrl.toString().replace("file:///",
-                                                                   "/")
-            cppWrapper.setProperty(fileDialog1.fileUrl.toString().replace(
+            textFieldWorld.text = fileDialogWorld.fileUrl.toString().replace("file:///", "/")
+            cppWrapper.setProperty(fileDialogWorld.fileUrl.toString().replace(
                                        "file:///", "/"), "world_path")
         }
         onRejected: {
-            console.log("fileDialog1 rejected")
+            console.log("fileDialogWorld rejected")
         }
         Component.onCompleted: visible = false
     }
@@ -87,7 +84,7 @@ RowLayout {
         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
 
         Connections {
-            function onClicked() { fileDialog1.open() }
+            function onClicked() { fileDialogWorld.open() }
         }
     }
     anchors.rightMargin: 19
@@ -103,7 +100,7 @@ RowLayout {
         anchors.rightMargin: 19
 
         TextField {
-            id: textField
+            id: textFieldUrdf
             height: 40
             text: qsTr("Выберите файл URDF")
             Layout.preferredHeight: 40

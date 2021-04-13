@@ -32,7 +32,7 @@ Page {
         id: groupBox
         x: 34
         y: 0
-        width: 674
+        width: 688
         height: 314
         title: qsTr("Состав системы")
 
@@ -455,7 +455,7 @@ Page {
         id: groupBox1
         x: 34
         y: 348
-        width: 674
+        width: 688
         height: 262
         title: qsTr("Управление")
 

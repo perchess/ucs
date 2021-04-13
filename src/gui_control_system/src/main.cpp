@@ -6,6 +6,7 @@
 #include <qml_wrapper.h>
 #include <ros_wrapper.h>
 #include <QQmlContext>
+#include <QProcess>
 
 #include <QDir>
 //#include <my_rviz.h>
@@ -46,25 +47,33 @@ void readParam(const std::string param_name, T& param_value,
 
 
 int main(int argc, char *argv[]){
-
+    ///
+    ///  Инциализация переменных окружения
+    ///
     qputenv("QSG_RENDER_LOOP", "basic");
     qputenv("TURTLEBOT3_MODEL", "waffle");
-    /// Init ROS
+    ///
+    ///  Инциализация ROS
+    ///
     ros::init(argc, argv, "DataHub_node");
-
+    QProcess rosTerminal;
     // Проверяем, запущен ли мастер, если нет - запускаем
-    if (!ros::master::check()){
+    if (!ros::master::check())
+    {
       ROS_WARN("No rosmaster detected. Launching roscore ...");
-      system("roscore &");
+      rosTerminal.start("roscore", QStringList());
+      rosTerminal.waitForStarted();
     }
 
     RosWrapper rosWrapper;
+    ///
+    ///  ----------
+    ///
 
-    /// ----------
-
-    /// Init QT
+    ///
+    ///  Инциализация QT
+    ///
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
     QGuiApplication app(argc, argv);
     app.setOrganizationName("SPBSTU");
     app.setOrganizationDomain("SPBSTU");
@@ -104,7 +113,8 @@ int main(int argc, char *argv[]){
 
     auto app_exec = app.exec();
 
-//    system("killall roscore &");
+    rosTerminal.terminate();
+    rosTerminal.waitForFinished();
 
     return app_exec;
 }
