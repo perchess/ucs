@@ -1,6 +1,6 @@
 <launch>
-  <arg name="ns" default="ffff"/>
-  <param name="ns" type="str" value="scooter"/>
-  <node pkg="scooter_teleop" type="scooter_teleop_key" name="scooter_teleop_keyboard"  output="screen">
+<!--  <arg name="ns" default="ffff"/>
+  <param name="ns" type="str" value="scooter"/>-->
+  <node pkg="robot_teleop" type="robot_teleop_key" name="robot_teleop_keyboard"  output="screen">
   </node>
 </launch>

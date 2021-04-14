@@ -13,6 +13,7 @@ Page {
     id: page2
     width: 640
     height: 480
+    property alias tools: tools
     property alias displayConfig: displayConfig
     title: ""
     font.pointSize: 12
@@ -76,6 +77,7 @@ Page {
             id: textFieldWorld
             height: 40
             text: qsTr("Выберите файл мира")
+            Layout.fillWidth: true
             Layout.preferredWidth: 400
             Layout.preferredHeight: 40
         }
@@ -105,6 +107,7 @@ Page {
             id: textFieldUrdf
             height: 40
             text: qsTr("Выберите файл URDF")
+            Layout.fillWidth: true
             Layout.preferredHeight: 40
             Layout.preferredWidth: 400
         }
@@ -133,17 +136,39 @@ Page {
         anchors.leftMargin: 15
         anchors.bottomMargin: 15
         anchors.topMargin: 15
+
+
+
+
         ///////////////////////////////
         // Функции
         //////////////////////////////
         //////////////////////////////
 
+
         Rectangle {
+            id: rectangle
             anchors.fill: parent
 
             RenderWindow {
                 id: renderWindow
                 anchors.fill: parent
+            }
+
+            RowLayout {
+                id: rowLayout
+                height: 40
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.leftMargin: 0
+                anchors.rightMargin: 0
+
+                Button {
+                    id: button
+                    text: qsTr("Задать целевую точку")
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                    onClicked: tools.setCurrentTool("rviz/SetGoal")
+                }
             }
         }
 
@@ -234,7 +259,7 @@ Page {
         RvizTools {
             id: tools
             frame: visualizationFrame
-            toolNames: ["rviz/Interact", "rviz/MoveCamera"]
+            toolNames: ["rviz/Interact", "rviz/MoveCamera", "rviz/SetGoal"]
 
             onToolsCreated: {
                 setCurrentTool("rviz/Interact")
@@ -268,6 +293,6 @@ Page {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:480;width:640}
+    D{i:0;formeditorZoom:0.66;height:720;width:1280}D{i:15}
 }
 ##^##*/

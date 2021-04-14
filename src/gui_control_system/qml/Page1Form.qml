@@ -337,7 +337,7 @@ Page {
             case 1:
                 return 0;
             case 5:
-                return 200;
+                return 1000;
             default:
                 return 100;
             }
@@ -415,9 +415,11 @@ Page {
     RowLayout {
         id: rowLayout
         x: 797
-        y: 423
         width: 294
         height: 42
+        anchors.top: tableView.bottom
+        anchors.horizontalCenter: tableView.horizontalCenter
+        anchors.topMargin: 15
 
         ComboBox {
             id: nodeFilter
@@ -458,6 +460,8 @@ Page {
         height: 262
         title: qsTr("Управление")
 
+
+
         RowLayout {
             id: rowLayout1
             x: 109
@@ -468,6 +472,16 @@ Page {
             CheckBox {
                 id: checkBox1
                 text: qsTr("Ручное")
+                checked: false
+                onClicked: {
+                    hotkey_left.enabled = checkBox1.checked
+                    hotkey_right.enabled = checkBox1.checked
+                    hotkey_up.enabled = checkBox1.checked
+                    hotkey_down.enabled = checkBox1.checked
+                    if (checkBox1.checked)
+                        rosWrapper.startKeyTeleop()
+                }
+
             }
 
             TextInput {
@@ -501,13 +515,13 @@ Page {
                 id: fileDialog3
                 x: 0
                 y: 0
-                title: "Please choose a file"
+                title: "Please choose a launch file"
                 folder: shortcuts.home
                 onAccepted: {
                     slamComboBox.editText = fileDialog3.fileUrl.toString().replace("file:///",
                                                                                    "/")
                     cppWrapper.setProperty(fileDialog3.fileUrl.toString().replace(
-                                               "file:///", "/"), "                                                      ")
+                                               "file:///", "/"), "autonomous_launch_path")
                 }
                 onRejected: {
                     console.log("fileDialog1 rejected")
@@ -542,40 +556,13 @@ Page {
                 }
             }
         }
-
     }
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.75}
+    D{i:0;formeditorZoom:0.75}D{i:46}
 }
 ##^##*/

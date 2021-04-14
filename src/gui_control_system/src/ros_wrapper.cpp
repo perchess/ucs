@@ -10,6 +10,7 @@ RosWrapper::RosWrapper(QObject *parent)
   , updt_srv_(nh_.serviceClient<std_srvs::Trigger>("updateParams"))
   , model_(new LogsTableModel)
   , sort_model_(new ModelFilter(this))
+  , teleop_terminal_(new QProcess())
 {
     sort_model_->setSourceModel(model_);
     sort_model_->setSeverityDebugEnabled(false);
@@ -29,6 +30,8 @@ RosWrapper::~RosWrapper()
     ros::shutdown();
     ros::waitForShutdown();
   }
+  teleop_terminal_->terminate();
+  teleop_terminal_->waitForFinished();
 }
 
 ModelFilter * RosWrapper::getTableModel()
@@ -187,3 +190,14 @@ QStringList RosWrapper::getPacakgeListModel() const{
   return packageStringList_;
 }
 
+void RosWrapper::startKeyTeleop()
+{
+  teleop_terminal_->start("roslaunch robot_teleop robot_teleop_key.launch");
+  teleop_terminal_->waitForStarted();
+}
+
+
+void RosWrapper::sendTeleopCmd(QString key)
+{
+  teleop_terminal_->write(key.toStdString().c_str(), key.size());
+}

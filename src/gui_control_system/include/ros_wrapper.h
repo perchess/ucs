@@ -1,8 +1,10 @@
 #pragma once
 
 #include <QObject>
+#include <QProcess>
 
 #include <QStringListModel>
+#include <QKeySequence>
 
 #include <ros/ros.h>
 #include <ros/package.h>
@@ -49,6 +51,8 @@ public slots:
     bool isNodeStarted(QString node_name);
     void callUpdateService();
     QString find(QString pkg_name);
+    void startKeyTeleop();
+    void sendTeleopCmd(QString key);
 
 
 signals:
@@ -77,4 +81,5 @@ private:
     LogsTableModel* model_;
     ModelFilter* sort_model_;
     QString node_;
+    QProcess* teleop_terminal_;
 };

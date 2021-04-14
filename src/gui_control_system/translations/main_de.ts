@@ -14,54 +14,101 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="53"/>
+        <location filename="../qml/Page1Form.qml" line="49"/>
         <source>IMU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="63"/>
+        <location filename="../qml/Page1Form.qml" line="62"/>
         <source>RGB камера</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="72"/>
+        <location filename="../qml/Page1Form.qml" line="74"/>
         <source>Радар</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="81"/>
+        <location filename="../qml/Page1Form.qml" line="86"/>
         <source>RGBD камера</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="90"/>
+        <location filename="../qml/Page1Form.qml" line="98"/>
         <source>Лидар</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="180"/>
-        <location filename="../qml/Page1Form.qml" line="197"/>
-        <location filename="../qml/Page1Form.qml" line="206"/>
-        <location filename="../qml/Page1Form.qml" line="215"/>
-        <location filename="../qml/Page1Form.qml" line="224"/>
+        <location filename="../qml/Page1Form.qml" line="257"/>
+        <location filename="../qml/Page1Form.qml" line="274"/>
+        <location filename="../qml/Page1Form.qml" line="283"/>
+        <location filename="../qml/Page1Form.qml" line="292"/>
+        <location filename="../qml/Page1Form.qml" line="301"/>
         <source>Состояние</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Page1Form.qml" line="311"/>
+        <source>Пакеты</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Page1Form.qml" line="318"/>
+        <location filename="../qml/Page1Form.qml" line="424"/>
+        <source>Ноды</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Page1Form.qml" line="437"/>
+        <source>Статусы</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Page1Form.qml" line="459"/>
+        <source>Управление</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Page1Form.qml" line="470"/>
+        <source>Ручное</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Page1Form.qml" line="477"/>
+        <source>Телеуправление с клавиатуры</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Page1Form.qml" line="490"/>
+        <source>Автономная навигация</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Page1Form.qml" line="532"/>
+        <source>Старт</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Page2Form</name>
     <message>
-        <location filename="../qml/Page2Form.qml" line="22"/>
+        <location filename="../qml/Page2Form.qml" line="23"/>
         <source>Настройки ROS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page2Form.qml" line="67"/>
-        <source>Выберите файл</source>
+        <location filename="../qml/Page2Form.qml" line="78"/>
+        <source>Выберите файл мира</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page2Form.qml" line="74"/>
+        <location filename="../qml/Page2Form.qml" line="107"/>
+        <source>Выберите файл URDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Page2Form.qml" line="85"/>
+        <location filename="../qml/Page2Form.qml" line="114"/>
         <source>browse</source>
         <translation type="unfinished"></translation>
     </message>
@@ -74,8 +121,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="41"/>
-        <location filename="../qml/main.qml" line="49"/>
+        <location filename="../qml/main.qml" line="46"/>
+        <location filename="../qml/main.qml" line="54"/>
         <source>Tab Button</source>
         <translation type="unfinished"></translation>
     </message>
