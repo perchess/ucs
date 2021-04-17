@@ -1,4 +1,4 @@
-#include <qml_wrapper.h>
+#include <wrappers/qml_wrapper.h>
 
 
 
@@ -38,6 +38,14 @@ void CppWrapper::setProperty(QString parametr, QString name)
 }
 
 
+void CppWrapper::setSensorType(QString name)
+{
+  sensor_node_names_.push_back(name.toStdString());
+  yamlNode_["sensor_types"] = sensor_node_names_;
+  applyChanges();
+}
+
+
 
 void CppWrapper::setProperty(bool parametr, QString name)
 {
@@ -54,7 +62,7 @@ void CppWrapper::applyChanges()
   configFile_.open(packagePath_ + CONFIG_PATH);
   static YAML::Node parentNode;
   parentNode["gui_config"] = yamlNode_;
-  configFile_ << parentNode;
+  configFile_ << parentNode ;
   configFile_.close();
 
 }

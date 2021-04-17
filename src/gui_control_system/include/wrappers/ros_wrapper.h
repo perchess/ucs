@@ -12,8 +12,8 @@
 #include <std_srvs/Trigger.h>
 #include <std_msgs/String.h>
 
-#include <logs_table_model.h>
-#include <modelfilter.h>
+#include <rosbag_parser/logs_table_model.h>
+#include <rosbag_parser/modelfilter.h>
 
 
 class RosWrapper : public QObject

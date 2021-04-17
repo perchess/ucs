@@ -47,6 +47,7 @@ public slots:
     void systemCmd(QString command);
     void callSystem(QString program, QStringList args);
     void setLanguage(QString localeStr);
+    void setSensorType(QString name);
 
 
 signals:
@@ -62,5 +63,6 @@ private:
     QTranslator translator_;
     QLocale locale_;
     std::vector<QProcess*> terminals_;
+    std::vector<std::string> sensor_node_names_;
 
 };

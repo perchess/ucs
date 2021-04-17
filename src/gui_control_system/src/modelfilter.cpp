@@ -1,5 +1,5 @@
-#include <modelfilter.h>
-#include <logs_table_model.h>
+#include <rosbag_parser/modelfilter.h>
+#include <rosbag_parser/logs_table_model.h>
 
 
 ModelFilter::ModelFilter(QObject *parent) :

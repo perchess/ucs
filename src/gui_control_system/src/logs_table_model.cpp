@@ -1,4 +1,4 @@
-#include <logs_table_model.h>
+#include <rosbag_parser/logs_table_model.h>
 #include <QDateTime>
 #include <QBrush>
 #include <QColor>

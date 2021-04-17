@@ -1,4 +1,4 @@
-#include "simplegrid.h"
+#include "custom_rviz/simplegrid.h"
 
 #include <QColor>
 

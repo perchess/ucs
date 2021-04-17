@@ -5,7 +5,7 @@
 #include <QString>
 #include <QRegExpValidator>
 
-#include <logs_table_model.h>
+#include <rosbag_parser/logs_table_model.h>
 
 class ModelFilter : public QSortFilterProxyModel
 {

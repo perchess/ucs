@@ -47,6 +47,7 @@ Page {
             CheckBox {
                 id: imuCB
                 text: qsTr("IMU")
+                Component.onCompleted: cppWrapper.setSensorType(text)
 
                 Connections {
                     function onClicked() {
@@ -60,6 +61,7 @@ Page {
             CheckBox {
                 id: rgbCB
                 text: qsTr("RGB камера")
+                Component.onCompleted: cppWrapper.setSensorType(text)
                 Connections {
                     function onClicked() {
                         cppWrapper.setProperty(rgbCB.checked, "rgb_turn")
@@ -72,6 +74,7 @@ Page {
             CheckBox {
                 id: radarCB
                 text: qsTr("Радар")
+                Component.onCompleted: cppWrapper.setSensorType(text)
                 Connections {
                     function onClicked() {
                         cppWrapper.setProperty(radarCB.checked, "radar_turn")
@@ -84,6 +87,7 @@ Page {
             CheckBox {
                 id: rgbdCB
                 text: qsTr("RGBD камера")
+                Component.onCompleted: cppWrapper.setSensorType(text)
                 Connections {
                     function onClicked() {
                         cppWrapper.setProperty(rgbdCB.checked, "rgbd_turn")
@@ -96,6 +100,7 @@ Page {
             CheckBox {
                 id: lidarCB
                 text: qsTr("Лидар")
+                Component.onCompleted: cppWrapper.setSensorType(text)
                 Connections {
                     function onClicked() {
                         cppWrapper.setProperty(lidarCB.checked, "lidar_turn")
@@ -323,11 +328,11 @@ Page {
         id: tableView
         anchors.left: groupBox.right
         anchors.right: parent.right
-        anchors.top: parent.top
+        anchors.top: fileBrowserWorld.bottom
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 250
         anchors.rightMargin: 20
-        anchors.topMargin: 20
+        anchors.topMargin: 10
         anchors.leftMargin: 20
 
         columnWidthProvider: function (column) {
@@ -556,13 +561,109 @@ Page {
                 }
             }
         }
+    } // end groupBox1
+
+    FileDialog {
+        id: fileDialog
+        x: 0
+        y: 0
+        title: "Please choose a URDF file"
+        folder: shortcuts.home
+        property variant args: ["robot_description", "description.launch", "xacro_urdf_arg:=" + textFieldUrdf.text]
+        onAccepted: {
+            textFieldUrdf.text = fileDialog.fileUrl.toString().replace("file:///", "/")
+            cppWrapper.setProperty(fileDialog.fileUrl.toString().replace(
+                                       "file:///", "/"), "urdf_path")
+            cppWrapper.callSystem("roslaunch", args)
+            robotModelDisplay.enable = true
+        }
+        onRejected: {
+            console.log("fileDialog rejected")
+        }
+        Component.onCompleted: visible = false
     }
+
+    FileDialog {
+        id: fileDialogWorld
+        x: 0
+        y: 0
+        title: "Please choose a world file"
+        folder: shortcuts.home
+        onAccepted: {
+            textFieldWorld.text = fileDialogWorld.fileUrl.toString().replace("file:///", "/")
+            cppWrapper.setProperty(fileDialogWorld.fileUrl.toString().replace(
+                                       "file:///", "/"), "world_path")
+        }
+        onRejected: {
+            console.log("fileDialogWorld rejected")
+        }
+        Component.onCompleted: visible = false
+    }
+
+    RowLayout {
+        id: fileBrowserWorld
+        height: 40
+        anchors.left: groupBox.right
+        anchors.right: parent.right
+        anchors.top: fileBrowser.bottom
+        anchors.topMargin: 5
+        anchors.leftMargin: 15
+        TextField {
+            id: textFieldWorld
+            height: 40
+            text: qsTr("Выберите файл мира")
+            Layout.fillWidth: true
+            Layout.preferredWidth: 400
+            Layout.preferredHeight: 40
+        }
+
+        Button {
+            id: findButton1
+            text: qsTr("browse")
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+            Connections {
+                function onClicked() { fileDialogWorld.open() }
+            }
+        }
+        anchors.rightMargin: 19
+    }
+
+    RowLayout {
+        id: fileBrowser
+        y: 2
+        height: 40
+        anchors.left: groupBox.right
+        anchors.leftMargin: 15
+        anchors.right: parent.right
+        anchors.rightMargin: 19
+
+        TextField {
+            id: textFieldUrdf
+            height: 40
+            text: qsTr("Выберите файл URDF")
+            Layout.fillWidth: true
+            Layout.preferredHeight: 40
+            Layout.preferredWidth: 400
+        }
+
+        Button {
+            id: findButton
+            text: qsTr("browse")
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+            Connections {
+                function onClicked() { fileDialog.open() }
+            }
+        }
+    } // end fileBrowser
+
 }
 
 
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.75}D{i:46}
+    D{i:0;formeditorZoom:0.75}
 }
 ##^##*/

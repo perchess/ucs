@@ -3,8 +3,8 @@
 #include <QQmlEngine>
 #include <QQmlContext>
 #include <ros/ros.h>
-#include <qml_wrapper.h>
-#include <ros_wrapper.h>
+#include <wrappers/qml_wrapper.h>
+#include <wrappers/ros_wrapper.h>
 #include <QQmlContext>
 #include <QProcess>
 
@@ -22,10 +22,10 @@
 #include "rviz/default_plugin/robot_model_display.h"
 #include <ros/package.h>
 
-#include "simplegrid.h"
-#include "displayconfig.h"
+#include "custom_rviz/simplegrid.h"
+#include "custom_rviz/displayconfig.h"
 
-#include "logs_table_model.h"
+#include "rosbag_parser/logs_table_model.h"
 
 //#include "robot_model.h"
 

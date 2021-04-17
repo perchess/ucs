@@ -1,4 +1,4 @@
-#include "robot_model.h"
+#include "custom_rviz/robot_model.h"
 #include <QColor>
 
 #include <ros/ros.h>

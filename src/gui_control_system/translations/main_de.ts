@@ -54,76 +54,85 @@
     </message>
     <message>
         <location filename="../qml/Page1Form.qml" line="318"/>
-        <location filename="../qml/Page1Form.qml" line="424"/>
+        <location filename="../qml/Page1Form.qml" line="426"/>
         <source>Ноды</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="437"/>
+        <location filename="../qml/Page1Form.qml" line="439"/>
         <source>Статусы</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="459"/>
+        <location filename="../qml/Page1Form.qml" line="461"/>
         <source>Управление</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="470"/>
+        <location filename="../qml/Page1Form.qml" line="474"/>
         <source>Ручное</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="477"/>
+        <location filename="../qml/Page1Form.qml" line="491"/>
         <source>Телеуправление с клавиатуры</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="490"/>
+        <location filename="../qml/Page1Form.qml" line="504"/>
         <source>Автономная навигация</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page1Form.qml" line="532"/>
+        <location filename="../qml/Page1Form.qml" line="546"/>
         <source>Старт</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Page1Form.qml" line="609"/>
+        <source>Выберите файл мира</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Page1Form.qml" line="617"/>
+        <location filename="../qml/Page1Form.qml" line="647"/>
+        <source>browse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Page1Form.qml" line="639"/>
+        <source>Выберите файл URDF</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Page2Form</name>
     <message>
-        <location filename="../qml/Page2Form.qml" line="23"/>
+        <location filename="../qml/Page2Form.qml" line="24"/>
         <source>Настройки ROS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Page2Form.qml" line="78"/>
-        <source>Выберите файл мира</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Page2Form.qml" line="107"/>
-        <source>Выберите файл URDF</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Page2Form.qml" line="85"/>
-        <location filename="../qml/Page2Form.qml" line="114"/>
-        <source>browse</source>
+        <location filename="../qml/Page2Form.qml" line="54"/>
+        <source>Задать целевую точку</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>main</name>
     <message>
-        <location filename="../qml/main.qml" line="10"/>
+        <location filename="../qml/main.qml" line="11"/>
         <source>Tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="46"/>
-        <location filename="../qml/main.qml" line="54"/>
-        <source>Tab Button</source>
+        <location filename="../qml/main.qml" line="66"/>
+        <source>Конфигуратор</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/main.qml" line="74"/>
+        <source>Визуализатор</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

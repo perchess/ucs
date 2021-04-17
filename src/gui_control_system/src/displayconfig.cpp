@@ -1,4 +1,4 @@
-#include "displayconfig.h"
+#include "custom_rviz/displayconfig.h"
 
 #include <ros/ros.h>
 

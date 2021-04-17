@@ -1,4 +1,4 @@
-#include <ros_wrapper.h>
+#include <wrappers/ros_wrapper.h>
 
 
 RosWrapper::RosWrapper(QObject *parent)
