@@ -7,9 +7,10 @@
 
 class SLAMLifeSupport : DiagnosticMain
 {
+public:
   SLAMLifeSupport();
-  virtual void report_status();
-  virtual void feedback_callback(const diagnostic_msgs::DiagnosticArrayConstPtr &msg);
+  void report_status();
+  void feedback_callback(const diagnostic_msgs::DiagnosticArrayConstPtr &msg);
   void set_hierarchy();
 
   // Цикл, в котором будет крутиться проверка работоспособности
@@ -24,8 +25,10 @@ private:
   ros::NodeHandle nh_;
   ros::Subscriber diagnostic_sub_;
   ros::Publisher status_pub_;
+  ros::Rate loop_rate_;
 
   diagnostic_msgs::DiagnosticArray diagnost_msg_;
+
 
 };
 

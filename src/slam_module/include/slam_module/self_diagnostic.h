@@ -15,7 +15,7 @@ class DiagnosticMain
 {
 public:
   virtual void report_status() = 0;
-  virtual void feedback_callback() = 0;
+  virtual void feedback_callback(const diagnostic_msgs::DiagnosticArrayConstPtr &msg) = 0;
 
   void set_state(status_type::_level_type state) {state_.level = state;}
   void set_msg(std::string msg) {state_.message = msg;}

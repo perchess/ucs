@@ -2,9 +2,10 @@
 
 SLAMLifeSupport::SLAMLifeSupport()
   : nh_()
-  , diagnostic_sub_(nh_.subscribe("slam_diagn_topic", 100,
+  , diagnostic_sub_(nh_.subscribe("/diagnostics", 100,
                                   &SLAMLifeSupport::feedback_callback, this) )
   , status_pub_(nh_.advertise<diagnostic_msgs::DiagnosticArray>("slam_status", 100))
+  , loop_rate_(100)
 {
   set_state(diagnostic_msgs::DiagnosticStatus::OK);
   set_hierarchy();
@@ -50,6 +51,7 @@ void SLAMLifeSupport::feedback_processing()
       state_.level = diagnostic_msgs::DiagnosticStatus::ERROR;
       // ОБЕСПЕЧИТЬ СОВПАДЕНИЕ it.name и имени в map!!!!!
       sensor_hierarchy_[it.name] = -1; // Помечаем, что выпала ошибка
+      find_alternative();
 
     case diagnostic_msgs::DiagnosticStatus::WARN:
       state_.message = "Catch WARN from " + it.name + " MSG : " + it.message;
@@ -58,6 +60,13 @@ void SLAMLifeSupport::feedback_processing()
     case diagnostic_msgs::DiagnosticStatus::STALE:
       state_.message = "Catch STALE from " + it.name + " MSG : " + it.message;
       state_.level = diagnostic_msgs::DiagnosticStatus::STALE;
+
+    case diagnostic_msgs::DiagnosticStatus::OK:
+      state_.message = "It's OK";
+      state_.level = diagnostic_msgs::DiagnosticStatus::OK;
+
+    default:
+      state_.message = "Default message";
     }
   }
 }
@@ -66,14 +75,24 @@ void SLAMLifeSupport::feedback_processing()
 bool SLAMLifeSupport::find_alternative()
 {
   using pair_type = decltype(sensor_hierarchy_)::value_type;
-  auto pr = std::max_element (
+  auto candidate = std::max_element (
         sensor_hierarchy_.begin(), sensor_hierarchy_.end(),
         [] (const pair_type & p1, const pair_type & p2)
   {return p1.second < p2.second;}  );
   // ДОПИСАТЬ!!!
-  if (pr)
-    return true;
-  else
+//  if (candidate)
+//    return true;
+//  else
     return false;
+}
+
+void SLAMLifeSupport::spin()
+{
+  while(nh_.ok())
+  {
+    feedback_processing();
+    loop_rate_.sleep();
+    ros::spinOnce();
+  }
 }
 
