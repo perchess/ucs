@@ -12,7 +12,7 @@ int main(int argc, char **argv)
   updater.setHardwareID("none");
 
 
-  DiagnosticCreator test_node_handler("/node", nh, &updater);
+  DiagnosticCreator test_node_handler("/imu_sim", nh, &updater);
   DiagnosticCreator test_node_handler2("/spamer", nh, &updater);
   updater.add(test_node_handler);
   updater.add(test_node_handler2);
