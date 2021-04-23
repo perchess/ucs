@@ -1,0 +1,7 @@
+<launch>
+    <arg name="node_name" default="default_name"/>
+    <arg name="subscribe_topic_name" default="default_name"/>
+    <node name="$(arg node_name)" pkg="sensor_node" type="sensor_sim.py" output="screen">
+        <param name="sensor_topic_name" type="str" value="$(arg subscribe_topic_name)" />
+    </node>
+</launch>
