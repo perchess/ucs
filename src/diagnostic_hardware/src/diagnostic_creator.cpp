@@ -1,7 +1,7 @@
 #include <diagnostic_hardware/diagnostic_creator.h>
 
 DiagnosticCreator::DiagnosticCreator(std::string node_name, ros::NodeHandle& nh,
-                                     diagnostic_updater::Updater * updater)
+                                     diagnostic_updater::Updater * updater, std::string sensor_type)
   : DiagnosticTask("Check all sensor nodes")
   , nh_(nh)
   , rosoutSub_(nh_.subscribe("rosout", 100, &DiagnosticCreator::callbackRosout, this) )
@@ -9,14 +9,16 @@ DiagnosticCreator::DiagnosticCreator(std::string node_name, ros::NodeHandle& nh,
   , stat_()
   , buffer_size_(50)
   , updater_(updater)
+  , sensor_type_(sensor_type)
 {
+  ROS_INFO("Looking for [%s] node ", node_name.c_str());
 }
 
 
 void DiagnosticCreator::run(diagnostic_updater::DiagnosticStatusWrapper &stat)
 {
   stat = stat_;
-  stat.name = "kek";
+  stat.name = "From " + node_name_;
 }
 
 void DiagnosticCreator::callbackRosout(const rosgraph_msgs::Log::ConstPtr &msg)
@@ -78,6 +80,8 @@ void DiagnosticCreator::processing()
       status.add("File", msg->file);
       status.add("Function", msg->function);
       status.add("Line", msg->line);
+      // Тип сенсора дб ПОСЛЕДНИМ аргументом!!!!!
+      status.add("Sensor type", sensor_type_);
       stat_ = status;
       updater_->update();
     }

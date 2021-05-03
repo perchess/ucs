@@ -12,8 +12,8 @@ int main(int argc, char **argv)
   updater.setHardwareID("none");
 
 
-  DiagnosticCreator test_node_handler("/imu_sim", nh, &updater);
-  DiagnosticCreator test_node_handler2("/spamer", nh, &updater);
+  DiagnosticCreator test_node_handler("/lidar_driver", nh, &updater, "Лидар");
+  DiagnosticCreator test_node_handler2("/imu_driver", nh, &updater, "imu");
   updater.add(test_node_handler);
   updater.add(test_node_handler2);
 

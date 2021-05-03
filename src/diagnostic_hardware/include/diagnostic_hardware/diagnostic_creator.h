@@ -8,7 +8,8 @@
 class DiagnosticCreator : public diagnostic_updater::DiagnosticTask
 {
 public:
-  DiagnosticCreator(std::string node_name, ros::NodeHandle& nh, diagnostic_updater::Updater *);
+  DiagnosticCreator(std::string node_name, ros::NodeHandle& nh, diagnostic_updater::Updater * updater,
+                    std::string sensor_type);
 
   void run(diagnostic_updater::DiagnosticStatusWrapper &stat);
   void callbackRosout(const rosgraph_msgs::Log::ConstPtr &msg);
@@ -24,6 +25,7 @@ private:
   std::vector<rosgraph_msgs::Log::ConstPtr> rosout_buffer_;
   size_t buffer_size_;
   diagnostic_updater::Updater * updater_;
+  std::string sensor_type_;
 };
 
 
