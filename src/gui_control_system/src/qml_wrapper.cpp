@@ -37,6 +37,38 @@ void CppWrapper::setProperty(QString parametr, QString name)
   applyChanges();
 }
 
+void CppWrapper::setProperty(bool parametr, QString name)
+{
+  yamlNode_[name] = parametr;
+  applyChanges();
+}
+void CppWrapper::setProperty(QString name, QMap<QString, QVariant> parametr)
+{
+  string_map_type sensor_map;
+  sensor_map = toStringMap(parametr.toStdMap());
+  yamlNode_[name] = sensor_map;
+  applyChanges();
+}
+
+
+//template<class T>
+//void setProperty(T parametr, QString name)
+//{
+//    yamlNode_[name] = parametr;
+//    applyChanges();
+//}
+
+
+string_map_type CppWrapper::toStringMap(const std::map<QString, QVariant>& in)
+{
+  string_map_type out;
+  for (auto& it: in)
+  {
+    out[it.first.toStdString()] = it.second.toString().toStdString();
+  }
+  return out;
+}
+
 
 void CppWrapper::setSensorType(QString name)
 {
@@ -47,11 +79,7 @@ void CppWrapper::setSensorType(QString name)
 
 
 
-void CppWrapper::setProperty(bool parametr, QString name)
-{
-  yamlNode_[name] = parametr;
-  applyChanges();
-}
+
 
 // Запись конфига в файл
 void CppWrapper::applyChanges()
@@ -62,7 +90,7 @@ void CppWrapper::applyChanges()
   configFile_.open(packagePath_ + CONFIG_PATH);
   static YAML::Node parentNode;
   parentNode["gui_config"] = yamlNode_;
-  configFile_ << parentNode ;
+  configFile_ << parentNode << std::endl;
   configFile_.close();
 
 }

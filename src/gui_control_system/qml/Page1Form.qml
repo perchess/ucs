@@ -47,13 +47,17 @@ Page {
             CheckBox {
                 id: imuCB
                 text: qsTr("IMU")
-                Component.onCompleted: cppWrapper.setSensorType(text)
+                property string sensorType: "imu"
+                Component.onCompleted: cppWrapper.setSensorType(sensorType)
 
                 Connections {
                     function onClicked() {
-                        cppWrapper.setProperty(imuCB.checked, "imu_turn")
-                        cppWrapper.setProperty(imuPackage.editText, "imu_pkg")
-                        cppWrapper.setProperty(imuNodeName.editText, "imu_node")
+                        cppWrapper.setProperty(imuCB.sensorType,
+                                               {
+                                                   turn: imuCB.checked,
+                                                   pkg: imuPackage.editText,
+                                                   node: imuNodeName.editText
+                                               })
                     }
                 }
             }
@@ -61,12 +65,16 @@ Page {
             CheckBox {
                 id: rgbCB
                 text: qsTr("RGB камера")
-                Component.onCompleted: cppWrapper.setSensorType(text)
+                property string sensorType: "rgb"
+                Component.onCompleted: cppWrapper.setSensorType(sensorType)
                 Connections {
                     function onClicked() {
-                        cppWrapper.setProperty(rgbCB.checked, "rgb_turn")
-                        cppWrapper.setProperty(rgbPackage.editText, "rgb_pkg")
-                        cppWrapper.setProperty(rgbNodeName.editText, "rgb_node")
+                        cppWrapper.setProperty(rgbCB.sensorType,
+                                               {
+                                                   turn: rgbCB.checked,
+                                                   pkg: rgbPackage.editText,
+                                                   node: rgbNodeName.editText
+                                               })
                     }
                 }
             }
@@ -74,12 +82,16 @@ Page {
             CheckBox {
                 id: radarCB
                 text: qsTr("Радар")
-                Component.onCompleted: cppWrapper.setSensorType(text)
+                property string sensorType: "radar"
+                Component.onCompleted: cppWrapper.setSensorType(sensorType)
                 Connections {
                     function onClicked() {
-                        cppWrapper.setProperty(radarCB.checked, "radar_turn")
-                        cppWrapper.setProperty(radarPackage.editText, "radar_pkg")
-                        cppWrapper.setProperty(radarNodeName.editText, "radar_node")
+                        cppWrapper.setProperty(radarCB.sensorType,
+                                               {
+                                                   turn: radarCB.checked,
+                                                   pkg: radarPackage.editText,
+                                                   node: radarNodeName.editText
+                                               })
                     }
                 }
             }
@@ -87,12 +99,16 @@ Page {
             CheckBox {
                 id: rgbdCB
                 text: qsTr("RGBD камера")
-                Component.onCompleted: cppWrapper.setSensorType(text)
+                property string sensorType: "rgbd"
+                Component.onCompleted: cppWrapper.setSensorType(sensorType)
                 Connections {
                     function onClicked() {
-                        cppWrapper.setProperty(rgbdCB.checked, "rgbd_turn")
-                        cppWrapper.setProperty(rgbdPackage.editText, "rgbd_pkg")
-                        cppWrapper.setProperty(rgbdNodeName.editText, "rgbd_node")
+                        cppWrapper.setProperty(rgbdCB.sensorType,
+                                               {
+                                                   turn: rgbdCB.checked,
+                                                   pkg: rgbdPackage.editText,
+                                                   node: rgbdNodeName.editText
+                                               })
                     }
                 }
             }
@@ -100,12 +116,16 @@ Page {
             CheckBox {
                 id: lidarCB
                 text: qsTr("Лидар")
-                Component.onCompleted: cppWrapper.setSensorType(text)
+                property string sensorType: "lidar"
+                Component.onCompleted: cppWrapper.setSensorType(sensorType)
                 Connections {
                     function onClicked() {
-                        cppWrapper.setProperty(lidarCB.checked, "lidar_turn")
-                        cppWrapper.setProperty(lidarPackage.editText, "lidar_pkg")
-                        cppWrapper.setProperty(lidarNodeName.editText, "lidar_node")
+                        cppWrapper.setProperty(lidarCB.sensorType,
+                                               {
+                                                   turn: lidarCB.checked,
+                                                   pkg: lidarPackage.editText,
+                                                   node: lidarNodeName.editText
+                                               })
                     }
                 }
             }
@@ -310,18 +330,25 @@ Page {
         }
 
         Label {
-            id: label
-            x: 228
+            id: sensorsLabel1
+            x: 208
             y: -10
-            text: qsTr("Пакеты")
+            width: 105
+            height: 21
+            text: qsTr("ROS пакет")
+
         }
 
         Label {
-            id: label1
-            x: 420
-            y: -10
-            text: qsTr("Ноды")
+            id: sensorsLabel2
+            x: 423
+            y: -8
+            text: qsTr("ROS нода")
         }
+
+
+
+
     }
 
     TableView {
@@ -512,7 +539,7 @@ Page {
                     cppWrapper.callSystem("roslaunch", [slamComboBox.editText, "open_rviz:=false"])
                     // КАКОЙ-то ХАРДКОД!!!!!!!!!!
                     page2.displayConfig.setSource(rosWrapper.find("robot_gmapping") +
-                            "/rviz/turtlebot.rviz")
+                                                  "/rviz/turtlebot.rviz")
                 }
             }
 
@@ -544,23 +571,50 @@ Page {
             }
         }
 
-        Button {
-            id: launchButton
-            x: 270
+        RowLayout {
+            id: rowLayout2
+            x: 87
             y: 155
-            text: qsTr("Старт")
+            width: 443
+            height: 56
+            anchors.horizontalCenter: parent.horizontalCenter
 
-            Connections {
-                property variant args: ["control_module", "start.launch"]
-                function onClicked(mouse){
-                    if (rosWrapper.isNodeStarted("control_node"))
-                        rosWrapper.callService()
-                    else
-                        cppWrapper.callSystem("roslaunch", args)
-                    //                        cppWrapper.callSystem("roslaunch control_module start.launch")
+            CheckBox {
+                id: simCB
+                text: qsTr("Симуляция")
+                onCheckedChanged: {
+                    cppWrapper.setProperty(simCB.checked, "simulation")
+                    if (simCB.checked){
+                        sensorsLabel1.text = qsTr("Топик из симулятора")
+                        sensorsLabel2.text = qsTr("Название ноды")
+                    }
+                    else{
+                        sensorsLabel1.text = qsTr("ROS пакет")
+                        sensorsLabel2.text = qsTr("ROS нода")
+                    }
                 }
             }
+
+            Button {
+                id: launchButton
+                text: qsTr("Старт")
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
+                Connections {
+                    property variant args: ["control_module", "start.launch"]
+                    function onClicked(mouse){
+                        if (rosWrapper.isNodeStarted("control_node"))
+                            rosWrapper.callUpdateService()
+                        else
+                            cppWrapper.callSystem("roslaunch", args)
+                        //                        cppWrapper.callSystem("roslaunch control_module start.launch")
+                    }
+                }
+
+            }
+
         }
+
     } // end groupBox1
 
     FileDialog {

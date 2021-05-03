@@ -30,6 +30,8 @@
 #define CONFIG_PATH "/config/qt_out.yaml"
 #define TAB "  "
 
+using string_map_type = std::map<std::string, std::string>;
+
 
 class CppWrapper : public QObject{
     Q_OBJECT
@@ -44,6 +46,7 @@ public:
 public slots:
     void setProperty(QString parametr, QString name);
     void setProperty(bool parametr, QString name);
+    void setProperty(QString name, QMap<QString, QVariant> parametr);
     void systemCmd(QString command);
     void callSystem(QString program, QStringList args);
     void setLanguage(QString localeStr);
@@ -56,6 +59,8 @@ signals:
 
 
 private:
+    string_map_type toStringMap(const std::map<QString, QVariant>&);
+
     std::ofstream configFile_;
     YAML::Node yamlNode_;
     std::string packagePath_;
