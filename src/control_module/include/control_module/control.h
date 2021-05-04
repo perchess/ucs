@@ -6,24 +6,24 @@
 #include <std_srvs/Trigger.h>
 
 
-struct Module
+struct Sensor
 {
 
-  Module(bool state, std::string pkg, std::string node)
+  Sensor(bool state, QString pkg, QString node)
     : state_(state)
     , package_(pkg)
     , node_(node) {}
 
-  Module()
+  Sensor()
     : state_(0)
     , package_()
     , node_()
     , console_(new QProcess()) {}
 
   bool state_;
-  std::string package_;
-  std::string node_;
-  std::string name_;
+  QString package_;
+  QString node_;
+  QString name_;
   QProcess * console_;
 };
 
@@ -37,15 +37,16 @@ public:
   void update();
   void updateParams();
   void start();
-  void fillStruct(Module& struc, std::string prefix);
+  void fillStruct(Sensor& struc, QString prefix);
   bool callbackUpdate(std_srvs::Trigger::Request& request,
                       std_srvs::Trigger::Response& response);
 
 private:
-  std::vector<Module> modules_;
+  std::vector<Sensor> modules_;
   std::vector<std::string> names_;
   ros::ServiceServer srv_update_;
   ros::NodeHandle nh_;
+  bool simulator_;
 };
 
 
@@ -60,3 +61,5 @@ void readParam(const std::string param_name, T& param_value,
     param_value = default_value;
   }
 }
+
+
