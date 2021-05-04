@@ -18,15 +18,16 @@ CppWrapper::CppWrapper(QQmlApplicationEngine * qmlEng, QObject *parent)
 CppWrapper::~CppWrapper()
 {
   configFile_.close();
+  for (auto it : terminals_)
+  {
+//    it->terminate();
+    kill(it->processId(), SIGINT);
+    it->waitForFinished();
+  }
   if(ros::isStarted())
   {
     ros::shutdown();
     ros::waitForShutdown();
-  }
-  for (auto it : terminals_)
-  {
-    it->terminate();
-    it->waitForFinished();
   }
 }
 

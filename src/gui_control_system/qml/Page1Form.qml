@@ -132,9 +132,11 @@ Page {
 
             ComboBox {
                 id: imuPackage
+                flat: false
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.preferredWidth: 200
                 editable: true
+                selectTextByMouse: true
                 model: rosWrapper.pacakgeListModel
                 Component.onCompleted: rosWrapper.createRosPackageList()
                 onAccepted: {
@@ -144,6 +146,7 @@ Page {
                 onHighlighted: {
                     rosWrapper.createRosPackageList()
                 }
+                onModelChanged: editText = ""
             }
 
             ComboBox {
@@ -160,6 +163,7 @@ Page {
                 onHighlighted: {
                     rosWrapper.createRosPackageList()
                 }
+                onModelChanged: editText = ""
             }
 
             ComboBox {
@@ -176,6 +180,7 @@ Page {
                 onHighlighted: {
                     rosWrapper.createRosPackageList()
                 }
+                onModelChanged: editText = ""
             }
 
             ComboBox {
@@ -192,6 +197,7 @@ Page {
                 onHighlighted: {
                     rosWrapper.createRosPackageList()
                 }
+                onModelChanged: editText = ""
             }
 
             ComboBox {
@@ -208,6 +214,7 @@ Page {
                 onHighlighted: {
                     rosWrapper.createRosPackageList()
                 }
+                onModelChanged: editText = ""
             }
 
             ListModel {
@@ -329,22 +336,31 @@ Page {
             }
         }
 
-        Label {
-            id: sensorsLabel1
-            x: 208
-            y: -10
-            width: 105
-            height: 21
-            text: qsTr("ROS пакет")
+        RowLayout {
+            id: rowLayout3
+            x: 154
+            width: 406
+            anchors.top: parent.top
+            anchors.bottom: columnLayout.top
+            anchors.bottomMargin: 2
+            anchors.topMargin: -10
 
+            Label {
+                id: sensorsLabel1
+                text: qsTr("ROS пакет")
+                anchors.bottom: columnLayout.top
+                anchors.bottomMargin: 2
+
+            }
+
+            Label {
+                id: sensorsLabel2
+                text: qsTr("ROS нода")
+                anchors.bottom: columnLayout.top
+                anchors.bottomMargin: 2
+            }
         }
 
-        Label {
-            id: sensorsLabel2
-            x: 423
-            y: -8
-            text: qsTr("ROS нода")
-        }
 
 
 
@@ -362,14 +378,17 @@ Page {
         anchors.topMargin: 10
         anchors.leftMargin: 20
 
+
         columnWidthProvider: function (column) {
             switch (column){
             case 0:
                 return 50;
             case 1:
                 return 0;
-            case 5:
+            case 4:
                 return 1000;
+            case 5:
+                return 0;
             default:
                 return 100;
             }
@@ -391,6 +410,7 @@ Page {
                 font.pixelSize: 15
                 verticalAlignment: Text.AlignVCenter
             }
+
         }
         Rectangle { // mask the headers
             z: 3
@@ -415,7 +435,6 @@ Page {
                     font.pixelSize: 15
                     padding: 10
                     verticalAlignment: Text.AlignVCenter
-
                     background: Rectangle { color: "#333333" }
                 }
             }
@@ -587,6 +606,12 @@ Page {
                     if (simCB.checked){
                         sensorsLabel1.text = qsTr("Топик из симулятора")
                         sensorsLabel2.text = qsTr("Название ноды")
+                        rosWrapper.createRosTopicList()
+                        imuPackage.model = rosWrapper.myTopicModel
+                        lidarPackage.model = rosWrapper.myTopicModel
+                        rgbPackage.model = rosWrapper.myTopicModel
+                        rgbdPackage.model = rosWrapper.myTopicModel
+                        radarPackage.model = rosWrapper.myTopicModel
                     }
                     else{
                         sensorsLabel1.text = qsTr("ROS пакет")
@@ -600,14 +625,18 @@ Page {
                 text: qsTr("Старт")
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
+
                 Connections {
                     property variant args: ["control_module", "start.launch"]
                     function onClicked(mouse){
                         if (rosWrapper.isNodeStarted("control_node"))
                             rosWrapper.callUpdateService()
-                        else
+                        else {
                             cppWrapper.callSystem("roslaunch", args)
-                        //                        cppWrapper.callSystem("roslaunch control_module start.launch")
+                            cppWrapper.callSystem("rosrun", ["diagnostic_hardware","diagnostic_hardware_node"])
+                            launchButton.text = qsTr("Обновить состояние")
+                        }
+
                     }
                 }
 
@@ -710,14 +739,12 @@ Page {
                 function onClicked() { fileDialog.open() }
             }
         }
-    } // end fileBrowser
+    }
+
+    // end fileBrowser
 
 }
 
 
 
-/*##^##
-Designer {
-    D{i:0;formeditorZoom:0.75}
-}
-##^##*/
+

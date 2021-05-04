@@ -6,6 +6,7 @@ SLAMLifeSupport::SLAMLifeSupport()
                                   &SLAMLifeSupport::feedback_callback, this) )
   , status_pub_(nh_.advertise<diagnostic_msgs::DiagnosticArray>("slam_status", 100))
   , loop_rate_(100)
+  , updt_srv_(nh_.serviceClient<std_srvs::Trigger>("updateParams"))
 {
   set_state(diagnostic_msgs::DiagnosticStatus::OK);
   create_hierarchy();
@@ -52,7 +53,7 @@ void SLAMLifeSupport::feedback_processing()
       // ОБЕСПЕЧИТЬ СОВПАДЕНИЕ it.name и имени в map!!!!!
       // Сделал это путем добавления значения в сообщение диагностики diagnostic_msg_
       sensor_hierarchy_[it.values.back().value] = -1; // Помечаем, что выпала ошибка
-      setParam("/gui_config/" + it.values.back().value + "_turn", false);
+      setParam("/gui_config/" + it.values.back().value + "/turn", false);
       update_sensor_system();
       // Стираю информацию из сообщения,
       // чтобы не триггериться несколько раз на ошибку
@@ -94,9 +95,11 @@ bool SLAMLifeSupport::update_sensor_system()
   // Если сенсор найден и он валидный. Изменяем конфиг и даем команду запуска
   if (candidate != sensor_hierarchy_.end() && candidate->second > 0)
   {
-    std::string ros_param("/gui_config/" + candidate->first + "_turn");
+    std::string ros_param("/gui_config/" + candidate->first + "/turn");
     setParam(ros_param, true);
-    setParam("/gui_config/" + candidate->first + "_launch", true, true);
+    setParam("/gui_config/" + candidate->first + "/launch", true, true);
+    std_srvs::Trigger srv;
+    updt_srv_.call(srv);
   }
   return false;
 }

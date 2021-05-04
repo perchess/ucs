@@ -80,11 +80,11 @@ void ControlModule::start()
     {
       QStringList args = simulator_ ? QStringList{
                                      "sensor_node", "start_node.launch",
-                                     "node_name:=" + it.node_ + "_autoname",
+                                     "node_name:=" + it.node_,
                                      "subscribe_topic_name:=" + it.package_}
                                    : QStringList{
                                      "control_module", "node_launcher.launch",
-                                     "name:=" + it.node_ + "_autoname",
+                                     "name:=" + it.node_,
                                      "pkg:=" + it.package_,
                                      "type:=" + it.node_ };
       it.console_->start("roslaunch", args);
@@ -106,11 +106,11 @@ void ControlModule::update()
       {
         QStringList args = simulator_ ? QStringList{
                                        "sensor_node", "start_node.launch",
-                                       "node_name:=" + modules_.at(i).node_ + "_autoname",
+                                       "node_name:=" + modules_.at(i).node_,
                                        "subscribe_topic_name:=" + modules_.at(i).package_}
                                      : QStringList{
                                        "control_module", "node_launcher.launch",
-                                       "name:=" + modules_.at(i).node_ + "_autoname",
+                                       "name:=" + modules_.at(i).node_,
                                        "pkg:=" + modules_.at(i).package_,
                                        "type:=" + modules_.at(i).node_ };
         modules_.at(i).console_->start("roslaunch", args);

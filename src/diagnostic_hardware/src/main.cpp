@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 
   ros::NodeHandle nh;
 
-  ros::Duration(2).sleep();
+  ros::Duration(1).sleep();
 
   diagnostic_updater::Updater updater;
 
@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 
   for (auto it: sensor_info)
   {
-    diagnostic_objects.push_back(new DiagnosticCreator(it.second, nh, &updater, it.first));
+    diagnostic_objects.push_back(new DiagnosticCreator("/" + it.second, nh, &updater, it.first));
     updater.add(*diagnostic_objects.back());
   }
 
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
   updater.broadcast(0, "Doing important initialization stuff.");
 
 
-  while (nh.ok())
+  while (ros::ok())
   {
   for (auto it: diagnostic_objects)
     it->processing();

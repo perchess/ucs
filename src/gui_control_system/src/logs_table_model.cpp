@@ -36,9 +36,9 @@ QVariant LogsTableModel::headerData(int section, Qt::Orientation orientation, in
         case 4:
             return QString("Сообщение");
             break;
-        case 5:
-            return QString("Путь");
-            break;
+//        case 5:
+//            return QString("Путь");
+//            break;
         default:
             break;
         }

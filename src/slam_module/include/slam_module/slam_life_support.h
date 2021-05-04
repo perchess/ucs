@@ -3,6 +3,8 @@
 #include <slam_module/self_diagnostic.h>
 
 #include <ros/ros.h>
+#include <std_srvs/Trigger.h>
+#include <std_msgs/String.h>
 
 
 class SLAMLifeSupport : DiagnosticMain
@@ -30,6 +32,7 @@ private:
   ros::Rate loop_rate_;
 
   diagnostic_msgs::DiagnosticArray diagnost_msg_;
+  ros::ServiceClient updt_srv_;
 
 
 };

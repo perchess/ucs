@@ -17,6 +17,7 @@
 #include <iostream>
 #include <fstream>
 #include <any>
+#include <signal.h>
 
 
 #include "yaml-cpp/yaml.h"

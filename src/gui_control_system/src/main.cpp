@@ -57,12 +57,14 @@ int main(int argc, char *argv[]){
     ///
     ros::init(argc, argv, "DataHub_node");
     QProcess rosTerminal;
+    bool killRosMaster = false;
     // Проверяем, запущен ли мастер, если нет - запускаем
     if (!ros::master::check())
     {
       ROS_WARN("No rosmaster detected. Launching roscore ...");
       rosTerminal.start("roscore", QStringList());
       rosTerminal.waitForStarted();
+      killRosMaster = true;
     }
 
     RosWrapper rosWrapper;
@@ -113,8 +115,17 @@ int main(int argc, char *argv[]){
 
     auto app_exec = app.exec();
 
-    rosTerminal.terminate();
-    rosTerminal.waitForFinished();
+    if (killRosMaster)
+    {
+      if(ros::isStarted())
+      {
+        ros::shutdown();
+        ros::waitForShutdown();
+      }
+      rosTerminal.terminate();
+      rosTerminal.waitForFinished();
+    }
+
 
     return app_exec;
 }
