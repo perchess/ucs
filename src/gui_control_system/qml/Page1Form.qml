@@ -38,6 +38,8 @@ Page {
                                          pkg: "",
                                          node: ""    })
 
+
+
     Connections {
         target: rosWrapper
         function onValueChanged() { lidarTF.text = "Принято:" + newValue}
@@ -680,39 +682,30 @@ Page {
                 text: qsTr("Автономная навигация")
                 onClicked: {
 
-                    cppWrapper.callSystem("roslaunch", [slamComboBox.editText, "open_rviz:=false"])
+                    cppWrapper.callSystem("roslaunch", [featureComboBox.editText, "open_rviz:=false"])
                     // КАКОЙ-то ХАРДКОД!!!!!!!!!!
                     page2.displayConfig.setSource(rosWrapper.find("robot_gmapping") +
                                                   "/rviz/turtlebot.rviz")
                 }
             }
 
-            FileDialog {
-                id: fileDialog3
-                x: 0
-                y: 0
-                title: "Please choose a launch file"
-                folder: shortcuts.home
-                onAccepted: {
-                    slamComboBox.editText = fileDialog3.fileUrl.toString().replace("file:///",
-                                                                                   "/")
-                    cppWrapper.setProperty(fileDialog3.fileUrl.toString().replace(
-                                               "file:///", "/"), "autonomous_launch_path")
-                }
-                onRejected: {
-                    console.log("fileDialog1 rejected")
-                }
-                Component.onCompleted: visible = false
-            }
-
             ComboBox {
-                id: slamComboBox
+                id: featureComboBox
                 Layout.minimumWidth: 200
                 Layout.fillWidth: false
                 displayText: "Выбрать модуль"
                 textRole: "key"
                 valueRole: "value"
                 editable: false
+                property variant slam: ({turn: true, pkg: "turtlebot3_slam", launch: "turtlebot3_slam.launch"})
+                property variant cv: ({turn: true, pkg: "pkg_cv", launch: "file_cv"})
+                property variant args: ({turn: false, pkg: "", launch: ""})
+                function fillFeatureParam(args, ref){
+                    args["turn"] = ref["turn"]
+                    args["pkg"] = ref["pkg"]
+                    args["launch"] = ref["launch"]
+                }
+
                 model: ListModel{
                     ListElement { key: "SLAM"; value: 0 }
                     ListElement { key: "СТЗ"; value: 1 }
@@ -720,14 +713,20 @@ Page {
                 }
                 onActivated: {
                     this.displayText = currentText
-                    cppWrapper.addListMap(currentText, {turn:true})
+                    if (currentText == "SLAM"){
+                        fillFeatureParam(args, slam)
+                    }
+                    if (currentText == "CV"){
+                        fillFeatureParam(args, cv)
+                    }
+
+                    cppWrapper.addListMap(currentText, {turn:args["turn"], pkg: args["pkg"], launch: args["launch"]})
                 }
 
                 ToolTip.visible: hovered
                 ToolTip.text: "Выбрать модуль"
                 ToolTip.timeout: 3000
                 ToolTip.delay: 1000
-
             }
         }
 

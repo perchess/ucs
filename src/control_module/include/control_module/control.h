@@ -28,6 +28,22 @@ struct Sensor
 };
 
 
+struct Feature
+{
+  Feature(bool state, QString pkg, QString launch)
+    : turn_(state)
+    , package_(pkg)
+    , launch_file_(launch)
+    , console_(new QProcess()){}
+
+
+  bool turn_;
+  QString package_;
+  QString launch_file_;
+  QProcess * console_;
+};
+
+
 class ControlModule
 {
 public:
@@ -43,6 +59,7 @@ public:
 
 private:
   std::vector<Sensor> modules_;
+  std::vector<Feature> features_;
   std::vector<std::string> names_;
   ros::ServiceServer srv_update_;
   ros::NodeHandle nh_;

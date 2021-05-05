@@ -71,6 +71,13 @@ void ControlModule::fillStruct(Sensor& struc, QString prefix)
   readParam(prefix.toStdString() + "/node", struc.node_, QString());
 }
 
+void ControlModule::fillStruct(Feature& struc, QString prefix)
+{
+  readParam(prefix.toStdString() + "/turn", struc.turn_, false);
+  readParam(prefix.toStdString() + "/pkg", struc.package_, QString());
+  readParam(prefix.toStdString() + "/launch", struc.launch_file_, QString());
+}
+
 
 void ControlModule::start()
 {
