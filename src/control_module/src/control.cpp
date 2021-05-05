@@ -60,6 +60,9 @@ void ControlModule::updateParams()
   {
     fillStruct(it, "/gui_config/" + it.name_);
   }
+  //DEBUG
+  Feature test;
+  fillStruct(test, "/gui_config/features", "SLAM");
   readParam("/gui_config/simulation", simulator_, false);
 }
 
@@ -71,11 +74,27 @@ void ControlModule::fillStruct(Sensor& struc, QString prefix)
   readParam(prefix.toStdString() + "/node", struc.node_, QString());
 }
 
-void ControlModule::fillStruct(Feature& struc, QString prefix)
+void ControlModule::fillStruct(Feature& struc, QString prefix, QString feature_name)
 {
-  readParam(prefix.toStdString() + "/turn", struc.turn_, false);
-  readParam(prefix.toStdString() + "/pkg", struc.package_, QString());
-  readParam(prefix.toStdString() + "/launch", struc.launch_file_, QString());
+  XmlRpc::XmlRpcValue rosparam;
+  readParam(prefix.toStdString(), rosparam, rosparam);
+
+  if (!rosparam.valid())
+  {
+    ROS_WARN("Rosparam [%s] doesn,t valid", prefix.toStdString().c_str());
+    return;
+  }
+
+  if(rosparam.getType() == XmlRpc::XmlRpcValue::Type::TypeStruct &&
+     rosparam.hasMember(feature_name.toStdString()))
+  {
+      if(rosparam[feature_name.toStdString()].getType() == XmlRpc::XmlRpcValue::Type::TypeStruct)
+      {
+        struc.turn_ = bool(rosparam[feature_name.toStdString()]["turn"]);
+        struc.package_ = QString::fromStdString(std::string(rosparam[feature_name.toStdString()]["pkg"]));
+        struc.launch_file_ = QString::fromStdString(std::string(rosparam[feature_name.toStdString()]["launch"]));
+      }
+  }
 }
 
 

@@ -36,6 +36,12 @@ struct Feature
     , launch_file_(launch)
     , console_(new QProcess()){}
 
+  Feature()
+    : turn_(0)
+    , package_()
+    , launch_file_()
+    , console_(new QProcess()){}
+
 
   bool turn_;
   QString package_;
@@ -54,6 +60,7 @@ public:
   void updateParams();
   void start();
   void fillStruct(Sensor& struc, QString prefix);
+  void fillStruct(Feature& struc, QString prefix, QString feature_name);
   bool callbackUpdate(std_srvs::Trigger::Request& request,
                       std_srvs::Trigger::Response& response);
 
