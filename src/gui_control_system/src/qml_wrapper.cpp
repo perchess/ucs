@@ -78,7 +78,14 @@ void CppWrapper::setSensorType(QString name)
   applyChanges();
 }
 
-
+void CppWrapper::addListMap(QString name, QMap<QString, QVariant> parametr)
+{
+  string_map_type string_map;
+  string_map = toStringMap(parametr.toStdMap());
+  features_node_[name.toStdString()] = string_map;
+  yamlNode_["features"] = features_node_;
+  applyChanges();
+}
 
 
 

@@ -27,7 +27,7 @@ def listener():
 
 
 if __name__ == '__main__':
-    srv = rospy.Service(rospy.get_namespace() + "emit", emit_error, handle_server)
+    srv = rospy.Service("~emit", emit_error, handle_server)
     try:
         listener()
         rospy.loginfo("Redirecting from %s to %s", topic_name, topic_name + "_sim")

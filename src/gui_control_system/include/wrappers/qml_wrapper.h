@@ -52,6 +52,7 @@ public slots:
     void callSystem(QString program, QStringList args);
     void setLanguage(QString localeStr);
     void setSensorType(QString name);
+    void addListMap(QString name, QMap<QString, QVariant> parametr);
 
 
 signals:
@@ -70,5 +71,6 @@ private:
     QLocale locale_;
     std::vector<QProcess*> terminals_;
     std::vector<std::string> sensor_node_names_;
+    YAML::Node features_node_;
 
 };

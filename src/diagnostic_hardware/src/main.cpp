@@ -75,8 +75,10 @@ int main(int argc, char **argv)
 
 
     ros::spinOnce();
-    ros::Duration(0.1).sleep();
+    ros::Rate(10).sleep();
   }
+//  ros::shutdown();
+//  ros::waitForShutdown();
 
   return 0;
 }

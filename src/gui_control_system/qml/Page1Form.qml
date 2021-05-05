@@ -1,5 +1,5 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.12
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
 import QtQuick.Extras 1.4
 import Qt.labs.qmlmodels 1.0
@@ -21,6 +21,22 @@ Page {
         font.pixelSize: Qt.application.font.pixelSize * 2
         padding: 10
     }
+
+    property variant imuSettings: ({   turn: false,
+                                       pkg: "",
+                                       node: ""    })
+    property variant rgbSettings: ({   turn: false,
+                                       pkg: "",
+                                       node: ""    })
+    property variant rgbdSettings: ({   turn: false,
+                                        pkg: "",
+                                        node: ""    })
+    property variant lidarSettings: ({   turn: false,
+                                         pkg: "",
+                                         node: ""    })
+    property variant radarSettings: ({   turn: false,
+                                         pkg: "",
+                                         node: ""    })
 
     Connections {
         target: rosWrapper
@@ -48,16 +64,16 @@ Page {
                 id: imuCB
                 text: qsTr("IMU")
                 property string sensorType: "imu"
-                Component.onCompleted: cppWrapper.setSensorType(sensorType)
+                Component.onCompleted: {
+                    cppWrapper.setSensorType(sensorType)
+                    imuSettings['turn'] = imuCB.checked
+                    cppWrapper.setProperty(imuCB.sensorType, imuSettings)
+                }
 
                 Connections {
                     function onClicked() {
-                        cppWrapper.setProperty(imuCB.sensorType,
-                                               {
-                                                   turn: imuCB.checked,
-                                                   pkg: imuPackage.editText,
-                                                   node: imuNodeName.editText
-                                               })
+                        imuSettings['turn'] = imuCB.checked
+                        cppWrapper.setProperty(imuCB.sensorType, imuSettings)
                     }
                 }
             }
@@ -66,15 +82,15 @@ Page {
                 id: rgbCB
                 text: qsTr("RGB камера")
                 property string sensorType: "rgb"
-                Component.onCompleted: cppWrapper.setSensorType(sensorType)
+                Component.onCompleted: {
+                    cppWrapper.setSensorType(sensorType)
+                    rgbSettings['turn'] = rgbCB.checked
+                    cppWrapper.setProperty(this.sensorType, rgbSettings)
+                }
                 Connections {
                     function onClicked() {
-                        cppWrapper.setProperty(rgbCB.sensorType,
-                                               {
-                                                   turn: rgbCB.checked,
-                                                   pkg: rgbPackage.editText,
-                                                   node: rgbNodeName.editText
-                                               })
+                        rgbSettings['turn'] = rgbCB.checked
+                        cppWrapper.setProperty(rgbCB.sensorType,rgbSettings)
                     }
                 }
             }
@@ -83,15 +99,15 @@ Page {
                 id: radarCB
                 text: qsTr("Радар")
                 property string sensorType: "radar"
-                Component.onCompleted: cppWrapper.setSensorType(sensorType)
+                Component.onCompleted: {
+                    cppWrapper.setSensorType(sensorType)
+                    radarSettings['turn'] = radarCB.checked
+                    cppWrapper.setProperty(this.sensorType, radarSettings)
+                }
                 Connections {
                     function onClicked() {
-                        cppWrapper.setProperty(radarCB.sensorType,
-                                               {
-                                                   turn: radarCB.checked,
-                                                   pkg: radarPackage.editText,
-                                                   node: radarNodeName.editText
-                                               })
+                        radarSettings['turn'] = radarCB.checked
+                        cppWrapper.setProperty(radarCB.sensorType, radarSettings)
                     }
                 }
             }
@@ -100,15 +116,15 @@ Page {
                 id: rgbdCB
                 text: qsTr("RGBD камера")
                 property string sensorType: "rgbd"
-                Component.onCompleted: cppWrapper.setSensorType(sensorType)
+                Component.onCompleted: {
+                    cppWrapper.setSensorType(sensorType)
+                    rgbdSettings['turn'] = rgbdCB.checked
+                    cppWrapper.setProperty(this.sensorType, rgbdSettings)
+                }
                 Connections {
                     function onClicked() {
-                        cppWrapper.setProperty(rgbdCB.sensorType,
-                                               {
-                                                   turn: rgbdCB.checked,
-                                                   pkg: rgbdPackage.editText,
-                                                   node: rgbdNodeName.editText
-                                               })
+                        rgbdSettings['turn'] = rgbdCB.checked
+                        cppWrapper.setProperty(rgbdCB.sensorType, rgbdSettings)
                     }
                 }
             }
@@ -117,15 +133,15 @@ Page {
                 id: lidarCB
                 text: qsTr("Лидар")
                 property string sensorType: "lidar"
-                Component.onCompleted: cppWrapper.setSensorType(sensorType)
+                Component.onCompleted: {
+                    cppWrapper.setSensorType(sensorType)
+                    lidarSettings['turn'] = lidarCB.checked
+                    cppWrapper.setProperty(this.sensorType, lidarSettings)
+                }
                 Connections {
                     function onClicked() {
-                        cppWrapper.setProperty(lidarCB.sensorType,
-                                               {
-                                                   turn: lidarCB.checked,
-                                                   pkg: lidarPackage.editText,
-                                                   node: lidarNodeName.editText
-                                               })
+                        lidarSettings['turn'] = lidarCB.checked
+                        cppWrapper.setProperty(lidarCB.sensorType, lidarSettings)
                     }
                 }
             }
@@ -138,13 +154,31 @@ Page {
                 editable: true
                 selectTextByMouse: true
                 model: rosWrapper.pacakgeListModel
+
+                delegate: ItemDelegate {
+                    width: imuPackage.width
+                    height: imuPackage.height
+                    highlighted: ListView.isCurrentItem
+                    text: modelData
+
+                    ToolTip.visible: hovered
+                    ToolTip.text: modelData
+                    ToolTip.timeout: 3000
+                    ToolTip.delay: 1000
+                }
+
                 Component.onCompleted: rosWrapper.createRosPackageList()
                 onAccepted: {
                     if (find(editText) === -1)
                         rosWrapper.appendList(editText)
+
                 }
                 onHighlighted: {
                     rosWrapper.createRosPackageList()
+                }
+                onEditTextChanged:  {
+                    imuSettings["pkg"] = imuPackage.editText
+                    cppWrapper.setProperty(imuCB.sensorType, imuSettings)
                 }
                 onModelChanged: editText = ""
             }
@@ -155,6 +189,19 @@ Page {
                 Layout.preferredWidth: 200
                 editable: true
                 model: rosWrapper.pacakgeListModel
+
+                delegate: ItemDelegate {
+                    width: imuPackage.width
+                    height: imuPackage.height
+                    highlighted: ListView.isCurrentItem
+                    text: modelData
+
+                    ToolTip.visible: hovered
+                    ToolTip.text: modelData
+                    ToolTip.timeout: 3000
+                    ToolTip.delay: 1000
+                }
+
                 Component.onCompleted: rosWrapper.createRosPackageList()
                 onAccepted: {
                     if (find(editText) === -1)
@@ -162,6 +209,10 @@ Page {
                 }
                 onHighlighted: {
                     rosWrapper.createRosPackageList()
+                }
+                onEditTextChanged:  {
+                    rgbSettings["pkg"] = rgbPackage.editText
+                    cppWrapper.setProperty(rgbCB.sensorType, imuSettings)
                 }
                 onModelChanged: editText = ""
             }
@@ -172,6 +223,18 @@ Page {
                 Layout.preferredWidth: 200
                 editable: true
                 model: rosWrapper.pacakgeListModel
+                delegate: ItemDelegate {
+                    width: imuPackage.width
+                    height: imuPackage.height
+                    highlighted: ListView.isCurrentItem
+                    text: modelData
+
+                    ToolTip.visible: hovered
+                    ToolTip.text: modelData
+                    ToolTip.timeout: 3000
+                    ToolTip.delay: 1000
+                }
+
                 Component.onCompleted: rosWrapper.createRosPackageList()
                 onAccepted: {
                     if (find(editText) === -1)
@@ -179,6 +242,10 @@ Page {
                 }
                 onHighlighted: {
                     rosWrapper.createRosPackageList()
+                }
+                onEditTextChanged:  {
+                    radarSettings["pkg"] = radarPackage.editText
+                    cppWrapper.setProperty(radarCB.sensorType, radarSettings)
                 }
                 onModelChanged: editText = ""
             }
@@ -189,6 +256,17 @@ Page {
                 Layout.preferredWidth: 200
                 editable: true
                 model: rosWrapper.pacakgeListModel
+                delegate: ItemDelegate {
+                    width: imuPackage.width
+                    height: imuPackage.height
+                    highlighted: ListView.isCurrentItem
+                    text: modelData
+
+                    ToolTip.visible: hovered
+                    ToolTip.text: modelData
+                    ToolTip.timeout: 3000
+                    ToolTip.delay: 1000
+                }
                 Component.onCompleted: rosWrapper.createRosPackageList()
                 onAccepted: {
                     if (find(editText) === -1)
@@ -196,6 +274,10 @@ Page {
                 }
                 onHighlighted: {
                     rosWrapper.createRosPackageList()
+                }
+                onEditTextChanged:  {
+                    rgbdSettings["pkg"] = rgbdPackage.editText
+                    cppWrapper.setProperty(rgbdCB.sensorType, rgbdSettings)
                 }
                 onModelChanged: editText = ""
             }
@@ -206,6 +288,17 @@ Page {
                 Layout.preferredWidth: 200
                 editable: true
                 model: rosWrapper.pacakgeListModel
+                delegate: ItemDelegate {
+                    width: imuPackage.width
+                    height: imuPackage.height
+                    highlighted: ListView.isCurrentItem
+                    text: modelData
+
+                    ToolTip.visible: hovered
+                    ToolTip.text: modelData
+                    ToolTip.timeout: 3000
+                    ToolTip.delay: 1000
+                }
                 Component.onCompleted: rosWrapper.createRosPackageList()
                 onAccepted: {
                     if (find(editText) === -1)
@@ -213,6 +306,10 @@ Page {
                 }
                 onHighlighted: {
                     rosWrapper.createRosPackageList()
+                }
+                onEditTextChanged:  {
+                    lidarSettings["pkg"] = lidarPackage.editText
+                    cppWrapper.setProperty(lidarCB.sensorType, lidarSettings)
                 }
                 onModelChanged: editText = ""
             }
@@ -232,6 +329,10 @@ Page {
                     if (find(editText) === -1)
                         listModel.append({name: editText})
                 }
+                onEditTextChanged:   {
+                    imuSettings["node"] = imuNodeName.editText
+                    cppWrapper.setProperty(imuCB.sensorType, imuSettings)
+                }
             }
 
             ComboBox {
@@ -243,6 +344,10 @@ Page {
                 onAccepted: {
                     if (find(editText) === -1)
                         listModel.append({name: editText})
+                }
+                onEditTextChanged:   {
+                    rgbSettings["node"] = rgbNodeName.editText
+                    cppWrapper.setProperty(rgbCB.sensorType, rgbSettings)
                 }
             }
 
@@ -259,6 +364,10 @@ Page {
                     if (find(editText) === -1)
                         listModel.append({name: editText})
                 }
+                onEditTextChanged:   {
+                    radarSettings["node"] = radarNodeName.editText
+                    cppWrapper.setProperty(radarCB.sensorType, radarSettings)
+                }
             }
 
 
@@ -272,6 +381,10 @@ Page {
                     if (find(editText) === -1)
                         listModel.append({name: editText})
                 }
+                onEditTextChanged:   {
+                    rgbdSettings["node"] = rgbdNodeName.editText
+                    cppWrapper.setProperty(rgbdCB.sensorType, rgbdSettings)
+                }
             }
 
             ComboBox {
@@ -280,6 +393,14 @@ Page {
                 Layout.preferredWidth: 200
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 editable: true
+                onAccepted: {
+                    if (find(editText) === -1)
+                        listModel.append({name: editText})
+                }
+                onEditTextChanged:   {
+                    lidarSettings["node"] = lidarNodeName.editText
+                    cppWrapper.setProperty(lidarCB.sensorType, lidarSettings)
+                }
             }
 
 
@@ -515,10 +636,12 @@ Page {
 
         RowLayout {
             id: rowLayout1
-            x: 109
             y: 90
-            width: 421
             height: 59
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.leftMargin: 5
+            anchors.rightMargin: 5
 
             CheckBox {
                 id: checkBox1
@@ -545,10 +668,12 @@ Page {
         }
 
         RowLayout {
-            x: 109
             y: 17
-            width: 421
             height: 60
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.leftMargin: 5
+            anchors.rightMargin: 5
 
             CheckBox {
                 id: checkBox
@@ -582,21 +707,38 @@ Page {
 
             ComboBox {
                 id: slamComboBox
-                displayText: "Тип"
-                editable: true
-                onPressedChanged: {
-                    fileDialog3.open()
+                Layout.minimumWidth: 200
+                Layout.fillWidth: false
+                displayText: "Выбрать модуль"
+                textRole: "key"
+                valueRole: "value"
+                editable: false
+                model: ListModel{
+                    ListElement { key: "SLAM"; value: 0 }
+                    ListElement { key: "СТЗ"; value: 1 }
+                    ListElement { key: "..."; value: 2 }
                 }
+                onActivated: {
+                    this.displayText = currentText
+                    cppWrapper.addListMap(currentText, {turn:true})
+                }
+
+                ToolTip.visible: hovered
+                ToolTip.text: "Выбрать модуль"
+                ToolTip.timeout: 3000
+                ToolTip.delay: 1000
+
             }
         }
 
         RowLayout {
             id: rowLayout2
-            x: 87
             y: 155
-            width: 443
             height: 56
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.rightMargin: 5
+            anchors.leftMargin: 5
 
             CheckBox {
                 id: simCB
@@ -748,3 +890,9 @@ Page {
 
 
 
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:1.25}
+}
+##^##*/

@@ -16,10 +16,10 @@ void readParam(const std::string param_name, QString& param_value,
 }
 
 ControlModule::ControlModule()
-  : nh_()
+  : nh_("~")
   , simulator_(false)
 {
-  srv_update_ = nh_.advertiseService("updateParams", &ControlModule::callbackUpdate, this);
+  srv_update_ = nh_.advertiseService("update_params", &ControlModule::callbackUpdate, this);
   readParam("/gui_config/sensor_types", names_, names_);
   // init
   modules_.resize(names_.size());
@@ -51,11 +51,11 @@ ControlModule::~ControlModule()
 
 void ControlModule::updateParams()
 {
-  bool delete_success = ros::param::del("/gui_config/");
-  QProcess console;
-  static QString pkg_path(ros::package::getPath("gui_control_system").c_str());
-  console.start("rosparam", {"load", pkg_path + "/config/qt_out.yaml"});
-  console.waitForFinished();
+//  bool delete_success = ros::param::del("/gui_config/");
+//  QProcess console;
+//  static QString pkg_path(ros::package::getPath("gui_control_system").c_str());
+//  console.start("rosparam", {"load", pkg_path + "/config/qt_out.yaml"});
+//  console.waitForFinished();
   for (auto& it : modules_)
   {
     fillStruct(it, "/gui_config/" + it.name_);

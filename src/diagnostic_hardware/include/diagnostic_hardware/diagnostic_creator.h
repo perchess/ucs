@@ -11,6 +11,7 @@ public:
   DiagnosticCreator(std::string node_name, ros::NodeHandle& nh, diagnostic_updater::Updater * updater,
                     std::string sensor_type);
 
+
   void run(diagnostic_updater::DiagnosticStatusWrapper &stat);
   void callbackRosout(const rosgraph_msgs::Log::ConstPtr &msg);
   void processing();
