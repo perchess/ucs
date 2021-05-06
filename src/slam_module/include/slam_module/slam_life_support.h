@@ -2,9 +2,22 @@
 
 #include <slam_module/self_diagnostic.h>
 
-#include <ros/ros.h>
+
 #include <std_srvs/Trigger.h>
 #include <std_msgs/String.h>
+
+
+struct SlamAlgorithm : public Algorithm
+{
+  using Algorithm::Algorithm;
+  void publish_to_rosparam(bool turn)
+  {
+    setParam("/gui_config/features/SLAM/pkg", pkg_, true);
+    setParam("/gui_config/features/SLAM/launch", launch_file_, true);
+    setParam("/gui_config/features/SLAM/turn", turn, true);
+  }
+};
+
 
 
 class SLAMLifeSupport : DiagnosticMain
@@ -22,6 +35,7 @@ public:
   bool update_sensor_system();
   // Основной цикл
   void spin();
+  void set_sensor_hierarchy(std::map<std::string, SlamAlgorithm>& in) {sensor_hierarchy_ = in;}
 
 private:
   void create_hierarchy();
@@ -33,34 +47,11 @@ private:
 
   diagnostic_msgs::DiagnosticArray diagnost_msg_;
   ros::ServiceClient updt_srv_;
+  std::vector<SlamAlgorithm> algorithms_;
+  std::map<std::string, SlamAlgorithm> sensor_hierarchy_;
 
 
 };
 
 
-//! @brief Шаблоннная функция для чтения параметров
-template <typename T>
-void readParam(const std::string param_name, T& param_value,
-               const T default_value) {
-  if (!ros::param::get(param_name, param_value)) {
-    ROS_WARN_STREAM("Parameter \""
-                        << param_name << "\" didn' find in Parameter Server."
-                        << "\nSetting default value: " << &default_value);
-    param_value = default_value;
-  }
-}
 
-template <class T>
-void setParam(const std::string param_name, const T& value, bool create = false)
-{
-  if (ros::param::has(param_name))
-  {
-    ros::param::set(param_name, value);
-  }
-  else if (create)
-    ros::param::set(param_name, value);
-  else
-  {
-    ROS_WARN_STREAM("Parameter \"" << param_name << "\" didn' find in Parameter Server.");
-  }
-}
