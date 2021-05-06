@@ -169,20 +169,42 @@ Page {
                     ToolTip.delay: 1000
                 }
 
-                Component.onCompleted: rosWrapper.createRosPackageList()
+                Component.onCompleted: {
+                    if (simCB.checked)
+                        rosWrapper.createRosTopicList()
+                    else
+                        rosWrapper.createRosPackageList()
+                }
                 onAccepted: {
                     if (find(editText) === -1)
                         rosWrapper.appendList(editText)
 
                 }
                 onHighlighted: {
-                    rosWrapper.createRosPackageList()
+                    if (simCB.checked) {
+                        rosWrapper.createRosTopicList()
+                        this.model = rosWrapper.myTopicModel
+                    }
+                    else
+                        rosWrapper.createRosPackageList()
                 }
                 onEditTextChanged:  {
                     imuSettings["pkg"] = imuPackage.editText
                     cppWrapper.setProperty(imuCB.sensorType, imuSettings)
                 }
-                onModelChanged: editText = ""
+                onFocusChanged: {
+                    if (simCB.checked) {
+                        rosWrapper.createRosTopicList()
+                        this.model = rosWrapper.myTopicModel
+                    }
+                    else
+                        rosWrapper.createRosPackageList()
+                }
+
+                onModelChanged: {
+                    editText = ""
+
+                }
             }
 
             ComboBox {
@@ -210,11 +232,24 @@ Page {
                         rosWrapper.appendList(editText)
                 }
                 onHighlighted: {
-                    rosWrapper.createRosPackageList()
+                    if (simCB.checked) {
+                        rosWrapper.createRosTopicList()
+                        this.model = rosWrapper.myTopicModel
+                    }
+                    else
+                        rosWrapper.createRosPackageList()
                 }
                 onEditTextChanged:  {
                     rgbSettings["pkg"] = rgbPackage.editText
                     cppWrapper.setProperty(rgbCB.sensorType, imuSettings)
+                }
+                onFocusChanged: {
+                    if (simCB.checked) {
+                        rosWrapper.createRosTopicList()
+                        this.model = rosWrapper.myTopicModel
+                    }
+                    else
+                        rosWrapper.createRosPackageList()
                 }
                 onModelChanged: editText = ""
             }
@@ -243,11 +278,24 @@ Page {
                         rosWrapper.appendList(editText)
                 }
                 onHighlighted: {
-                    rosWrapper.createRosPackageList()
+                    if (simCB.checked) {
+                        rosWrapper.createRosTopicList()
+                        this.model = rosWrapper.myTopicModel
+                    }
+                    else
+                        rosWrapper.createRosPackageList()
                 }
                 onEditTextChanged:  {
                     radarSettings["pkg"] = radarPackage.editText
                     cppWrapper.setProperty(radarCB.sensorType, radarSettings)
+                }
+                onFocusChanged: {
+                    if (simCB.checked) {
+                        rosWrapper.createRosTopicList()
+                        this.model = rosWrapper.myTopicModel
+                    }
+                    else
+                        rosWrapper.createRosPackageList()
                 }
                 onModelChanged: editText = ""
             }
@@ -275,11 +323,24 @@ Page {
                         rosWrapper.appendList(editText)
                 }
                 onHighlighted: {
-                    rosWrapper.createRosPackageList()
+                    if (simCB.checked) {
+                        rosWrapper.createRosTopicList()
+                        this.model = rosWrapper.myTopicModel
+                    }
+                    else
+                        rosWrapper.createRosPackageList()
                 }
                 onEditTextChanged:  {
                     rgbdSettings["pkg"] = rgbdPackage.editText
                     cppWrapper.setProperty(rgbdCB.sensorType, rgbdSettings)
+                }
+                onFocusChanged: {
+                    if (simCB.checked) {
+                        rosWrapper.createRosTopicList()
+                        this.model = rosWrapper.myTopicModel
+                    }
+                    else
+                        rosWrapper.createRosPackageList()
                 }
                 onModelChanged: editText = ""
             }
@@ -307,11 +368,24 @@ Page {
                         rosWrapper.appendList(editText)
                 }
                 onHighlighted: {
-                    rosWrapper.createRosPackageList()
+                    if (simCB.checked) {
+                        rosWrapper.createRosTopicList()
+                        this.model = rosWrapper.myTopicModel
+                    }
+                    else
+                        rosWrapper.createRosPackageList()
                 }
                 onEditTextChanged:  {
                     lidarSettings["pkg"] = lidarPackage.editText
                     cppWrapper.setProperty(lidarCB.sensorType, lidarSettings)
+                }
+                onFocusChanged: {
+                    if (simCB.checked) {
+                        rosWrapper.createRosTopicList()
+                        this.model = rosWrapper.myTopicModel
+                    }
+                    else
+                        rosWrapper.createRosPackageList()
                 }
                 onModelChanged: editText = ""
             }
@@ -417,7 +491,7 @@ Page {
                 Layout.preferredWidth: 100
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 background: Rectangle {
-                    color: "#ed4040"
+                    color: "firebrick"
                     border.color: "#d1c5c5"
                 }
 
@@ -697,7 +771,7 @@ Page {
                 textRole: "key"
                 valueRole: "value"
                 editable: false
-                property variant slam: ({turn: true, pkg: "turtlebot3_slam", launch: "turtlebot3_slam.launch"})
+                property variant slam: ({turn: true, pkg: "slam_module", launch: "turtlebot3_slam_with_move_base.launch"})
                 property variant cv: ({turn: true, pkg: "pkg_cv", launch: "file_cv"})
                 property variant args: ({turn: false, pkg: "", launch: ""})
                 function fillFeatureParam(args, ref){
@@ -708,13 +782,31 @@ Page {
 
                 model: ListModel{
                     ListElement { key: "SLAM"; value: 0 }
-                    ListElement { key: "СТЗ"; value: 1 }
-                    ListElement { key: "..."; value: 2 }
+                    ListElement { key: "CV"; value: 1 }
                 }
+                Component.onCompleted: {
+                    var i
+                    var list = Array.from({ length: model.count })
+                    for (i = 0; i < model.count; i++) {
+                        list[i] = (model.get(i).key)
+                    }
+                    cppWrapper.setList(list, "features_list")
+
+                }
+
+                onModelChanged: {
+                    var i
+                    for (i = 0; i < model.count; i++) {
+                        console.log(model.get(i).key)
+                    }
+                }
+
                 onActivated: {
                     this.displayText = currentText
                     if (currentText == "SLAM"){
                         fillFeatureParam(args, slam)
+                        page2.displayConfig.setSource(rosWrapper.find("slam_module") +
+                                                      "/rviz/turtlebot3_edited.rviz")
                     }
                     if (currentText == "CV"){
                         fillFeatureParam(args, cv)
@@ -745,6 +837,7 @@ Page {
                 onCheckedChanged: {
                     cppWrapper.setProperty(simCB.checked, "simulation")
                     if (simCB.checked){
+                        cppWrapper.callSystem("roslaunch", ["gui_control_system", "turtlebot3_world_remap.launch"])
                         sensorsLabel1.text = qsTr("Топик из симулятора")
                         sensorsLabel2.text = qsTr("Название ноды")
                         rosWrapper.createRosTopicList()
@@ -774,7 +867,12 @@ Page {
                             rosWrapper.callUpdateService()
                         else {
                             cppWrapper.callSystem("roslaunch", args)
-                            cppWrapper.callSystem("rosrun", ["diagnostic_hardware","diagnostic_hardware_node"])
+                            cppWrapper.callSystem("roslaunch", ["control_module", "node_launcher.launch",
+                                                                "pkg:=diagnostic_hardware",
+                                                                "type:=diagnostic_hardware_node",
+                                                                "name:=diagnostic_hardware_autorun"])
+                            cppWrapper.callSystem("roslaunch", ["sensor_node", "robot_control.launch",
+                                                                "node_name:=robot_control", "subscribe_topic_name:=/cmd_vel"])
                             launchButton.text = qsTr("Обновить состояние")
                         }
 
@@ -882,6 +980,28 @@ Page {
         }
     }
 
+    RoundButton {
+        id: roundButton
+        x: 966
+        y: 519
+        width: 66
+        height: 66
+        text: "СТОП"
+        font.bold: true
+        autoRepeat: false
+        palette.button: "firebrick"
+        display: AbstractButton.TextBesideIcon
+        property bool state: false
+        onClicked: {
+            state = !state
+            rosWrapper.callStopService(state)
+            if (state)
+                palette.button = "forestgreen"
+            else
+                palette.button = "firebrick"
+        }
+    }
+
     // end fileBrowser
 
 }
@@ -892,6 +1012,6 @@ Page {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:1.25}
+    D{i:0;formeditorZoom:0.75}
 }
 ##^##*/

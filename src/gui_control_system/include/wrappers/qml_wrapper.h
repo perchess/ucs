@@ -53,6 +53,7 @@ public slots:
     void setLanguage(QString localeStr);
     void setSensorType(QString name);
     void addListMap(QString name, QMap<QString, QVariant> parametr);
+    void setList(QVariant list, QString name);
 
 
 signals:

@@ -186,6 +186,15 @@ void RosWrapper::callUpdateService()
 }
 
 
+void RosWrapper::callStopService(bool state)
+{
+  ros::ServiceClient srv_client = nh_.serviceClient<std_srvs::SetBool>("/robot_control/stop");
+  std_srvs::SetBool srv;
+  srv.request.data = state;
+  srv_client.call(srv);
+}
+
+
 QStringList RosWrapper::getPacakgeListModel() const{
   return packageStringList_;
 }

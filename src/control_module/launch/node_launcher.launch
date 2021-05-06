@@ -1,6 +1,6 @@
 <launch>
-    <arg name="name" default=""/>
     <arg name="pkg" default=""/>
     <arg name="type" default=""/>
+    <arg name="name" default="$(arg type)_autoname"/>
     <node name="$(arg name)" pkg="$(arg pkg)" type="$(arg type)" output="screen"/>
 </launch>

@@ -20,15 +20,21 @@ ControlModule::ControlModule()
   , simulator_(false)
 {
   srv_update_ = nh_.advertiseService("update_params", &ControlModule::callbackUpdate, this);
-  readParam("/gui_config/sensor_types", names_, names_);
+  readParam("/gui_config/sensor_types", sensor_list_, sensor_list_);
+  readParam("/gui_config/features_list", features_List_, features_List_);
   // init
-  modules_.resize(names_.size());
+  modules_.resize(sensor_list_.size());
   for (size_t i = 0; i < modules_.size(); i++)
-    modules_.at(i).name_ = QString::fromStdString(names_.at(i));
+    modules_.at(i).name_ = QString::fromStdString(sensor_list_.at(i));
 
-  updateParams();
+  features_.resize(features_List_.size());
+  for (size_t i = 0; i < features_.size(); i++)
+    features_.at(i).name_ = QString::fromStdString(features_List_.at(i));
 
-  start();
+  update();
+//  updateParams();
+
+//  start();
 }
 
 
@@ -60,9 +66,11 @@ void ControlModule::updateParams()
   {
     fillStruct(it, "/gui_config/" + it.name_);
   }
-  //DEBUG
-  Feature test;
-  fillStruct(test, "/gui_config/features", "SLAM");
+  for (auto& it : features_)
+  {
+    fillStruct(it, "/gui_config/features", it.name_);
+  }
+
   readParam("/gui_config/simulation", simulator_, false);
 }
 
@@ -122,31 +130,67 @@ void ControlModule::start()
 void ControlModule::update()
 {
   auto old_modules = modules_;
+  auto old_features = features_;
   updateParams();
   for (size_t i = 0; i < modules_.size(); i++)
   {
     // Если изменился статус
     if (modules_.at(i).state_ != old_modules.at(i).state_)
     {
-      if (modules_.at(i).state_)
-      {
-        QStringList args = simulator_ ? QStringList{
-                                       "sensor_node", "start_node.launch",
-                                       "node_name:=" + modules_.at(i).node_,
-                                       "subscribe_topic_name:=" + modules_.at(i).package_}
-                                     : QStringList{
-                                       "control_module", "node_launcher.launch",
-                                       "name:=" + modules_.at(i).node_,
-                                       "pkg:=" + modules_.at(i).package_,
-                                       "type:=" + modules_.at(i).node_ };
-        modules_.at(i).console_->start("roslaunch", args);
-      }
-
-      else
-      {
-        modules_.at(i).console_->terminate();
-        modules_.at(i).console_->waitForFinished();
-      }
+      launch_item(modules_.at(i));
     }
+
+  }
+  for (size_t i = 0; i < features_.size(); i++)
+  {
+    // Если изменился статус
+    if (features_.at(i).turn_ != old_features.at(i).turn_)
+    {
+      launch_item(features_.at(i));
+    }
+
+  }
+
+}
+
+void ControlModule::launch_item(const Sensor& item)
+{
+  if (item.state_)
+  {
+    QStringList args = simulator_ ? QStringList{
+                                   "sensor_node", "start_node.launch",
+                                   "node_name:=" + item.node_,
+                                   "subscribe_topic_name:=" + item.package_}
+                                 : QStringList{
+                                   "control_module", "node_launcher.launch",
+                                   "name:=" + item.node_,
+                                   "pkg:=" + item.package_,
+                                   "type:=" + item.node_ };
+    item.console_->start("roslaunch", args);
+  }
+  else
+  {
+    item.console_->terminate();
+    item.console_->waitForFinished();
+  }
+}
+
+
+void ControlModule::launch_item(const Feature& item)
+{
+  if (item.turn_)
+  {
+    QStringList args = simulator_ ? QStringList{
+                                    item.package_,
+                                    item.launch_file_}
+                                 : QStringList{
+                                    item.package_,
+                                    item.launch_file_};
+    item.console_->start("roslaunch", args);
+  }
+  else
+  {
+    item.console_->terminate();
+    item.console_->waitForFinished();
   }
 }

@@ -30,20 +30,23 @@ struct Sensor
 
 struct Feature
 {
-  Feature(bool state, QString pkg, QString launch)
+  Feature(bool state, QString pkg, QString launch, QString name)
     : turn_(state)
+    , name_(name)
     , package_(pkg)
     , launch_file_(launch)
     , console_(new QProcess()){}
 
   Feature()
     : turn_(0)
+    , name_()
     , package_()
     , launch_file_()
     , console_(new QProcess()){}
 
 
   bool turn_;
+  QString name_;
   QString package_;
   QString launch_file_;
   QProcess * console_;
@@ -65,9 +68,13 @@ public:
                       std_srvs::Trigger::Response& response);
 
 private:
+  void launch_item(const Sensor& item);
+  void launch_item(const Feature& item);
+
   std::vector<Sensor> modules_;
   std::vector<Feature> features_;
-  std::vector<std::string> names_;
+  std::vector<std::string> sensor_list_;
+  std::vector<std::string> features_List_;
   ros::ServiceServer srv_update_;
   ros::NodeHandle nh_;
   bool simulator_;

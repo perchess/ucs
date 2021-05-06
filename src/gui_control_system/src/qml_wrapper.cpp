@@ -20,8 +20,9 @@ CppWrapper::~CppWrapper()
   configFile_.close();
   for (auto it : terminals_)
   {
-//    it->terminate();
-    kill(it->processId(), SIGINT);
+    it->terminate();
+//    if (it->processId())
+//      kill(it->processId(), SIGINT);
     it->waitForFinished();
   }
   if(ros::isStarted())
@@ -75,6 +76,15 @@ void CppWrapper::setSensorType(QString name)
 {
   sensor_node_names_.push_back(name.toStdString());
   yamlNode_["sensor_types"] = sensor_node_names_;
+  applyChanges();
+}
+
+void CppWrapper::setList(QVariant list, QString name)
+{
+  std::vector<QString> vector_str;
+  QStringList tmp = list.toStringList();
+  vector_str = tmp.toVector().toStdVector();
+  yamlNode_[name.toStdString()] = vector_str;
   applyChanges();
 }
 

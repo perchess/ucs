@@ -7,7 +7,7 @@ from sensor_node.srv import emit_error, emit_errorResponse
 rospy.init_node('sensor_sim_node')
 topic_name = rospy.get_param('~sensor_topic_name')
 topicclass = rostopic.get_topic_class(topic_name)
-pub = rospy.Publisher(topic_name + "_sim", topicclass[0], queue_size=10)
+pub = rospy.Publisher(topic_name[:-7], topicclass[0], queue_size=10)
 
 
 def handle_server(req):
@@ -30,7 +30,7 @@ if __name__ == '__main__':
     srv = rospy.Service("~emit", emit_error, handle_server)
     try:
         listener()
-        rospy.loginfo("Redirecting from %s to %s", topic_name, topic_name + "_sim")
+        rospy.loginfo("Redirecting from %s to %s", topic_name, topic_name[:-7])
         rospy.spin()
     except rospy.ROSInterruptException:
         pass

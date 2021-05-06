@@ -67,7 +67,7 @@ Page {
         DisplayConfig {
             id: displayConfig
             frame: visualizationFrame
-//            source: "/home/den/c_workspaces/ucs/src/robot_gmapping/rviz/turtlebot.rviz"
+            source: ""
             //            source: rosWrapper.find("turtlebot3_slam") +
             //                    "/rviz/turtlebot3_gmapping.rviz"
         }

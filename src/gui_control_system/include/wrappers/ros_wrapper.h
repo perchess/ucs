@@ -10,6 +10,7 @@
 #include <ros/package.h>
 #include <ros/datatypes.h>
 #include <std_srvs/Trigger.h>
+#include <std_srvs/SetBool.h>
 #include <std_msgs/String.h>
 
 #include <rosbag_parser/logs_table_model.h>
@@ -53,6 +54,7 @@ public slots:
     QString find(QString pkg_name);
     void startKeyTeleop();
     void sendTeleopCmd(QString key);
+    void callStopService(bool state);
 
 
 signals:
